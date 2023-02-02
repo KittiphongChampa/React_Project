@@ -7,19 +7,23 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Register from './screens/Register';
 import Login from './screens/Login';
 import Welcome from './screens/Welcome';
-import Home from './screens/Home';
+import Index from './screens/Index';
 import Profile from './screens/Profile';
+import Avatar from './screens/Avatar';
+import Verify from './screens/Verify';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<App />} />
+      <Route path="/test" element={<App />} />
+      <Route path="/" element={<Index />} />
       <Route path="/welcome" element={<Welcome />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/verify" element={<Verify />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/home" element={<Home />} />
       <Route path="/profile" element={<Profile />} />
+      <Route path="/avatar" element={<Avatar />} />
     </Routes>
   </BrowserRouter>
 );

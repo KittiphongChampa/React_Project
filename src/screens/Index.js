@@ -1,12 +1,12 @@
 import Button from "@mui/material/Button";
 import React, { useState,useEffect } from "react";
 
-export default function Home() {
+export default function Index() {
   const [email, setEmail] = useState('');
-  const [fname, setFname] = useState('');
+  const [username, setUsername] = useState('');
   useEffect(() => {
     const token = localStorage.getItem("token");
-    fetch("http://localhost:3333/authen", {
+    fetch("http://localhost:3333/index", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -16,13 +16,11 @@ export default function Home() {
       .then((response) => response.json())
       .then((data) => {
         if (data.status==='ok') {
-          // console.log(data.decoded.email);
           setEmail(data.users[0].email);
-          setFname(data.users[0].fname);
+          setUsername(data.users[0].username);
         }else{
-          alert("Authen Failed");
           localStorage.removeItem("token");
-          window.location = "/login";
+          window.location = "/welcome";
         }
       })
       .catch((error) => {
@@ -33,7 +31,7 @@ export default function Home() {
   const handleLogout = (event) => {
     event.preventDefault();
     localStorage.removeItem('token');
-    window.location = "/login";
+    window.location = "/welcome";
   };
 
   const handleProfile = (event) => {
@@ -42,8 +40,9 @@ export default function Home() {
   };
 
   return (
-    <div className="Home">
-      <h1>Welcome, {email+' '+fname}</h1>
+    
+    <div className="Index">
+      <h1>Welcome, {email+' '+username}</h1>
       <Button variant="contained" onClick={handleProfile}>Profile</Button>
       <Button variant="contained" onClick={handleLogout}>Logout</Button>
     </div>

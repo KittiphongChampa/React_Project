@@ -1,40 +1,51 @@
-import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Link from '@mui/material/Link';
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 const theme = createTheme();
 
 export default function Profile() {
-    const token = localStorage.getItem("token");
-    fetch("http://localhost:3333/profile", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.status==='ok') {
-        //   console.log(data.result[0]);
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+  const [username, setUername] = useState("");
+  const [img, setImg] = useState("");
+  // const [userdata, setUserdata] = useState([]);
+
+  if (localStorage.getItem("token")) {
+    if (window.location.pathname === "/login") {
+      window.location = "/profile";
+    }
+  } else {
+    window.location = "/login";
+  }
+
+  useEffect(() => {
+    getUser();
+  }, []);
+  const userid = "66";
+  const getUser = async () => {
+    const response = await axios.get("http://localhost:3333/profile/"+userid);
+    // setUserdata(response.data);
+    const test = response.data;
+    // const data = test.users;
+    setUername(test.users[0].username);
+    setImg(test.users[0].profile);
+  };
 
   return (
+    <>
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -46,86 +57,24 @@ export default function Profile() {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+            โปรไฟล์
           </Typography>
-          <Box
-            component="form"
-            noValidate
-            // onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
-          >
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label='FirstName'
-                  value={'test'}
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  value={'test'}
-                  autoComplete="family-name"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="confirmpassword"
-                  label="Confirm-Password"
-                  type="password"
-                  id="confirmpassword"
-                  autoComplete="condirm-password"
-                />
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              บันทึกข้อมูล
-            </Button>
-          </Box>
+
+          <h1>{username}</h1>
+          <img src={img} alt="Profile"/>
+            {/* {image.map((user) => ( */}
+              {/* <img src={user[0].profile} alt="Profile"/> */}
+            {/* ))} */}
+            {/* {userdata.map((user) => (
+                console.log(user)
+                <img src="user.profile" alt="Profile"/>
+                <h1>{user.username}</h1>
+            ))} */}
         </Box>
       </Container>
     </ThemeProvider>
+    <ToastContainer />
+    </>
   );
 }

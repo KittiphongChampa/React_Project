@@ -1,0 +1,203 @@
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Link from '@mui/material/Link';
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+
+const theme = createTheme();
+
+export default function Profile() {
+  // const [username, setUsername] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [image, setImage] = useState(null);
+
+  const [userdata, setUserdata] = useState([]);
+
+  const toastOptions = {
+    position : "bottom-right",
+    autoClose : 1000,
+    pauseOnHover : true,
+    draggable : true,
+    theme : "dark",
+  }
+
+  if (localStorage.getItem("token")) {
+    if (window.location.pathname === "/login") {
+      window.location = "/profile";
+    }
+  } else {
+    window.location = "/login";
+  }
+
+  useEffect(() => {
+    // axios.post('http://localhost:3333/profile/63')
+    //   .then(response => {
+    //     const data = response.data;
+    //     if (data.status === "ok") {
+    //       setUsername(data.users[0].username);
+    //       setEmail(data.users[0].email);
+    //       setImage(data.users[0].profile);
+    //     }
+    //   })
+    //   .catch(error => {
+    //     console.error(error);
+    //   });
+    getUser();
+  }, []);
+
+  const getUser = async () => {
+    const response = await axios.get("http://localhost:3333/profile");
+    setUserdata(response.data);
+  };
+
+  // const token = localStorage.getItem("token");
+  // fetch("http://localhost:3333/profile", {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //     Authorization: "Bearer " + token,
+  //   },
+  // })
+  // .then((response) => response.json())
+  // .then((data) => {
+  //   if (data.status === "ok") {
+  //     setUsername(data.users[0].username);
+  //     setEmail(data.users[0].email);
+  //     setImage(data.users[0].profile);
+  //   }
+  // })
+  // .catch((error) => {
+  //   console.error("Error:", error);
+  // });
+
+  // const handleUploadImage = (event) => {
+  //   const file = event.target.files[0]
+  //   const reader = new FileReader();
+  //   reader.onloadend = () => {
+  //     setFile(file)
+  //     setImagePreviewUrl(reader.result)
+  //   }
+  //   reader.readAsDataURL(file);
+  // }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const jsondata = {
+      username: data.get('username'),
+    };
+    const token = localStorage.getItem("token");
+    fetch("http://localhost:3333/editprofile", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      },
+      body: JSON.stringify(jsondata),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "ok") {
+          alert("Update Success");
+          window.location = "/profile";
+        } else {
+          alert("Update Failed");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
+  return (
+    <>
+    <ThemeProvider theme={theme}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography component="h1" variant="h5">
+            โปรไฟล์
+          </Typography>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleSubmit}
+            sx={{ mt: 3 }}
+          >
+            <Grid container spacing={2}
+            alignItems="center"
+            justifyContent="center">
+
+              <Grid item xs={12}>
+                {image ? <img src={image} alt="Image from database" /> : <p>Loading...</p>}
+              </Grid>
+
+              <Grid item xs={12}>
+                <h2>{image}</h2>
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <h2>{username}</h2>
+              </Grid>
+ 
+              <Grid item xs={12} sm={6}>
+                <h2>{email}</h2>
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  name="username"
+                  label="Username"
+                  type="username"
+                  id="username"
+                  autoComplete="username"
+                  placeholder={username}
+                />
+              </Grid>
+
+              {/* <Grid item xs={6} center>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  >
+                  แก้ไขโปรไฟล์
+              </Button>
+              </Grid> */}
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              บันทึกข้อมูล
+            </Button>
+          </Box>
+        </Box>
+      </Container>
+    </ThemeProvider>
+    <ToastContainer />
+    </>
+  );
+}

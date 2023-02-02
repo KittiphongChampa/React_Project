@@ -14,23 +14,6 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import React, { useState,useEffect } from "react";
 
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 
 const theme = createTheme();
 
@@ -38,7 +21,7 @@ export default function SignIn() {
   useEffect(() => {
     if (localStorage.getItem("token")) {
       if (window.location.pathname === "/login") {
-        window.location = "/home";
+        window.location = "/";
       }
     }
   }, []);
@@ -68,8 +51,9 @@ export default function SignIn() {
       .then((response) => response.json())
       .then((data) => {
         if (data.status === "ok") {
-          localStorage.setItem("token", data.token); //ส่ง token ไว้ที่ตัวแปร token แล้วส่งไปหน้า /home
-          window.location = "/home";
+          localStorage.setItem("token", data.token); //ส่ง token ไว้ที่ตัวแปร token แล้วส่งไปหน้า /
+          console.log(data.token);
+          window.location = "/";
         } else {
           alert("Login Failed");
         }
@@ -95,7 +79,7 @@ export default function SignIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            เข้าสู่ระบบ
           </Typography>
           <Box
             component="form"
@@ -138,18 +122,17 @@ export default function SignIn() {
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
-                  Forgot password?
+                  ลืมรหัสผ่าน?
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="/register" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                <Link href="/verify" variant="body2">
+                  {"ยังไม่มีบัญชี? สมัครสมาชิก"}
                 </Link>
               </Grid>
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
   );
