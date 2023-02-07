@@ -19,6 +19,13 @@ import axios from "axios";
 
 
 const theme = createTheme();
+const toastOptions = {
+  position : "bottom-right",
+  autoClose : 1000,
+  pauseOnHover : true,
+  draggable : true,
+  theme : "dark",
+}
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -39,7 +46,10 @@ export default function SignUp() {
     password: "",
     confirmpassword: "",
   })
-
+  const handleChange = (event) => {
+    setValues({ ...values, [event.target.name]: event.target.value });
+  };
+  
   const [file, setFile] = useState("");
   const [previewUrl, setPreviewUrl] = useState("");
 
@@ -48,18 +58,6 @@ export default function SignUp() {
     setFile(image);
     setPreviewUrl(URL.createObjectURL(image));
   };
-
-  const handleChange = (event) => {
-    setValues({ ...values, [event.target.name]: event.target.value });
-  };
-
-  const toastOptions = {
-    position : "bottom-right",
-    autoClose : 1000,
-    pauseOnHover : true,
-    draggable : true,
-    theme : "dark",
-  }
 
   const handleValidation = () => {
     const {password, confirmpassword, username} = values;
@@ -84,7 +82,7 @@ export default function SignUp() {
       formData.append('username', values.username);
       formData.append('password', values.password);
       const token = localStorage.getItem("token");
-      await axios.post("http://localhost:3333/register", formData, {
+      await axios.put("http://localhost:3333/register", formData, {
         headers: {
           "Content-type": "multipart/form-data",
           Authorization: "Bearer " + token,

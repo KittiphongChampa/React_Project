@@ -11,6 +11,9 @@ import Index from './screens/Index';
 import Profile from './screens/Profile';
 import Avatar from './screens/Avatar';
 import Verify from './screens/Verify';
+import Editprofile from './screens/Editprofile';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -23,6 +26,7 @@ root.render(
       <Route path="/verify" element={<Verify />} />
       <Route path="/register" element={<Register />} />
       <Route path="/profile" element={<Profile />} />
+      <Route path="/editprofile" element={<Editprofile />} />
       <Route path="/avatar" element={<Avatar />} />
     </Routes>
   </BrowserRouter>
