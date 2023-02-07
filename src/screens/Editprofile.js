@@ -41,15 +41,8 @@ export default function Editprofile() {
     window.location = "/login";
   }
   const token = localStorage.getItem("token");
-  const [userId, setUserID] = useState("");
-  const [username, setUsername] = useState();
-  const [bio, setBio] = useState("");
-  const [email, setEmail] = useState("");
-  const [profile, setProfile] = useState("");
-
-  const [bankname, setBankname] = useState("");
-  const [bankuser, setBankuser] = useState("");
-  const [banknum, setBanknum] = useState("");
+  const [userdata, setUserdata] = useState([]);
+  console.log(userdata);
 
   const [file, setFile] = useState("");
   const [previewUrl, setPreviewUrl] = useState("");
@@ -101,14 +94,7 @@ export default function Editprofile() {
       .then((response) => {
         const data = response.data;
         if (data.status === "ok") {
-          setUserID(data.users[0].id);
-          setUsername(data.users[0].username);
-          setBio(data.users[0].urs_bio);
-          setEmail(data.users[0].email);
-          setProfile(data.users[0].urs_profile_img);
-          setBankname(data.users[0].urs_bank_accname);
-          setBankuser(data.users[0].urs_bank_name);
-          setBanknum(data.users[0].urs_bank_number);
+          setUserdata(data.users[0]);
         } else if (data.status === "error") {
           toast.error(data.message, toastOptions);
         } else {
@@ -144,7 +130,7 @@ export default function Editprofile() {
     const formData = new FormData();
     formData.append("username", editedData.usernames);
     formData.append("bio", editedData.bios);
-    handleClose();
+    Close_form_data();
     await axios
       .put("http://localhost:3333/updateprofile", formData, {
         headers: {
@@ -164,54 +150,77 @@ export default function Editprofile() {
       });
   };
 
+  const handleValidation = () => {
+    // const {password, confirmpassword, username} = values;
+    if (editedData.bankuser.length < 3) {
+      toast.error("username should be greater than 4 characters", toastOptions);
+      return false;
+    } else if (editedData.bankname === "") {
+      toast.error("บัญชีธนาคารห้ามว่าง", toastOptions);
+      return false;
+    } else if (editedData.banknum.length < 10) {
+      toast.error("banknum should be greater at 10 characters", toastOptions);
+      return false;
+    }
+    return true;
+  };
+
   const addbank = async (event) => {
     event.preventDefault();
-    const formData = new FormData();
-    formData.append("bankuser", editedData.bankuser);
-    formData.append("bankname", editedData.bankname);
-    formData.append("banknum", editedData.banknum);
-    handleClose();
-    await axios
-      .post("http://localhost:3333/addbank", formData, {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-        body: formData,
-      })
-      .then((response) => {
-        const data = response.data;
-        if (data.status === "ok") {
-          alert("Add Success");
-          window.location = "/editprofile";
-        } else {
-          toast.error(data.message, toastOptions);
-        }
-      });
+    if (handleValidation()) {
+      const formData = new FormData();
+      formData.append("bankuser", editedData.bankuser);
+      formData.append("bankname", editedData.bankname);
+      formData.append("banknum", editedData.banknum);
+      handleClose1();
+      await axios
+        .post("http://localhost:3333/addbank", formData, {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((response) => {
+          const data = response.data;
+          if (data.status === "ok") {
+            alert("Add Success");
+            window.location = "/editprofile";
+          } else {
+            toast.error(data.message, toastOptions);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
   };
 
   const editbank = async (event) => {
     event.preventDefault();
-    const formData = new FormData();
-    formData.append("bankuser", editedData.bankuser);
-    formData.append("bankname", editedData.bankname);
-    formData.append("banknum", editedData.banknum);
-    handleClose();
-    await axios
-      .put("http://localhost:3333/addbank", formData, {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-        body: formData,
-      })
-      .then((response) => {
-        const data = response.data;
-        if (data.status === "ok") {
-          alert("Add Success");
-          window.location = "/editprofile";
-        } else {
-          toast.error(data.message, toastOptions);
-        }
-      });
+    if (handleValidation()) {
+      const formData = new FormData();
+      formData.append("bankuser", editedData.bankuser);
+      formData.append("bankname", editedData.bankname);
+      formData.append("banknum", editedData.banknum);
+      handleClose2();
+      await axios
+        .put("http://localhost:3333/updatebank", formData, {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((response) => {
+          const data = response.data;
+          if (data.status === "ok") {
+            alert("Update Success");
+            window.location = "/editprofile";
+          } else {
+            toast.error(data.message, toastOptions);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
   };
 
   const UserDelete = async () => {
@@ -234,16 +243,7 @@ export default function Editprofile() {
         }
       });
   };
-
-  const [mode, setMode] = useState("เพิ่มบัญชีธนาคาร");
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const handleClick = () => {
-    setMode(mode === "เพิ่มบัญชีธนาคาร" ? "แก้ไขข้อมูลบัญชี" : "เพิ่มบัญชีธนาคาร");
-  };
-
+  // console.log(userdata.urs_bank_accname === "" && userdata.urs_bank_accname === "" && userdata.urs_bank_number === "");
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -258,7 +258,7 @@ export default function Editprofile() {
             }}
           >
             <h1>โปรไฟล์</h1>
-            <img src={profile} alt="Profile" />
+            <img src={userdata.urs_profile_img} alt="Profile" />
             <Button
               variant="primary"
               onClick={editprofile_image}
@@ -266,9 +266,9 @@ export default function Editprofile() {
             >
               แก้ไขรูปโปรไฟล์
             </Button>
-            <p>{username}</p>
-            <p>{bio}</p>
-            <p>{email}</p>
+            <p>{userdata.username}</p>
+            <p>{userdata.urs_bio}</p>
+            <p>{userdata.email}</p>
             <Button
               variant="primary"
               onClick={editprofile_data}
@@ -276,30 +276,30 @@ export default function Editprofile() {
             >
               แก้ไขโปรไฟล์
             </Button>
-            {/* <Editdata /> */}
 
             <h2>บัญชีธนาคาร</h2>
-            <p>{bankuser}</p>
-            <p>{bankname}</p>
-            <p>{banknum}</p>
-
-            {bankuser.length === 0 ? (
-              <Button variant="primary" onClick={handleShow} className="mb-3">
+            <p>{userdata.urs_bank_accname}</p>
+            <p>{userdata.urs_bank_name}</p>
+            <p>{userdata.urs_bank_number}</p>
+            {userdata.urs_bank_accname === "" &&
+            userdata.urs_bank_accname === "" &&
+            userdata.urs_bank_number === "" ? (
+              <Button
+                variant="primary"
+                onClick={handle_addbank}
+                className="mb-3"
+              >
                 เพิ่มบัญชีธนาคาร
               </Button>
             ) : (
-              <Button variant="primary" onClick={handleShow} className="mb-3">
-                แก้ไขข้อมูลบัญชี
+              <Button
+                variant="primary"
+                onClick={handle_editbank}
+                className="mb-3"
+              >
+                แก้ไขบัญชีธนาคาร
               </Button>
             )}
-
-            {/* <Button variant="primary" onClick={handle_addbank} className="mb-3">
-              เพิ่มบัญชีธนาคาร
-            </Button>
-
-            <Button variant="primary" onClick={handle_editbank} className="mb-3">
-              แก้ไขชีธนาคาร
-            </Button> */}
 
             <Button variant="primary" onClick={UserDelete} className="mb-3">
               ลบบัญชีการใช้งาน
@@ -357,7 +357,7 @@ export default function Editprofile() {
               <Form.Label>อีเมล</Form.Label>
               <Form.Control
                 type="text"
-                placeholder={email}
+                placeholder={userdata.email}
                 aria-label="Disabled input example"
                 disabled
                 readOnly
@@ -369,8 +369,8 @@ export default function Editprofile() {
               <Form.Control
                 type="text"
                 name="usernames"
-                placeholder={username}
-                defaultValue={username}
+                placeholder={userdata.username}
+                defaultValue={userdata.username}
                 onChange={(e) => handleInputChange(e)}
                 autoFocus
               />
@@ -385,8 +385,8 @@ export default function Editprofile() {
                 rows={3}
                 type="text"
                 name="bios"
-                placeholder={bio}
-                defaultValue={bio}
+                placeholder={userdata.urs_bio}
+                defaultValue={userdata.urs_bio}
                 onChange={(e) => handleInputChange(e)}
                 autoFocus
               />
@@ -394,7 +394,7 @@ export default function Editprofile() {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={Close_form_data}>
             ปิด
           </Button>
           <Button variant="primary" type="submit" form="myForm">
@@ -403,118 +403,12 @@ export default function Editprofile() {
         </Modal.Footer>
       </Modal>
 
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>
-            {mode === "เพิ่มบัญชีธนาคาร" ? "เพิ่มบัญชีธนาคาร" : "แก้ไขข้อมูลบัญชี"}{" "}
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {mode === "เพิ่มบัญชีธนาคาร" && (
-            <form>
-              <Form onSubmit={addbank} id="bankForm_add">
-                <Form.Group className="mb-3">
-                  <Form.Label>ชื่อบัญชีธนาคาร</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="bankuser"
-                    onChange={(e) => handleInputChange(e)}
-                    autoFocus
-                  />
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                  <Form.Label>บัญชีธนาคาร</Form.Label>
-                  <Form.Select
-                    aria-label="Default select example"
-                    name="bankname"
-                    onChange={(e) => handleInputChange(e)}
-                  >
-                    <option>เลือกธนาคาร</option>
-                    <option value="ธนาคารกรุงเทพ">ธนาคารกรุงเทพ</option>
-                    <option value="ธนาคารกรุงไทย">ธนาคารกรุงไทย</option>
-                    <option value="ธนาคารไทยพานิช">ธนาคารไทยพานิช</option>
-                  </Form.Select>
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                  <Form.Label>เลขบัญชีธนาคาร</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="banknum"
-                    onChange={(e) => handleInputChange(e)}
-                    autoFocus
-                  />
-                </Form.Group>
-              </Form>
-            </form>
-          )}
-          {mode === "แก้ไขข้อมูลบัญชี" && (
-            <form>
-              <Form onSubmit={editbank} id="bankForm_edit">
-                <Form.Group className="mb-3">
-                  <Form.Label>ชื่อบัญชีธนาคาร</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="bankuser"
-                    placeholder={bankuser}
-                    defaultValue={bankuser}
-                    onChange={(e) => handleInputChange(e)}
-                    autoFocus
-                  />
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                  <Form.Label>บัญชีธนาคาร</Form.Label>
-                  <Form.Select
-                    aria-label="Default select example"
-                    name="bankname"
-                    defaultValue={bankname}
-                  >
-                    <option defaultValue={bankname}>{bankname}</option>
-                    <option value="ธนาคารกรุงเทพ">ธนาคารกรุงเทพ</option>
-                    <option value="ธนาคารกรุงไทย">ธนาคารกรุงไทย</option>
-                    <option value="ธนาคารไทยพานิช">ธนาคารไทยพานิช</option>
-                  </Form.Select>
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                  <Form.Label>เลขบัญชีธนาคาร</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="banknum"
-                    placeholder={banknum}
-                    defaultValue={banknum}
-                    onChange={(e) => handleInputChange(e)}
-                    autoFocus
-                  />
-                </Form.Group>
-              </Form>
-            </form>
-          )}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            ยกเลิก
-          </Button>
-        {mode === "เพิ่มบัญชีธนาคาร" && (
-          <Button variant="primary" type="submit" form="bankForm_add">
-            บันทึก
-          </Button>
-        )}{mode === "แก้ไขข้อมูลบัญชี" && (
-          <Button variant="primary" type="submit" form="bankForm_edit">
-            บันทึก
-          </Button>
-        )}
-        </Modal.Footer>
-      </Modal>
-
-      {/* <Modal show={show1} onHide={handleClose1}>
+      <Modal show={show1} onHide={handleClose1}>
         <Modal.Header closeButton>
           <Modal.Title>เพิ่มบัญชีธนาคาร</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={addbank} id="bankForm">
+          <Form onSubmit={addbank} id="bankForm_add">
             <Form.Group className="mb-3">
               <Form.Label>ชื่อบัญชีธนาคาร</Form.Label>
               <Form.Control
@@ -554,13 +448,13 @@ export default function Editprofile() {
           <Button variant="secondary" onClick={handleClose1}>
             ปิด
           </Button>
-          <Button variant="primary" type="submit" form="bankForm">
+          <Button variant="primary" type="submit" form="bankForm_add">
             บันทึก
           </Button>
         </Modal.Footer>
-      </Modal> */}
+      </Modal>
 
-      {/* <Modal show={show2} onHide={handleClose2}>
+      <Modal show={show2} onHide={handleClose2}>
         <Modal.Header closeButton>
           <Modal.Title>แก้ไขบัญชีธนาคาร</Modal.Title>
         </Modal.Header>
@@ -571,9 +465,9 @@ export default function Editprofile() {
               <Form.Control
                 type="text"
                 name="bankuser"
-                placeholder={bankuser}
-                defaultValue={bankuser}
-                // onChange={(e) => handleInputChange(e)}
+                placeholder={userdata.urs_bank_name}
+                defaultValue={userdata.urs_bank_name}
+                onChange={(e) => handleInputChange(e)}
                 autoFocus
               />
             </Form.Group>
@@ -583,9 +477,12 @@ export default function Editprofile() {
               <Form.Select
                 aria-label="Default select example"
                 name="bankname"
-                defaultValue={bankname}
+                defaultValue={userdata.urs_bank_accname}
+                onChange={(e) => handleInputChange(e)}
               >
-                <option defaultValue={bankname}>{bankname}</option>
+                <option defaultValue={userdata.urs_bank_accname}>
+                  {userdata.urs_bank_accname}
+                </option>
                 <option value="ธนาคารกรุงเทพ">ธนาคารกรุงเทพ</option>
                 <option value="ธนาคารกรุงไทย">ธนาคารกรุงไทย</option>
                 <option value="ธนาคารไทยพานิช">ธนาคารไทยพานิช</option>
@@ -597,9 +494,9 @@ export default function Editprofile() {
               <Form.Control
                 type="text"
                 name="banknum"
-                placeholder={banknum}
-                defaultValue={banknum}
-                // onChange={(e) => handleInputChange(e)}
+                placeholder={userdata.urs_bank_number}
+                defaultValue={userdata.urs_bank_number}
+                onChange={(e) => handleInputChange(e)}
                 autoFocus
               />
             </Form.Group>
@@ -613,7 +510,7 @@ export default function Editprofile() {
             บันทึก
           </Button>
         </Modal.Footer>
-      </Modal> */}
+      </Modal>
 
       <ToastContainer />
     </>
