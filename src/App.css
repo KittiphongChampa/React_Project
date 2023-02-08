@@ -1,5 +1,9 @@
-img {
+img.myimg{
   width: 200px;
   height: 200px;
   border-radius: 100%;
+}
+img.mystyle {
+  width: 100%; 
+  height: 250px;
 }

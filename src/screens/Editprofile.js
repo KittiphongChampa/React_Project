@@ -16,6 +16,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "../App.css";
 
 // import Editdata from '../components/Editdata';
 import Button from "react-bootstrap/Button";
@@ -258,7 +259,7 @@ export default function Editprofile() {
             }}
           >
             <h1>โปรไฟล์</h1>
-            <img src={userdata.urs_profile_img} alt="Profile" />
+            <img src={userdata.urs_profile_img} alt="Profile" className="myimg"/>
             <Button
               variant="primary"
               onClick={editprofile_image}
