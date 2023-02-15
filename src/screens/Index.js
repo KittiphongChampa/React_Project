@@ -1,54 +1,74 @@
 import Button from "@mui/material/Button";
-import React, { useState,useEffect } from "react";
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { width } from "@mui/system";
 
 export default function Index() {
-  const [userId, setUserID] = useState('');
-  const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
+  const navigate = useNavigate();
+  const [userdata, setUserdata] = useState([]);
+  console.log(userdata);
+  const [urs_token, setUrs_token] = useState();
+
   useEffect(() => {
+    if (localStorage.getItem("token")) {
+      if (window.location.pathname === "/login") {
+        navigate("/");
+      }
+    } else {
+      navigate("/login");
+    }
+    getUser();
+  }, []);
+
+  const getUser = async () => {
     const token = localStorage.getItem("token");
-    fetch("http://localhost:3333/index", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.status==='ok') {
-          setUserID(data.users[0].id)
-          setEmail(data.users[0].email);
-          setUsername(data.users[0].username);
-        }else{
+    await axios
+      .get("http://localhost:3333/index", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((response) => {
+        const data = response.data;
+        if (data.status === "ok") {
+          setUserdata(data.users[0]);
+          setUrs_token(data.urs_token);
+        } else {
           localStorage.removeItem("token");
-          window.location = "/welcome";
+          navigate("/login");
         }
       })
       .catch((error) => {
         console.error("Error:", error);
       });
-  }, []);
+  };
 
   const handleLogout = (event) => {
     event.preventDefault();
-    localStorage.removeItem('token');
-    window.location = "/welcome";
-  };
-
-  const handleProfile = (event) => {
-    event.preventDefault(userId);
-    window.location = "/profile";
+    localStorage.removeItem("token");
+    navigate("/welcome");
   };
 
   return (
-    
     <div className="Index">
-      <h1>Welcome, {userId+' '+email+' '+username}</h1>
-      <Button variant="contained" onClick={handleProfile}>Profile</Button>
-      {/* <Link to={{pathname: "/profile", state: { user : userId }}}>Profile</Link> */}
-      <Button variant="contained" onClick={handleLogout}>Logout</Button>
+      <h1>
+        Welcome,
+        {userdata.id + " " + userdata.urs_email + " " + userdata.urs_name}
+      </h1>
+      <img src={userdata.urs_profile_img} style={{width: "50px", height: "50px", borderRadius:"50px"}}/>
+      <h3>token : {urs_token}</h3>
+      <Button variant="contained" onClick={() => navigate("/addtoken")}>
+        Token
+      </Button>
+      <Button variant="contained" onClick={() => navigate("/profile")}>
+        Profile
+      </Button>
+      <Button variant="contained" onClick={handleLogout}>
+        Logout
+      </Button>
     </div>
   );
 }

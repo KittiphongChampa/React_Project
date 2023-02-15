@@ -13,15 +13,17 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import React, { useState,useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 const theme = createTheme();
 
 export default function SignIn() {
+  const navigate = useNavigate();
   useEffect(() => {
     if (localStorage.getItem("token")) {
       if (window.location.pathname === "/login") {
-        window.location = "/";
+        navigate("/")
       }
     }
   }, []);
@@ -53,7 +55,7 @@ export default function SignIn() {
         if (data.status === "ok") {
           localStorage.setItem("token", data.token); //ส่ง token ไว้ที่ตัวแปร token แล้วส่งไปหน้า /
           console.log(data.token);
-          window.location = "/";
+          navigate("/")
         } else {
           alert("Login Failed");
         }

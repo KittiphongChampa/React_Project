@@ -15,14 +15,16 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import React, { useState,useEffect } from "react";
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 
 export default function Verify() {
+  const navigate = useNavigate();
   useEffect(() => {
     if (localStorage.getItem("token")) {
-      if (window.location.pathname === "/login") {
-        window.location = "/welcome";
+      if (window.location.pathname === "/verify") {
+        navigate("/")
       }
     }
   }, []);

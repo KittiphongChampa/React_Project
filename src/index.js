@@ -9,9 +9,11 @@ import Login from './screens/Login';
 import Welcome from './screens/Welcome';
 import Index from './screens/Index';
 import Profile from './screens/Profile';
-import Avatar from './screens/Avatar';
+import Transaction_history from './screens/Transaction_history';
 import Verify from './screens/Verify';
 import Editprofile from './screens/Editprofile';
+import Addtoken from './screens/Addtoken';
+import Test from './screens/Test';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -19,7 +21,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <Routes>
-      <Route path="/test" element={<App />} />
+      {/* <Route path="/test" element={<App />} /> */}
       <Route path="/" element={<Index />} />
       <Route path="/welcome" element={<Welcome />} />
       <Route path="/login" element={<Login />} />
@@ -27,7 +29,9 @@ root.render(
       <Route path="/register" element={<Register />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/editprofile" element={<Editprofile />} />
-      <Route path="/avatar" element={<Avatar />} />
+      <Route path="/transaction" element={<Transaction_history />} />
+      <Route path="/addtoken" element={<Addtoken/>} />
+      <Route path="/test" element={<Test/>} />
     </Routes>
   </BrowserRouter>
 );

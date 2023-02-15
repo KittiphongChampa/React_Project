@@ -22,6 +22,7 @@ import "../App.css";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 
@@ -34,16 +35,21 @@ const toastOptions = {
 };
 
 export default function Editprofile() {
-  if (localStorage.getItem("token")) {
-    if (window.location.pathname === "/login") {
-      window.location = "/profile";
-    }
-  } else {
-    window.location = "/login";
-  }
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [userdata, setUserdata] = useState([]);
-  console.log(userdata);
+  const [editdata, setEditdata] = useState([]);
+  const [editedData, setEditedData] = useState({
+    usernames: "",
+    bios: "",
+    bankname: "",
+    bankuser: "",
+    banknum: "",
+  });
+  console.log(editedData);
+  const handleInputChange = (event) => {
+    setEditedData({ ...editedData, [event.target.name]: event.target.value });
+  };
 
   const [file, setFile] = useState("");
   const [previewUrl, setPreviewUrl] = useState("");
@@ -69,19 +75,14 @@ export default function Editprofile() {
   const handleClose2 = () => setShow2(false);
   const handle_editbank = () => setShow2(true);
 
-  const handleInputChange = (event) => {
-    setEditedData({ ...editedData, [event.target.name]: event.target.value });
-  };
-  const [editedData, setEditedData] = useState({
-    usernames: "",
-    bios: "",
-    bankname: "",
-    bankuser: "",
-    banknum: "",
-  });
-  console.log(editedData);
-
   useEffect(() => {
+    if (localStorage.getItem("token")) {
+      if (window.location.pathname === "/login") {
+        navigate("/profile");
+      }
+    } else {
+      navigate("/login");
+    }
     getUser();
   }, []);
 
@@ -96,6 +97,7 @@ export default function Editprofile() {
         const data = response.data;
         if (data.status === "ok") {
           setUserdata(data.users[0]);
+          setEditdata(data.users[0]);
         } else if (data.status === "error") {
           toast.error(data.message, toastOptions);
         } else {
@@ -119,6 +121,7 @@ export default function Editprofile() {
         const data = response.data;
         if (data.status === "ok") {
           alert("Update Success");
+          // navigate("/editprofile");
           window.location = "/editprofile";
         } else {
           toast.error(data.message, toastOptions);
@@ -138,13 +141,14 @@ export default function Editprofile() {
           "Content-type": "multipart/form-data",
           Authorization: "Bearer " + token,
         },
-        body: formData,
       })
       .then((response) => {
         const data = response.data;
         if (data.status === "ok") {
           alert("Update Success");
+          // navigate("/editprofile");
           window.location = "/editprofile";
+          
         } else {
           toast.error(data.message, toastOptions);
         }
@@ -184,6 +188,7 @@ export default function Editprofile() {
           const data = response.data;
           if (data.status === "ok") {
             alert("Add Success");
+            // navigate("/editprofile");
             window.location = "/editprofile";
           } else {
             toast.error(data.message, toastOptions);
@@ -213,6 +218,7 @@ export default function Editprofile() {
           const data = response.data;
           if (data.status === "ok") {
             alert("Update Success");
+            // navigate("/editprofile");
             window.location = "/editprofile";
           } else {
             toast.error(data.message, toastOptions);
@@ -236,6 +242,7 @@ export default function Editprofile() {
         if (data.status === "ok") {
           alert(data.message);
           localStorage.removeItem("token");
+          navigate("/welcome");
           window.location = "/welcome";
         } else if (data.status === "error") {
           toast.error(data.message, toastOptions);
@@ -267,9 +274,10 @@ export default function Editprofile() {
             >
               แก้ไขรูปโปรไฟล์
             </Button>
-            <p>{userdata.username}</p>
+
+            <p>{userdata.urs_name}</p>
             <p>{userdata.urs_bio}</p>
-            <p>{userdata.email}</p>
+            <p>{userdata.urs_email}</p>
             <Button
               variant="primary"
               onClick={editprofile_data}
@@ -358,7 +366,7 @@ export default function Editprofile() {
               <Form.Label>อีเมล</Form.Label>
               <Form.Control
                 type="text"
-                placeholder={userdata.email}
+                placeholder={userdata.urs_email}
                 aria-label="Disabled input example"
                 disabled
                 readOnly
@@ -370,8 +378,8 @@ export default function Editprofile() {
               <Form.Control
                 type="text"
                 name="usernames"
-                placeholder={userdata.username}
-                defaultValue={userdata.username}
+                placeholder={userdata.urs_name}
+                defaultValue={userdata.urs_name}
                 onChange={(e) => handleInputChange(e)}
                 autoFocus
               />

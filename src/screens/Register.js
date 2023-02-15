@@ -31,13 +31,11 @@ export default function SignUp() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      if (window.location.pathname === "/verify") {
-        window.location = "/register";
-      }
-    } else {
-      window.location = "/verify";
-    }
+    // if (localStorage.getItem("token")) {
+    //   if (window.location.pathname === "/register") {
+    //     navigate("/register")
+    //   }
+    // }
   }, []);
 
 
@@ -86,14 +84,13 @@ export default function SignUp() {
         headers: {
           "Content-type": "multipart/form-data",
           Authorization: "Bearer " + token,
-        },
-        body: formData
+        }
       })
       .then(response => {
         const data = response.data;
         if (data.status === "ok") {
           localStorage.setItem("token", data.token);
-          window.location = "/";
+          navigate("/");
         } else if(data.status === "error") {
           toast.error(data.message, toastOptions)
         }else {

@@ -1,7 +1,9 @@
 import Button from "@mui/material/Button";
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Welcome() {
+  const navigate = useNavigate();
   const styles = {
     container: {
       display: 'flex',
@@ -19,6 +21,14 @@ export default function Welcome() {
       display: 'block'
     }
   };
+  console.log(localStorage.getItem("token"));
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      if (window.location.pathname === "/welcome") {
+        navigate("/")
+      }
+    }
+  }, []);
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>Welcome</h1>

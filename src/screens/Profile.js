@@ -21,6 +21,8 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 
+import { useNavigate } from "react-router-dom";
+
 const theme = createTheme();
 
 const toastOptions = {
@@ -32,13 +34,7 @@ const toastOptions = {
 };
 
 export default function Profile() {
-  if (localStorage.getItem("token")) {
-    if (window.location.pathname === "/login") {
-      window.location = "/profile";
-    }
-  } else {
-    window.location = "/login";
-  }
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [userdata, setUserdata] = useState([]);
   const [file, setFile] = useState("");
@@ -58,6 +54,13 @@ export default function Profile() {
   const editcover_image = () => setForm_cover_edit(true);
 
   useEffect(() => {
+    if (localStorage.getItem("token")) {
+      if (window.location.pathname === "/login") {
+        navigate("/profile")
+      }
+    } else {
+      navigate("/login")
+    }
     getUser();
   }, []);
 
@@ -85,6 +88,7 @@ export default function Profile() {
     event.preventDefault();
     const formData = new FormData();
     formData.append("file", file);
+    Close_form_cover_add()
     await axios
       .put("http://localhost:3333/addcover_img", formData, {
         headers: {
@@ -95,7 +99,7 @@ export default function Profile() {
       .then((response) => {
         const data = response.data;
         if (data.status === "ok") {
-          alert("Update Success");
+          alert("add Success");
           window.location = "/profile";
         } else {
           toast.error(data.message, toastOptions);
@@ -107,6 +111,7 @@ export default function Profile() {
     event.preventDefault();
     const formData = new FormData();
     formData.append("file", file);
+    Close_form_cover_edit()
     await axios
       .put("http://localhost:3333/updatecover_img", formData, {
         headers: {
@@ -153,14 +158,14 @@ export default function Profile() {
               alt="Profile"
               className="myimg"
             />
-            <h4>{userdata.username}</h4>
+            <h4>{userdata.urs_name}</h4>
             <p>ผู้ติดตาม {0} คน</p>
             <p>คะแนน {0} คะแนน</p>
             <p>เสร็จงานแล้ว {0} งาน</p>
             <Button variant="primary" href="/editprofile" className="mb-3" >
               จัดการบัญชี
             </Button>
-            <Button variant="primary" href="" fullWidth>
+            <Button variant="primary" href="">
               เพิ่มผลงานหรือคอมมิชชัน
             </Button>
           </Box>

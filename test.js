@@ -1,100 +1,119 @@
-function onSubmitAddExam(event) {
-    event.preventDefault();
-    const aws = answer.current.value;
-    const imageExam = event.target[1].files[0];
-
-    if (!imageExam) {
-      Swal.fire({
-        title: "กรุณาเลือกรูปภาพ",
-        icon: "warning",
-        confirmButtonText: "ตกลง",
-      });
-      return;
-    }
-    const timestamp = Date.now();
-
-    answer.current.value = "";
-    event.target[1].value = "";
-    document.getElementById("image-exam").src = "/img/no-image-exam.png";
-
-    const storageRef = refSR(storage, /image-exam/${timestamp});
-    const uploadTask = uploadBytesResumable(storageRef, imageExam);
-
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {},
-      (err) => alert(err),
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-          try {
-            set(refDB(database, "Exams/" + timestamp), {
-              answer: aws,
-              image: url,
-              createAt: timestamp,
-            });
-            Swal.fire({
-              title: "เพิ่มข้อสอบสำเร็จ",
-              icon: "success",
-              confirmButtonText: "ตกลง",
-            });
-            getExam();
-            // add history
-            addHistory(
-              currentAuth?.uid,
-              currentAuth?.email,
-              "เพิ่มข้อสอบ",
-              เพิ่มข้อสอบของอารมณ์${emotional[aws]}
-            );
-            // *********************
-          } catch (error) {
-            if (error) {
-              Swal.fire({
-                title: "เพิ่มข้อสอบไม่สำเร็จ",
-                text: "กรุณาทำรายการใหม่อีกครั้ง",
-                icon: "error",
-                confirmButtonText: "ตกลง",
-              });
-            }
-          }
-        });
-      }
-    );
-  }
-
-  const getExam = async () => {
-    const dbRef = refDB(database);
-    get(child(dbRef, "Exams"))
-      .then((snapshot) => {
-        let allExam = {};
-        let num = {};
-        if (snapshot.exists()) {
-          let dataExam = snapshot.val();
-          for (const key in dataExam) {
-            try {
-              allExam[dataExam[key]["answer"]][key] = dataExam[key];
-              num[dataExam[key]["answer"]] += 1;
-            } catch (error) {
-              allExam[dataExam[key]["answer"]] = {};
-              allExam[dataExam[key]["answer"]][key] = dataExam[key];
-              num[dataExam[key]["answer"]] = 1;
-            }
-          }
-        }
-        setExam(allExam);
-        setNumExam(num);
+export default function Editprofile() {
+  const token = localStorage.getItem("token");
+  const [userdata, setUserdata] = useState([]);
+  const [editdata, setEditdata] = useState([]);
+  const [editedData, setEditedData] = useState({
+    usernames: "",
+    bios: "",
+    bankname: "",
+    bankuser: "",
+    banknum: "",
+  });
+  const [form_data, setForm_data] = useState(false);
+  const Close_form_data = () => setForm_data(false);
+  const editprofile_data = () => setForm_data(true);
+  const handleInputChange = (event) => {
+    setEditedData({ ...editedData, [event.target.name]: event.target.value });
+  };
+  useEffect(() => {
+    getUser();
+  }, []);
+  const getUser = async () => {
+    await axios
+      .get("http://localhost:3333/profile", {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
       })
-      .catch((error) => {
-        if (error) {
-          Swal.fire({
-            icon: "error",
-            title: "ทำรายการไม่สำเร็จ",
-            text: "กรุณาทำรายการใหม่อีกครั้ง",
-            confirmButtonText: "ตกลง",
-          });
+      .then((response) => {
+        const data = response.data;
+        if (data.status === "ok") {
+          setUserdata(data.users[0]);
+          setEditdata(data.users[0]);
+        } else if (data.status === "error") {
+          toast.error(data.message, toastOptions);
+        } else {
+          toast.error("ไม่พบผู้ใช้งาน", toastOptions);
+        }
+      });
+  };
+  const profileupdate = () => {
+    setUserdata({ ...editedData });
+    Close_form_data();
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append("username", editedData.usernames);
+    formData.append("bio", editedData.bios);
+    Close_form_data();
+    axios
+      .put("http://localhost:3333/updateprofile", formData, {
+        headers: {
+          "Content-type": "multipart/form-data",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((response) => {
+        const data = response.data;
+        if (data.status === "ok") {
+          alert("Update Success");
+          // navigate("/editprofile");
+          window.location = "/editprofile";
+          
+        } else {
+          toast.error(data.message, toastOptions);
         }
       });
   };
 
-  useEffect(() => {
-    getExam();
-  }, []);
+  return (
+    <>
+      <Button variant="primary" onClick={editprofile_data} className="mb-3">
+        แก้ไขโปรไฟล์
+      </Button>
+      <Modal show={form_data} onHide={Close_form_data}>
+        <Modal.Header closeButton>
+          <Modal.Title>แก้ไขโปรไฟล์</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={profileupdate} id="myForm">
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>ชื่อผู้ใช้</Form.Label>
+              <Form.Control
+                type="text"
+                name="usernames"
+                placeholder={userdata.urs_name}
+                value={editedData.usernames}
+                onChange={(e) => handleInputChange(e)}
+                autoFocus
+              />
+            </Form.Group>
+            <Form.Group
+              className="mb-3"
+              controlId="exampleForm.ControlTextarea1"
+            >
+              <Form.Label>คำอธิบายตัวเอง</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                type="text"
+                name="bios"
+                placeholder={userdata.urs_bio}
+                value={editedData.bios}
+                onChange={(e) => handleInputChange(e)}
+                autoFocus
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={Close_form_data}>
+            ปิด
+          </Button>
+          <Button variant="primary" type="submit" form="myForm">
+            บันทึก
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
+  );
+}
