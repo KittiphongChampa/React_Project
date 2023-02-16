@@ -80,7 +80,7 @@ export default function Verify() {
         if (data.status === "ok") {
           toast.error("Send OTP success", toastOptions)
         } else {
-          toast.error("Send OTP Failed" + data.message, toastOptions)
+          toast.error("Send OTP Failed " + data.message, toastOptions)
         }
       })
       .catch((error) => {
