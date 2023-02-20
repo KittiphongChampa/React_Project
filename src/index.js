@@ -12,7 +12,7 @@ import Profile from './screens/Profile';
 import Transaction_history from './screens/Transaction_history';
 import Verify from './screens/Verify';
 import Editprofile from './screens/Editprofile';
-import Addtoken from './screens/Addtoken';
+import Buytoken from './screens/Buytoken';
 import Test from './screens/Test';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -30,7 +30,7 @@ root.render(
       <Route path="/profile" element={<Profile />} />
       <Route path="/editprofile" element={<Editprofile />} />
       <Route path="/transaction" element={<Transaction_history />} />
-      <Route path="/addtoken" element={<Addtoken/>} />
+      <Route path="/buytoken" element={<Buytoken/>} />
       <Route path="/test" element={<Test/>} />
     </Routes>
   </BrowserRouter>

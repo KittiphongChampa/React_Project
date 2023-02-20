@@ -78,7 +78,7 @@ export default function Verify() {
       .then((response) => response.json())
       .then((data) => {
         if (data.status === "ok") {
-          toast.error("Send OTP success", toastOptions)
+          toast.success("Send OTP success", toastOptions)
         } else {
           toast.error("Send OTP Failed " + data.message, toastOptions)
         }
@@ -98,7 +98,7 @@ export default function Verify() {
         email
       };
       console.log(jsondata);
-      fetch("http://localhost:3333/verify_email", {
+      fetch("http://localhost:3333/verify/email", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -108,7 +108,7 @@ export default function Verify() {
       .then((response) => response.json())
       .then((data) => {
         if (data.status === "ok") {
-          toast.error(data.message, toastOptions)
+          toast.success(data.message, toastOptions)
           localStorage.setItem("token", data.token); //ส่ง token ไว้ที่ตัวแปร token แล้วส่งไปหน้า /
           window.location = "/register";
         } else {

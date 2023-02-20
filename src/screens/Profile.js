@@ -90,7 +90,7 @@ export default function Profile() {
     formData.append("file", file);
     Close_form_cover_add()
     await axios
-      .put("http://localhost:3333/addcover_img", formData, {
+      .put("http://localhost:3333/cover_img/add", formData, {
         headers: {
           "Content-type": "multipart/form-data",
           Authorization: "Bearer " + token,
@@ -113,7 +113,7 @@ export default function Profile() {
     formData.append("file", file);
     Close_form_cover_edit()
     await axios
-      .put("http://localhost:3333/updatecover_img", formData, {
+      .put("http://localhost:3333/cover_img/update", formData, {
         headers: {
           "Content-type": "multipart/form-data",
           Authorization: "Bearer " + token,

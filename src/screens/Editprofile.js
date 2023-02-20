@@ -111,7 +111,7 @@ export default function Editprofile() {
     const formData = new FormData();
     formData.append("file", file);
     await axios
-      .put("http://localhost:3333/updateprofile_img", formData, {
+      .put("http://localhost:3333/profile_img/update", formData, {
         headers: {
           "Content-type": "multipart/form-data",
           Authorization: "Bearer " + token,
@@ -136,7 +136,7 @@ export default function Editprofile() {
     formData.append("bio", editedData.bios);
     Close_form_data();
     await axios
-      .put("http://localhost:3333/updateprofile", formData, {
+      .put("http://localhost:3333/profile/update", formData, {
         headers: {
           "Content-type": "multipart/form-data",
           Authorization: "Bearer " + token,
@@ -148,7 +148,6 @@ export default function Editprofile() {
           alert("Update Success");
           // navigate("/editprofile");
           window.location = "/editprofile";
-          
         } else {
           toast.error(data.message, toastOptions);
         }
@@ -179,7 +178,7 @@ export default function Editprofile() {
       formData.append("banknum", editedData.banknum);
       handleClose1();
       await axios
-        .post("http://localhost:3333/addbank", formData, {
+        .post("http://localhost:3333/bank/add", formData, {
           headers: {
             Authorization: "Bearer " + token,
           },
@@ -209,7 +208,7 @@ export default function Editprofile() {
       formData.append("banknum", editedData.banknum);
       handleClose2();
       await axios
-        .put("http://localhost:3333/updatebank", formData, {
+        .put("http://localhost:3333/bank/update", formData, {
           headers: {
             Authorization: "Bearer " + token,
           },

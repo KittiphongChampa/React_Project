@@ -92,7 +92,7 @@ export default function CreditCard() {
       amount: selectedItem.p_token,
       onCreateTokenSuccess: (token) => {
         axios
-          .post("http://localhost:3333/addtoken", {
+          .post("http://localhost:3333/omiseAPI", {
             email: userdata.urs_email,
             name: userdata.urs_name,
             amount: selectedItem.p_token,
@@ -106,7 +106,7 @@ export default function CreditCard() {
             console.log(data);
             if (data.status === "successful") {
               axios
-                .put("http://localhost:3333/updatetoken", {
+                .put("http://localhost:3333/token/update", {
                   id_transaction: selectedItem.id,
                   amount: selectedItem.p_token,
                   urs_token: userdata.urs_token,
@@ -116,8 +116,8 @@ export default function CreditCard() {
                   const data = response.data;
                   if (data.status === "ok") {
                     alert(data.message);
-                    navigate("/addtoken");
-                    window.location = "/addtoken";
+                    navigate("/buytoken");
+                    window.location = "/buytoken";
                   } else if (data.status === "error") {
                     toast.error(data.message, toastOptions);
                   } else {
@@ -165,40 +165,6 @@ export default function CreditCard() {
       </Container>
 
       <ToastContainer />
-
-      {/* <Modal show={popuptoken} onHide={Close}>
-        <Modal.Header closeButton>
-          <Modal.Title>รายละเอียดแพ็คเกจเติมเหรียญ</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form onSubmit={handleClick} id="myForm">
-            <Script
-              url="https://cdn.omise.co/omise.js"
-              onLoad={handleLoadScript}
-            />
-            <Form.Control
-              type="text"
-              name="testvalue"
-              disabled
-              value={"20"}
-              autoFocus
-            />
-            <Button variant="secondary" onClick={Close}>
-              ปิด
-            </Button>
-            <Button
-              id="credit-card"
-              variant="primary"
-              type="submit"
-              form="myForm"
-            onClick={handleClick}
-            >
-              ชำระเงินด้วยบัตรเครดิต
-            </Button>
-          </Form>
-        </Modal.Body>
-      </Modal> */}
-
       <Modal show={popuptoken} onHide={Close}>
         <Modal.Body>
           <Form onSubmit={handleClick} id="myForm">

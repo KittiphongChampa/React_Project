@@ -60,11 +60,14 @@ export default function Index() {
       </h1>
       <img src={userdata.urs_profile_img} style={{width: "50px", height: "50px", borderRadius:"50px"}}/>
       <h3>token : {urs_token}</h3>
-      <Button variant="contained" onClick={() => navigate("/addtoken")}>
+      <Button variant="contained" onClick={() => navigate("/buytoken")}>
         Token
       </Button>
       <Button variant="contained" onClick={() => navigate("/profile")}>
         Profile
+      </Button>
+      <Button variant="contained" onClick={() => navigate("/test")}>
+        Admin
       </Button>
       <Button variant="contained" onClick={handleLogout}>
         Logout
