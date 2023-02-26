@@ -16,7 +16,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import { useLocation } from 'react-router-dom';
 
 const theme = createTheme();
 const toastOptions = {
@@ -29,6 +29,9 @@ const toastOptions = {
 
 export default function SignUp() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const email = new URLSearchParams(location.search).get('email');
+  console.log(email);
 
   useEffect(() => {
     // if (localStorage.getItem("token")) {
@@ -76,11 +79,12 @@ export default function SignUp() {
     event.preventDefault();
     if(handleValidation()){
       const formData = new FormData();
+      formData.append("email", email);
       formData.append("file", file);
       formData.append('username', values.username);
       formData.append('password', values.password);
       const token = localStorage.getItem("token");
-      await axios.put("http://localhost:3333/register", formData, {
+      await axios.post("http://localhost:3333/register", formData, {
         headers: {
           "Content-type": "multipart/form-data",
           Authorization: "Bearer " + token,

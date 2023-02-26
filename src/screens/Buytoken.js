@@ -32,7 +32,7 @@ export default function CreditCard() {
   useEffect(() => {
     if (localStorage.getItem("token")) {
       if (window.location.pathname === "/login") {
-        navigate("/profile");
+        navigate("/buytoken");
       }
     } else {
       navigate("/login");
@@ -89,13 +89,13 @@ export default function CreditCard() {
 
   const omiseCardHandler = () => {
     OmiseCard.open({
-      amount: selectedItem.p_token,
+      amount: selectedItem.p_price*100,
       onCreateTokenSuccess: (token) => {
         axios
           .post("http://localhost:3333/omiseAPI", {
             email: userdata.urs_email,
             name: userdata.urs_name,
-            amount: selectedItem.p_token,
+            amount: selectedItem.p_price*100,
             token: token,
             headers: {
               "Content-Type": "application/json",
@@ -149,8 +149,8 @@ export default function CreditCard() {
                 <Card.Body>
                   <Card.Title>{item.package}</Card.Title>
                   <p>{item.id}</p>
-                  <p>{item.p_price}</p>
-                  <p>{item.p_token}</p>
+                  <p>p_price : {item.p_price}</p>
+                  <p>p_token : {item.p_token}</p>
                   <Button
                     variant="primary"
                     onClick={() => handle_addtoken(item)}

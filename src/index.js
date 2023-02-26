@@ -13,6 +13,10 @@ import Transaction_history from './screens/Transaction_history';
 import Verify from './screens/Verify';
 import Editprofile from './screens/Editprofile';
 import Buytoken from './screens/Buytoken';
+import Package_Token from './screens/Package_Token';
+
+import Add_Package_Token from './screens/Add_Package_Token';
+
 import Test from './screens/Test';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -32,6 +36,12 @@ root.render(
       <Route path="/transaction" element={<Transaction_history />} />
       <Route path="/buytoken" element={<Buytoken/>} />
       <Route path="/test" element={<Test/>} />
+      <Route path="/packagetoken" element={<Package_Token/>} />
+
+
+      <Route path="/packagetoken/add" element={<Add_Package_Token/>}/>
+
+
     </Routes>
   </BrowserRouter>
 );

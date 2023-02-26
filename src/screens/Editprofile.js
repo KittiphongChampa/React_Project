@@ -38,19 +38,11 @@ export default function Editprofile() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [userdata, setUserdata] = useState([]);
-  const [editdata, setEditdata] = useState([]);
-  const [editedData, setEditedData] = useState({
-    usernames: "",
-    bios: "",
-    bankname: "",
-    bankuser: "",
-    banknum: "",
-  });
-  console.log(editedData);
-  const handleInputChange = (event) => {
-    setEditedData({ ...editedData, [event.target.name]: event.target.value });
-  };
-
+  const [name, setName ] = useState("");
+  const [bio, setBio ] = useState("");
+  const [bankname, setBankname ] = useState("");
+  const [bankuser, setBankuser ] = useState("");
+  const [banknum, setBanknum ] = useState("");
   const [file, setFile] = useState("");
   const [previewUrl, setPreviewUrl] = useState("");
   const handleFileChange = (event) => {
@@ -97,7 +89,11 @@ export default function Editprofile() {
         const data = response.data;
         if (data.status === "ok") {
           setUserdata(data.users[0]);
-          setEditdata(data.users[0]);
+          setName(data.users[0].urs_name);
+          setBio(data.users[0].urs_bio);
+          setBankuser(data.users[0].urs_bank_name);
+          setBankname(data.users[0].urs_bank_accname);
+          setBanknum(data.users[0].urs_bank_number);
         } else if (data.status === "error") {
           toast.error(data.message, toastOptions);
         } else {
@@ -132,13 +128,10 @@ export default function Editprofile() {
   const profileupdate = async (event) => {
     event.preventDefault();
     const formData = new FormData();
-    formData.append("username", editedData.usernames);
-    formData.append("bio", editedData.bios);
-    Close_form_data();
-    await axios
-      .put("http://localhost:3333/profile/update", formData, {
+    formData.append("name", name);
+    formData.append("bio", bio);
+    await axios.patch("http://localhost:3333/profile/update", formData, {
         headers: {
-          "Content-type": "multipart/form-data",
           Authorization: "Bearer " + token,
         },
       })
@@ -146,23 +139,23 @@ export default function Editprofile() {
         const data = response.data;
         if (data.status === "ok") {
           alert("Update Success");
-          // navigate("/editprofile");
           window.location = "/editprofile";
         } else {
           toast.error(data.message, toastOptions);
         }
       });
+    Close_form_data();
   };
 
   const handleValidation = () => {
     // const {password, confirmpassword, username} = values;
-    if (editedData.bankuser.length < 3) {
+    if (bankuser.length < 3) {
       toast.error("username should be greater than 4 characters", toastOptions);
       return false;
-    } else if (editedData.bankname === "") {
+    } else if (bankname === "") {
       toast.error("บัญชีธนาคารห้ามว่าง", toastOptions);
       return false;
-    } else if (editedData.banknum.length < 10) {
+    } else if (banknum.length < 10) {
       toast.error("banknum should be greater at 10 characters", toastOptions);
       return false;
     }
@@ -173,9 +166,9 @@ export default function Editprofile() {
     event.preventDefault();
     if (handleValidation()) {
       const formData = new FormData();
-      formData.append("bankuser", editedData.bankuser);
-      formData.append("bankname", editedData.bankname);
-      formData.append("banknum", editedData.banknum);
+      formData.append("bankuser", bankuser);
+      formData.append("bankname", bankname);
+      formData.append("banknum", banknum);
       handleClose1();
       await axios
         .post("http://localhost:3333/bank/add", formData, {
@@ -203,12 +196,12 @@ export default function Editprofile() {
     event.preventDefault();
     if (handleValidation()) {
       const formData = new FormData();
-      formData.append("bankuser", editedData.bankuser);
-      formData.append("bankname", editedData.bankname);
-      formData.append("banknum", editedData.banknum);
+      formData.append("bankuser", bankuser);
+      formData.append("bankname", bankname);
+      formData.append("banknum", banknum);
       handleClose2();
       await axios
-        .put("http://localhost:3333/bank/update", formData, {
+        .patch("http://localhost:3333/bank/update", formData, {
           headers: {
             Authorization: "Bearer " + token,
           },
@@ -217,7 +210,6 @@ export default function Editprofile() {
           const data = response.data;
           if (data.status === "ok") {
             alert("Update Success");
-            // navigate("/editprofile");
             window.location = "/editprofile";
           } else {
             toast.error(data.message, toastOptions);
@@ -229,11 +221,12 @@ export default function Editprofile() {
     }
   };
 
-  const UserDelete = async () => {
-    axios
-      .delete("http://localhost:3333/delete_account", {
+  const UserDelete = async() => {
+    const tested = "";
+    await axios
+      .put("http://localhost:3333/delete_account", tested,{
         headers: {
-          Authorization: "Bearer " + token,
+          Authorization: "Bearer " + token
         },
       })
       .then((response) => {
@@ -250,7 +243,6 @@ export default function Editprofile() {
         }
       });
   };
-  // console.log(userdata.urs_bank_accname === "" && userdata.urs_bank_accname === "" && userdata.urs_bank_number === "");
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -286,8 +278,8 @@ export default function Editprofile() {
             </Button>
 
             <h2>บัญชีธนาคาร</h2>
-            <p>{userdata.urs_bank_accname}</p>
             <p>{userdata.urs_bank_name}</p>
+            <p>{userdata.urs_bank_accname}</p>
             <p>{userdata.urs_bank_number}</p>
             {userdata.urs_bank_accname === "" &&
             userdata.urs_bank_accname === "" &&
@@ -372,14 +364,13 @@ export default function Editprofile() {
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+            <Form.Group className="mb-3">
               <Form.Label>ชื่อผู้ใช้</Form.Label>
               <Form.Control
                 type="text"
-                name="usernames"
-                placeholder={userdata.urs_name}
-                defaultValue={userdata.urs_name}
-                onChange={(e) => handleInputChange(e)}
+                placeholder={name}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 autoFocus
               />
             </Form.Group>
@@ -392,10 +383,9 @@ export default function Editprofile() {
                 as="textarea"
                 rows={3}
                 type="text"
-                name="bios"
-                placeholder={userdata.urs_bio}
-                defaultValue={userdata.urs_bio}
-                onChange={(e) => handleInputChange(e)}
+                placeholder={bio}
+                value={bio}
+                onChange={(e) => setBio(e.target.value)}
                 autoFocus
               />
             </Form.Group>
@@ -421,8 +411,8 @@ export default function Editprofile() {
               <Form.Label>ชื่อบัญชีธนาคาร</Form.Label>
               <Form.Control
                 type="text"
-                name="bankuser"
-                onChange={(e) => handleInputChange(e)}
+                value={bankuser}
+                onChange={(e) => setBankuser(e.target.value)}
                 autoFocus
               />
             </Form.Group>
@@ -431,8 +421,8 @@ export default function Editprofile() {
               <Form.Label>บัญชีธนาคาร</Form.Label>
               <Form.Select
                 aria-label="Default select example"
-                name="bankname"
-                onChange={(e) => handleInputChange(e)}
+                value={bankname}
+                onChange={(e) => setBankname(e.target.value)}
               >
                 <option>เลือกธนาคาร</option>
                 <option value="ธนาคารกรุงเทพ">ธนาคารกรุงเทพ</option>
@@ -445,8 +435,8 @@ export default function Editprofile() {
               <Form.Label>เลขบัญชีธนาคาร</Form.Label>
               <Form.Control
                 type="text"
-                name="banknum"
-                onChange={(e) => handleInputChange(e)}
+                value={banknum}
+                onChange={(e) => setBanknum(e.target.value)}
                 autoFocus
               />
             </Form.Group>
@@ -472,10 +462,9 @@ export default function Editprofile() {
               <Form.Label>ชื่อบัญชีธนาคาร</Form.Label>
               <Form.Control
                 type="text"
-                name="bankuser"
-                placeholder={userdata.urs_bank_name}
-                defaultValue={userdata.urs_bank_name}
-                onChange={(e) => handleInputChange(e)}
+                value={bankuser}
+                placeholder={bankuser}
+                onChange={(e) => setBankuser(e.target.value)}
                 autoFocus
               />
             </Form.Group>
@@ -484,13 +473,11 @@ export default function Editprofile() {
               <Form.Label>บัญชีธนาคาร</Form.Label>
               <Form.Select
                 aria-label="Default select example"
-                name="bankname"
-                defaultValue={userdata.urs_bank_accname}
-                onChange={(e) => handleInputChange(e)}
+                placeholder={bankname}
+                value={bankname}
+                onChange={(e) => setBankname(e.target.value)}
               >
-                <option defaultValue={userdata.urs_bank_accname}>
-                  {userdata.urs_bank_accname}
-                </option>
+                <option value={bankname}>{bankname}</option>
                 <option value="ธนาคารกรุงเทพ">ธนาคารกรุงเทพ</option>
                 <option value="ธนาคารกรุงไทย">ธนาคารกรุงไทย</option>
                 <option value="ธนาคารไทยพานิช">ธนาคารไทยพานิช</option>
@@ -501,10 +488,10 @@ export default function Editprofile() {
               <Form.Label>เลขบัญชีธนาคาร</Form.Label>
               <Form.Control
                 type="text"
-                name="banknum"
-                placeholder={userdata.urs_bank_number}
-                defaultValue={userdata.urs_bank_number}
-                onChange={(e) => handleInputChange(e)}
+
+                value={banknum}
+                placeholder={banknum}
+                onChange={(e) => setBanknum(e.target.value)}
                 autoFocus
               />
             </Form.Group>

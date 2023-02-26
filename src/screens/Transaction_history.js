@@ -18,13 +18,13 @@ export default function Transaction_history() {
   const token = localStorage.getItem("token");
   const [data, setData] = useState([]);
   useEffect(() => {
-    // if (localStorage.getItem("token")) {
-    //   if (window.location.pathname === "/login") {
-    //     navigate("/");
-    //   }
-    // } else {
-    //   navigate("/login");
-    // }
+    if (localStorage.getItem("token")) {
+      if (window.location.pathname === "/login") {
+        navigate("/transaction")
+      }
+    } else {
+      navigate("/login")
+    }
     getTransaction();
   }, []);
   const getTransaction = async () => {
@@ -40,7 +40,8 @@ export default function Transaction_history() {
         if (data.status === "ok") {
           setData(data.results);
         } else {
-          
+          alert(data.message);
+          window.location="/profile";
         }
       });
   };
@@ -51,7 +52,7 @@ export default function Transaction_history() {
       <h1>Transaction</h1>
       {data.map((item, index) => (
         <div key={index}>
-          <p>{item.createdat}</p>
+          <p>{item.created_at}</p>
           <p>เติมเงิน</p>
           <p>{item.p_price}</p>
         </div>

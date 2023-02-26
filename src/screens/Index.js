@@ -66,8 +66,12 @@ export default function Index() {
       <Button variant="contained" onClick={() => navigate("/profile")}>
         Profile
       </Button>
-      <Button variant="contained" onClick={() => navigate("/test")}>
+      <h1>Admin middleware</h1>
+      {/* <Button variant="contained" onClick={() => navigate("/test")}>
         Admin
+      </Button> */}
+      <Button variant="contained" onClick={() => navigate("/packagetoken")}>
+        Package Token
       </Button>
       <Button variant="contained" onClick={handleLogout}>
         Logout

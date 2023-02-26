@@ -110,7 +110,9 @@ export default function Verify() {
         if (data.status === "ok") {
           toast.success(data.message, toastOptions)
           localStorage.setItem("token", data.token); //ส่ง token ไว้ที่ตัวแปร token แล้วส่งไปหน้า /
-          window.location = "/register";
+          const queryParams = new URLSearchParams({ email });
+          window.location = `/register?${queryParams.toString()}`;
+          // window.location = "/register";
         } else {
           toast.error(data.message, toastOptions)
         }

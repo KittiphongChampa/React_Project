@@ -56,6 +56,8 @@ export default function SignIn() {
           localStorage.setItem("token", data.token); //ส่ง token ไว้ที่ตัวแปร token แล้วส่งไปหน้า /
           console.log(data.token);
           navigate("/")
+        } else if (data.status === "hasDelete"){
+          alert("User has Delete");
         } else {
           alert("Login Failed");
         }
