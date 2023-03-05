@@ -9,15 +9,19 @@ import Login from './screens/Login';
 import Welcome from './screens/Welcome';
 import Index from './screens/Index';
 import Profile from './screens/Profile';
-import Transaction_history from './screens/Transaction_history';
-import Verify from './screens/Verify';
+import TransactionHistory from './screens/TransactionHistory';
+import Verify from './secondary_screens.js/Verify';
 import Editprofile from './screens/Editprofile';
 import Buytoken from './screens/Buytoken';
-import Package_Token from './screens/Package_Token';
+import PackageToken from './screens/PackageToken';
+import ForgotPassword from './secondary_screens.js/ForgotPassword';
+import ResetPassword from './secondary_screens.js/ResetPassword';
+import VerifyMail_ResetPassword from './secondary_screens.js/VerifyMail_ResetPassword';
+import AllUser from './screens/AllUser';
+import ViewProfile from './screens/ViewProfile';
 
-import Add_Package_Token from './screens/Add_Package_Token';
 
-import Test from './screens/Test';
+import Test from './secondary_screens.js/Test';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -32,15 +36,17 @@ root.render(
       <Route path="/verify" element={<Verify />} />
       <Route path="/register" element={<Register />} />
       <Route path="/profile" element={<Profile />} />
+      <Route path="/profile/:id" element={<ViewProfile />} />
       <Route path="/editprofile" element={<Editprofile />} />
-      <Route path="/transaction" element={<Transaction_history />} />
+      <Route path="/transaction" element={<TransactionHistory />} />
       <Route path="/buytoken" element={<Buytoken/>} />
+      <Route path="/packagetoken" element={<PackageToken/>} />
+      <Route path="/forgot-password" element={<ForgotPassword/>} />
+      <Route path="/reset-password" element={<ResetPassword/>} />
+      <Route path="/verify-resetPassword" element={<VerifyMail_ResetPassword/>} />
+      <Route path="/alluser" element={<AllUser />} />
+
       <Route path="/test" element={<Test/>} />
-      <Route path="/packagetoken" element={<Package_Token/>} />
-
-
-      <Route path="/packagetoken/add" element={<Add_Package_Token/>}/>
-
 
     </Routes>
   </BrowserRouter>

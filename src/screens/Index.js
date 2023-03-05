@@ -3,12 +3,10 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { width } from "@mui/system";
 
 export default function Index() {
   const navigate = useNavigate();
   const [userdata, setUserdata] = useState([]);
-  console.log(userdata);
   const [urs_token, setUrs_token] = useState();
 
   useEffect(() => {
@@ -63,16 +61,23 @@ export default function Index() {
       <Button variant="contained" onClick={() => navigate("/buytoken")}>
         Token
       </Button>
+      <Button variant="contained" onClick={() => navigate("/transaction")}>
+        Transaction History
+      </Button>
       <Button variant="contained" onClick={() => navigate("/profile")}>
         Profile
       </Button>
-      <h1>Admin middleware</h1>
-      {/* <Button variant="contained" onClick={() => navigate("/test")}>
-        Admin
-      </Button> */}
-      <Button variant="contained" onClick={() => navigate("/packagetoken")}>
-        Package Token
-      </Button>
+      {userdata.urs_type === 3 && (
+        <>
+        <h1>Admin middleware</h1>
+        <Button variant="contained" onClick={() => navigate("/packagetoken")}>
+          Package Token
+        </Button>
+        <Button variant="contained" onClick={() => navigate("/alluser")}>
+          AllUser
+        </Button>
+        </>
+      )}
       <Button variant="contained" onClick={handleLogout}>
         Logout
       </Button>

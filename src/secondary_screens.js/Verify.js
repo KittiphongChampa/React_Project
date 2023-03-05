@@ -19,6 +19,14 @@ import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 
+const toastOptions = {
+  position : "bottom-right",
+  autoClose : 1000,
+  pauseOnHover : true,
+  draggable : true,
+  theme : "dark",
+}
+
 export default function Verify() {
   const navigate = useNavigate();
   useEffect(() => {
@@ -36,13 +44,6 @@ export default function Verify() {
   const handleChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
   };
-  const toastOptions = {
-    position : "bottom-right",
-    autoClose : 1000,
-    pauseOnHover : true,
-    draggable : true,
-    theme : "dark",
-  }
 
   const handleValidation = () => {
     const { email } = values;
@@ -52,6 +53,7 @@ export default function Verify() {
     }
     return true;
   }
+
   const handleValidationOTP = () => {
     const { otp } = values;
     if(otp === ""){
@@ -97,7 +99,6 @@ export default function Verify() {
         otp,
         email
       };
-      console.log(jsondata);
       fetch("http://localhost:3333/verify/email", {
       method: "POST",
       headers: {
@@ -109,10 +110,8 @@ export default function Verify() {
       .then((data) => {
         if (data.status === "ok") {
           toast.success(data.message, toastOptions)
-          localStorage.setItem("token", data.token); //ส่ง token ไว้ที่ตัวแปร token แล้วส่งไปหน้า /
           const queryParams = new URLSearchParams({ email });
           window.location = `/register?${queryParams.toString()}`;
-          // window.location = "/register";
         } else {
           toast.error(data.message, toastOptions)
         }

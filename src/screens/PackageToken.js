@@ -10,6 +10,7 @@ import Script from "react-load-script";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const toastOptions = {
   position: "bottom-right",
@@ -19,7 +20,7 @@ const toastOptions = {
   theme: "dark",
 };
 
-export default function Package_Token() {
+export default function PackageToken() {
   const navigate = useNavigate();
   const jwt_token = localStorage.getItem("token");
   useEffect(() => {
@@ -48,7 +49,6 @@ export default function Package_Token() {
           setPackageList(data.results);
         } else if (data.status === "no_access") {
           console.log("no_access");
-          //   toast.error(data.message, toastOptions);
           alert(data.message);
           navigate("/");
         } else {

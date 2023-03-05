@@ -132,7 +132,7 @@ export default function Profile() {
 
   return (
     <>
-      <img src={userdata.usr_cover_img} alt="cover" className="mystyle" />
+      <img src={userdata.usr_cover_img ? userdata.usr_cover_img : 'https://marketplace.canva.com/EAEtDohILoQ/1/0/1600w/canva-%E0%B8%9E%E0%B8%B7%E0%B9%89%E0%B8%99%E0%B8%AB%E0%B8%A5%E0%B8%B1%E0%B8%87%E0%B9%80%E0%B8%94%E0%B8%AA%E0%B8%81%E0%B9%8C%E0%B8%97%E0%B9%87%E0%B8%AD%E0%B8%9B-%E0%B8%AA%E0%B8%A3%E0%B9%89%E0%B8%B2%E0%B8%87%E0%B8%AA%E0%B8%A3%E0%B8%A3%E0%B8%84%E0%B9%8C-%E0%B8%8A%E0%B8%B2%E0%B8%A2%E0%B8%AB%E0%B8%B2%E0%B8%94-%E0%B8%9E%E0%B8%A3%E0%B8%B0%E0%B8%AD%E0%B8%B2%E0%B8%97%E0%B8%B4%E0%B8%95%E0%B8%A2%E0%B9%8C%E0%B8%95%E0%B8%81%E0%B8%94%E0%B8%B4%E0%B8%99-%E0%B8%A1%E0%B8%B5%E0%B8%A5%E0%B8%A7%E0%B8%94%E0%B8%A5%E0%B8%B2%E0%B8%A2-dn6mEVC-u5g.jpg'} alt="cover" className="mystyle" />
       {userdata.usr_cover_img === "" ? (
         <Button variant="primary" onClick={addcover_image} className="mb-3">
           เพิ่มรูปปก
