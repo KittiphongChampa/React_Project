@@ -4,6 +4,10 @@ import axios from "axios";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Form from "react-bootstrap/Form";
+import Modal from "react-bootstrap/Modal";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -19,6 +23,8 @@ export default function AllUser() {
   const navigate = useNavigate();
   const jwt_token = localStorage.getItem("token");
   const [user, setUser] = useState([]);
+  const [admin, setAdmin] = useState("");
+  const [coins, setCoins] = useState("");
   const [filteredUser, setFilteredUser] = useState([]);
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -47,12 +53,49 @@ export default function AllUser() {
         const data = response.data;
         if (data.status === "ok") {
           setUser(data.users);
+          setAdmin(data.results[0]);
         } else if (data.status === "no_access") {
           alert(data.message);
           navigate("/");
         }
       });
   };
+
+  //โอนเหรียญ
+  const [selectedItem, setSelectedItem] = useState({});
+  const [popup, setpopup] = useState(false);
+  const Close = () => setpopup(false);
+  // const handleClick = () => setpopup(true);
+  const handleClick = (item) => {
+    setSelectedItem(item);
+    setpopup(true);
+  };
+
+  const transferCoins = async(e) => {
+    const adminId = admin.id;
+    const userId = selectedItem.id;
+    e.preventDefault();
+    await axios
+      .post("http://localhost:3333/alluser/transferCoins", {
+        adminId,
+        userId,
+        coins,
+        headers: {
+          Authorization: "Bearer " + jwt_token,
+        },
+      })
+      .then((response) => {
+        const data = response.data;
+        if (data.status === "ok") {
+          alert(data.message);
+          window.location = "/alluser";
+        } else {
+          alert(data.message);
+          window.location = "/alluser";
+        }
+      });
+    Close();
+  }
 
   const deleteUser = async (id) => {
     await axios
@@ -70,9 +113,10 @@ export default function AllUser() {
 
   const handleSearch = (event) => {
     const query = event.target.value.toLowerCase();
-    const filtered = user.filter((item) =>
-      item.urs_name.toLowerCase().includes(query) || 
-      item.urs_email.toLowerCase().includes(query)
+    const filtered = user.filter(
+      (item) =>
+        item.urs_name.toLowerCase().includes(query) ||
+        item.urs_email.toLowerCase().includes(query)
     );
     setFilteredUser(filtered);
   };
@@ -124,6 +168,13 @@ export default function AllUser() {
                         ดูโปรไฟล์
                       </Link>
                       <Button
+                        onClick={() => handleClick(item)}
+                        // onClick={handleClick}
+                        variant="success"
+                      >
+                        โอนเหรียญ
+                      </Button>
+                      <Button
                         onClick={() => deleteUser(item.id)}
                         variant="danger"
                       >
@@ -137,6 +188,39 @@ export default function AllUser() {
           </div>
         </div>
       </Container>
+
+      <Modal show={popup} onHide={Close}>
+        <Modal.Header closeButton>
+          <Modal.Title>transferCoins</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <h5>จาก : {admin.urs_name}</h5>
+          <h5>ไป : {selectedItem.urs_name}</h5>
+          <Form onSubmit={transferCoins} id="myForm">
+            <Form.Label>จำนวนเหรียญ</Form.Label>
+            <Form.Control
+              type="number"
+              value={coins}
+              onChange={(e) => setCoins(e.target.value)}
+            />
+          </Form>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button variant="secondary" onClick={Close}>
+            ปิด
+          </Button>
+          <Button
+            variant="success"
+            type="submit"
+            form="myForm"
+          >
+            โอน
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
       <ToastContainer />
     </>
   );

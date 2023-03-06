@@ -14,9 +14,10 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import React, { useState,useEffect } from "react";
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import { useLocation } from 'react-router-dom';
+import Lottie from "lottie-react";
+import loading from "../loading.json";
 
 const theme = createTheme();
 const toastOptions = {
@@ -32,15 +33,10 @@ export default function SignUp() {
   const location = useLocation();
   const email = new URLSearchParams(location.search).get('email');
   console.log(email);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    // if (localStorage.getItem("token")) {
-    //   if (window.location.pathname === "/register") {
-    //     navigate("/register")
-    //   }
-    // }
   }, []);
-
 
   const [values, setValues] = useState({
     username: "", 
@@ -78,6 +74,7 @@ export default function SignUp() {
   const handleSubmit = async(event) => {
     event.preventDefault();
     if(handleValidation()){
+      setIsLoading(true);
       const formData = new FormData();
       formData.append("email", email);
       formData.append("file", file);
@@ -103,6 +100,9 @@ export default function SignUp() {
       })
       .catch((error) => {
         console.error("Error:", error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
     }
   };
@@ -123,7 +123,11 @@ export default function SignUp() {
           <Typography component="h1" variant="h5">
             สร้างบัญชี
           </Typography>
-
+          {isLoading ? (
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <Lottie animationData={loading} loop={true} />
+            </div>
+          ) : (
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
 
@@ -186,7 +190,8 @@ export default function SignUp() {
               </Grid>
             </Grid>
           </Box>
-        
+          )}
+
         </Box>
       </Container>
     </ThemeProvider>
