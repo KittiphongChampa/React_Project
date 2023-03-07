@@ -1,0 +1,39 @@
+/* *-------Navbar---------- */
+
+.inline-nav {
+    display: inline-block;
+}
+
+.inline-nav a {
+    display: inline-block;
+    margin-right: 20px;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    text-decoration: none;
+    color: black;
+}
+
+.nav-icon {
+    width: 20px;
+}
+
+.inline-nav a:hover {
+    background-color: rgb(53, 167, 255);
+
+}
+
+.nav-box {
+    background-color: white;
+    height: fit-content;
+    border: 0.5px solid #D0D0D0;
+
+
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 60px;
+}

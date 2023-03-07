@@ -15,6 +15,14 @@ import Editprofile from './screens/Editprofile';
 import Addtoken from './screens/Addtoken';
 import Test from './screens/Test';
 
+// ของข้อย
+import Login_M from './screens/Login_M';
+import Register_M from './screens/Register_M';
+import CreateAccount from './screens/CreateAccount';
+import BuyCoin from './screens/BuyCoin';
+import SettingProfile from './screens/SettingProfile';
+import SettingCoin from './screens/SettingCoin';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -30,8 +38,18 @@ root.render(
       <Route path="/profile" element={<Profile />} />
       <Route path="/editprofile" element={<Editprofile />} />
       <Route path="/transaction" element={<Transaction_history />} />
-      <Route path="/addtoken" element={<Addtoken/>} />
-      <Route path="/test" element={<Test/>} />
+      <Route path="/addtoken" element={<Addtoken />} />
+      <Route path="/test" element={<Test />} />
+
+      {/* ของข้อย */}
+      <Route path="/login_M" element={<Login_M />} />
+      <Route path="/register_M" element={<Register_M />} />
+      <Route path="/createAccount" element={<CreateAccount />} />
+      <Route path="/buyCoin" element={<BuyCoin />} />
+      {/* <Route path="/setting/:menuSettingPage" element={<Setting />} /> */}
+      <Route path="/setting-profile" element={<SettingProfile />} />
+      <Route path="/setting-coin" element={<SettingCoin />} />
+
     </Routes>
   </BrowserRouter>
 );

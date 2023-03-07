@@ -1,0 +1,54 @@
+.lightblue-btn {
+    background: #7E9AFA;
+    box-shadow: 0px 18px 45px -12px rgba(2, 49, 240, 0.35);
+    border-radius: 85px;
+    padding: 1rem 2rem;
+    width: fit-content;
+    border: none;
+    color: #fff;
+    margin: 2rem auto;
+}
+
+.gradiant-btn {
+    background: linear-gradient(90deg, #5400FE 0%, #9400CF 100%);
+    box-shadow: 0px 18px 45px -12px rgba(2, 49, 240, 0.35);
+    border-radius: 85px;
+    padding: 1rem 2rem;
+    width: fit-content;
+    border: none;
+    color: #fff;
+    margin: 2rem auto;
+}
+
+.edit-profile-btn {
+    background: #061228;
+    padding: 1rem 2rem;
+    width: fit-content;
+    color: white;
+    box-shadow: 0px 18px 45px -12px rgba(2, 49, 240, 0.35);
+    border-radius: 85px;
+    margin: 2rem auto;
+}
+
+.close-btn {
+    font-size: 1.5em;
+    padding: 0px;
+    cursor: pointer;
+}
+
+.boii {
+    text-align: right;
+    /* background-color: #d7e5ff; */
+    top: 50%;
+}
+
+.boi {
+    background: linear-gradient(90deg, #5400FE 0%, #9400CF 100%);
+    box-shadow: 0px 18px 45px -12px rgba(2, 49, 240, 0.35);
+    border-radius: 5px;
+    padding: 0.5rem;
+    width: fit-content;
+    border: none;
+    color: #fff;
+    margin: 0.5rem auto;
+}
