@@ -1,6 +1,6 @@
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 // ของข้อย
 
@@ -19,10 +19,9 @@ const title = 'สมัครสมาชิก';
 
 
 export default function SignIn() {
-    const test = '';
     const emailRef = useRef(null);
     const passRef = useRef(null);
-    
+
 
     return (
         <ThemeProvider theme={theme}>
@@ -33,30 +32,34 @@ export default function SignIn() {
 
             <div class='body' style={{ backgroundImage: "url('mainmoon.jpg')", backgroundPosition: 'center', backgroundSize: 'cover', backgroundAttachment: 'fixed', backgroundRepeat: 'no-repeat' }}>
 
-                    <Navbar />
-                    <div class="container">
-                        <div class="login-clearpage">
-                            <div class="">
-                                <img class="login-img" src="ภาพตัด.png" alt="" />
-                            </div>
-                            <div class="login-col-text">
-                                <div class="input-login-box">
-                                    <h1>{title} </h1>
-                                    <form>
-                                    <DefaultInput headding='อีเมล' type='email' ref={emailRef } />
-                                    <DefaultInput headding='ใส่รหัสยืนยัน' type='text' ref={passRef } />
-                                        <div class="text-align-center">
-                                            <button class="lightblue-btn" type="submit">ยืนยันอีเมล</button>
-                                        </div>
-                                    </form>
-                                    
-                                </div>
+                <Navbar />
+                <div class="container">
+                    <div class="login-clearpage">
+                        <div class="">
+                            <img class="login-img" src="ภาพตัด.png" alt="" />
+                        </div>
+                        <div class="login-col-text">
+                            <div class="input-login-box">
+                                <h1>{title} </h1>
+                                <form>
+                                    <DefaultInput headding='อีเมล' type='email' ref={emailRef} />
+                                    <button type='submit'>ส่งรหัสยืนยันน</button>
+                                </form>
+                                <form>
+                                    <DefaultInput headding='ใส่รหัสยืนยัน' type='text' ref={passRef} />
+                                    <div class="text-align-center">
+                                        <button class="lightblue-btn" type="submit">ยืนยันอีเมล</button>
+                                    </div>
+                                </form>
+
+
                             </div>
                         </div>
                     </div>
                 </div>
-            
-            
+            </div>
+
+
         </ThemeProvider>
     );
 }
