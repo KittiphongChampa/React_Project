@@ -19,6 +19,7 @@ const title = 'สมัครสมาชิก';
 
 
 export default function SignIn() {
+    const test = '';
     const emailRef = useRef(null);
     const passRef = useRef(null);
     
