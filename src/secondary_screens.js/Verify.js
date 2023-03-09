@@ -1,105 +1,78 @@
+import "../css/indexx.css";
+import "../css/allbutton.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Helmet } from "react-helmet";
+import DefaultInput from "../components/DefaultInput";
 
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
+// import Navbar from "../components/Navbar";
+
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import React, { useState,useEffect } from "react";
-import { toast, ToastContainer } from 'react-toastify';
+import React, { useState, useEffect, useRef } from "react";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-
-const theme = createTheme();
+import Lottie from "lottie-react";
+import loading from "../loading.json";
 
 const toastOptions = {
-  position : "bottom-right",
-  autoClose : 1000,
-  pauseOnHover : true,
-  draggable : true,
-  theme : "dark",
-}
+  position: "bottom-right",
+  autoClose: 1000,
+  pauseOnHover: true,
+  draggable: true,
+  theme: "dark",
+};
+const theme = createTheme();
 
 export default function Verify() {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     if (localStorage.getItem("token")) {
       if (window.location.pathname === "/verify") {
-        navigate("/")
+        navigate("/");
       }
     }
   }, []);
 
+  
+
   const [values, setValues] = useState({
     email: "",
-    otp: ""
-  })
+    otp: "",
+  });
+  console.log(values);
+
   const handleChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
   };
 
   const handleValidation = () => {
     const { email } = values;
-    if(email === ""){
-      toast.error("email is required", toastOptions)
+    if (email === "") {
+      toast.error("email is required", toastOptions);
       return false;
     }
     return true;
-  }
+  };
 
   const handleValidationOTP = () => {
     const { otp } = values;
-    if(otp === ""){
-      toast.error("otp is required", toastOptions)
+    if (otp === "") {
+      toast.error("otp is required", toastOptions);
       return false;
     }
     return true;
-  }
-
-  const handleSubmitotp = async(event) => {
-    event.preventDefault();
-    if(handleValidation()){
-      const { email } = values;
-      const jsondata = {
-        email
-      };
-      await fetch("http://localhost:3333/verify", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(jsondata),
-      })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.status === "ok") {
-          toast.success("Send OTP success", toastOptions)
-        } else {
-          toast.error("Send OTP Failed " + data.message, toastOptions)
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-    }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmitotp = async (event) => {
     event.preventDefault();
-    if(handleValidationOTP()){
-      const { otp, email } = values;
+    setIsLoading(true);
+    if (handleValidation()) {
+      const { email } = values;
       const jsondata = {
-        otp,
-        email
+        email,
       };
-      fetch("http://localhost:3333/verify/email", {
+    await fetch("http://localhost:3333/verify", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -109,108 +82,118 @@ export default function Verify() {
       .then((response) => response.json())
       .then((data) => {
         if (data.status === "ok") {
-          toast.success(data.message, toastOptions)
-          const queryParams = new URLSearchParams({ email });
-          window.location = `/register?${queryParams.toString()}`;
+          toast.success("Send OTP success", toastOptions);
         } else {
-          toast.error(data.message, toastOptions)
+          toast.error("Send OTP Failed " + data.message, toastOptions);
         }
       })
       .catch((error) => {
         console.error("Error:", error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
     }
-  }
+  };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (handleValidationOTP()) {
+      const { otp, email } = values;
+      const jsondata = {
+        otp,
+        email,
+      };
+      fetch("http://localhost:3333/verify/email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(jsondata),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.status === "ok") {
+            toast.success(data.message, toastOptions);
+            const queryParams = new URLSearchParams({ email });
+            window.location = `/register?${queryParams.toString()}`;
+          } else {
+            toast.error(data.message, toastOptions);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+  };
+
+  const theme = createTheme();
+  const title = 'สมัครสมาชิก';
   return (
     <>
-      <ThemeProvider theme={theme}>
-        <Container component="main" maxWidth="xs">
-          <CssBaseline />
-          <Box
-            sx={{
-              marginTop: 8,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <Typography component="h1" variant="h5">
-              สร้างบัญชี
-            </Typography>
-            <Box
-              component="form"
-              onSubmit={handleSubmitotp}
-              noValidate
-              sx={{ mt: 3 }}
-            >
-              <Grid container spacing={0}>
-                <Grid item xs={8} sm={8}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="email"
-                    label="Email"
-                    name="email"
-                    autoComplete="email"
-                    type="email"
-                    onChange={(e) => handleChange(e)}
-                  />
-                </Grid>
-                <Grid item xs={4} sm={4} >
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 1 }}
-                  >
-                    ส่งรหัส OTP
-                  </Button>
-                </Grid>
-              </Grid>
-            </Box>
 
-            <Box
-              component="form"
-              onSubmit={handleSubmit}
-              noValidate
-            >
-              <Grid container spacing={0}>
-                <Grid item xs={12}>
-                  <TextField
-                      margin="normal"
-                      required
-                      fullWidth
-                      id="otp"
-                      label="OTP"
-                      name="otp"
-                      autoComplete="otp"
-                      autoFocus
+        <Helmet>
+          <title>{title}</title>
+        </Helmet>
+        <div
+          className="body"
+          style={{
+            backgroundImage: "url('mainmoon.jpg')",
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            backgroundAttachment: "fixed",
+            backgroundRepeat: "no-repeat",
+          }}
+        >
+          {/* <Navbar /> */}
+          <div className="container">
+            <div className="login-clearpage">
+              <div className="">
+                <img className="login-img" src="ภาพตัด.png" alt="" />
+              </div>
+              <div className="login-col-text">
+                <div className="input-login-box">
+                  <h1>{title} </h1>
+{/* 
+                  {isLoading ? (
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                      <Lottie animationData={loading} loop={true} />
+                    </div>
+                  ) : ( */}
+
+                  <form onSubmit={handleSubmitotp}>
+                    <DefaultInput
+                      headding="อีเมล"
+                      type="email"
+                      id="email"
+                      name="email"
                       onChange={(e) => handleChange(e)}
                     />
-                </Grid>
-                <Grid item xs={12}>
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  >
-                  ยืนยันรหัส
-                </Button>
-                </Grid>
-              </Grid>
-              <Grid container justifyContent="flex-end">
-                <Grid sx={{ mt: 1 }}>
-                  <Link href="/login" variant="body2">
-                    เข้าสู่ระบบ
-                  </Link>
-                </Grid>
-              </Grid>
-            </Box>
-            
-          </Box>
-        </Container>
-      </ThemeProvider>
+                    <button type="submit">ส่งรหัสยืนยัน</button>
+                  </form>
+
+                  {/* )} */}
+
+                  <form onSubmit={handleSubmit}>
+                    <DefaultInput
+                      headding="ใส่รหัสยืนยัน"
+                      type="text"
+                      id="otp"
+                      name="otp"
+                      onChange={(e) => handleChange(e)}
+                    />
+                    <div className="text-align-center">
+                      <button className="lightblue-btn" type="submit">
+                        ยืนยันอีเมล
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       <ToastContainer />
     </>
   );

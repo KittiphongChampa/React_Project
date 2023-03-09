@@ -1,115 +1,214 @@
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import React, { useState,useEffect } from "react";
-import { toast, ToastContainer } from 'react-toastify';
+// import Avatar from '@mui/material/Avatar';
+// import Button from '@mui/material/Button';
+// import CssBaseline from '@mui/material/CssBaseline';
+// import TextField from '@mui/material/TextField';
+// import FormControlLabel from '@mui/material/FormControlLabel';
+// import Checkbox from '@mui/material/Checkbox';
+// import Link from '@mui/material/Link';
+// import Grid from '@mui/material/Grid';
+// import Box from '@mui/material/Box';
+// import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+// import Typography from '@mui/material/Typography';
+// import Container from '@mui/material/Container';
+// import { createTheme, ThemeProvider } from '@mui/material/styles';
+import React, { useState, useEffect } from "react";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import Lottie from "lottie-react";
 import loading from "../loading.json";
+import "../css/indexx.css";
+import "../css/allbutton.css";
 
-const theme = createTheme();
+//import { Button } from 'react-bootstrap';
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Helmet } from "react-helmet";
+import DefaultInput from "../components/DefaultInput";
+// import Navbar from "../components/Navbar";
+import ProfileImg from "../components/ProfileImg.js";
+// import ImportScript from "../components/ImportScript";
+
+const title = "สร้างบัญชี";
+
 const toastOptions = {
-  position : "bottom-right",
-  autoClose : 1000,
-  pauseOnHover : true,
-  draggable : true,
-  theme : "dark",
-}
+  position: "bottom-right",
+  autoClose: 1000,
+  pauseOnHover: true,
+  draggable: true,
+  theme: "dark",
+};
 
 export default function SignUp() {
   const navigate = useNavigate();
   const location = useLocation();
-  const email = new URLSearchParams(location.search).get('email');
+  const email = new URLSearchParams(location.search).get("email");
   console.log(email);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-  }, []);
+  useEffect(() => {}, []);
 
   const [values, setValues] = useState({
-    username: "", 
+    username: "",
     password: "",
     confirmpassword: "",
-  })
+  });
+  console.log(values);
+
   const handleChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
   };
-  
+
   const [file, setFile] = useState("");
   const [previewUrl, setPreviewUrl] = useState("");
 
-  const handleFileChange = (event) => {
-    const image = event.target.files[0];
-    setFile(image);
-    setPreviewUrl(URL.createObjectURL(image));
-  };
+  //หยุน
+  // const handleFileChange = (event) => {
+  //   const image = event.target.files[0];
+  //   setFile(image);
+  //   setPreviewUrl(URL.createObjectURL(image));
+  // };
+
+  //มิ้นท์
+  const addProfileImg = () => {
+    let input = document.createElement('input');
+    input.type = 'file';
+    input.onchange = (e) => {
+        // var image = e.target.files[0];
+        const image = e.target.files[0];
+        setFile(image);
+        setPreviewUrl(URL.createObjectURL(image));
+    }
+    input.accept="image/png ,image/gif ,image/jpeg";
+    input.click();
+  }
 
   const handleValidation = () => {
-    const {password, confirmpassword, username} = values;
-    if(password !== confirmpassword){
-      toast.error("password and confirm password should be same", toastOptions)
+    const { password, confirmpassword, username } = values;
+    if (password !== confirmpassword) {
+      toast.error("password and confirm password should be same", toastOptions);
       return false;
-    }else if(username.length<3){
-      toast.error("username should be greater than 4 characters", toastOptions)
+    } else if (username.length < 3) {
+      toast.error("username should be greater than 4 characters", toastOptions);
       return false;
-    }else if(password.length<8){
-      toast.error("password should be greater than 8 characters", toastOptions)
+    } else if (password.length < 8) {
+      toast.error("password should be greater than 8 characters", toastOptions);
       return false;
     }
     return true;
-  }
+  };
 
-  const handleSubmit = async(event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    if(handleValidation()){
+    if (handleValidation()) {
       setIsLoading(true);
       const formData = new FormData();
       formData.append("email", email);
       formData.append("file", file);
-      formData.append('username', values.username);
-      formData.append('password', values.password);
+      formData.append("username", values.username);
+      formData.append("password", values.password);
       const token = localStorage.getItem("token");
-      await axios.post("http://localhost:3333/register", formData, {
-        headers: {
-          "Content-type": "multipart/form-data",
-          Authorization: "Bearer " + token,
-        }
-      })
-      .then(response => {
-        const data = response.data;
-        if (data.status === "ok") {
-          localStorage.setItem("token", data.token);
-          navigate("/");
-        } else if(data.status === "error") {
-          toast.error(data.message, toastOptions)
-        }else {
-          toast.error("Register Failed", toastOptions);
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+      await axios
+        .post("http://localhost:3333/register", formData, {
+          headers: {
+            "Content-type": "multipart/form-data",
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((response) => {
+          const data = response.data;
+          if (data.status === "ok") {
+            localStorage.setItem("token", data.token);
+            navigate("/");
+          } else if (data.status === "error") {
+            toast.error(data.message, toastOptions);
+          } else {
+            toast.error("Register Failed", toastOptions);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
     }
   };
 
   return (
     <>
-    <ThemeProvider theme={theme}>
+      <Helmet>
+        <title>{title}</title>
+      </Helmet>
+
+      <div
+        className="body"
+        style={{
+          backgroundImage: "url('mainmoon.jpg')",
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+          backgroundAttachment: "fixed",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        {/* <Navbar /> */}
+        <div className="container">
+          <div className="createaccount-clearpage">
+            <div className="createaccount-col-text">
+              <h1 className="text-center">{title} </h1>
+
+              <ProfileImg src={previewUrl} onPress={addProfileImg}/>
+              {/* <input type="file" className="file-input" onChange={handleFileChange} accept="image/png ,image/gif ,image/jpeg"/> */}
+              {/* {previewUrl && <img src={previewUrl} alt="Preview" width={250} height={250}/>} */}
+
+              <p className="text-center">รูปโปรไฟล์</p>
+
+              <form onSubmit={handleSubmit}>
+                <DefaultInput 
+                  headding="อีเมล" 
+                  type="email" 
+                  id="email"
+                  name="email"
+                  defaultValue={email}
+                  disabled={true}
+                />
+                <DefaultInput 
+                  headding="ชื่อผู้ใช้" 
+                  type="text" 
+                  id="username"
+                  name="username"
+                  onChange={(e) => handleChange(e)}
+                />
+                <DefaultInput 
+                  headding="รหัสผ่าน" 
+                  type="password" 
+                  id="password"
+                  name="password"
+                  onChange={(e) => handleChange(e)}
+                />
+                <DefaultInput 
+                  headding="ยืนยันรหัสผ่าน" 
+                  type="password" 
+                  id="confirmpassword"
+                  name="confirmpassword"
+                  onChange={(e) => handleChange(e)}
+                />
+                <div className="text-align-center">
+                  <button className="gradiant-btn" type="submit">
+                    ยืนยันการสร้างบัญชี
+                  </button>
+                  <button className="lightblue-btn" onClick={() => navigate("/login")}>
+                    ยกเลิก
+                  </button>
+                </div>
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -194,8 +293,8 @@ export default function SignUp() {
 
         </Box>
       </Container>
-    </ThemeProvider>
-    <ToastContainer />
+    </ThemeProvider> */}
+      <ToastContainer />
     </>
   );
 }

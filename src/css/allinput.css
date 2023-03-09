@@ -1,0 +1,36 @@
+
+
+input.defInput {
+    background: rgba(255, 255, 255, 0.54);
+    border: 1px solid #9D9EB8;
+    border-radius: 62.5px;
+    padding: 0.5rem 1rem;
+    width: 100%;
+
+}
+
+p.onInput {
+    margin-bottom: 0.5rem;
+    margin-top: 1rem;
+    color: #495C83;
+    font-weight: 700;
+}
+
+.input-login-box {
+    width: 80%;
+}
+
+.txtarea {
+    word-break: break-all;
+    border-radius: 5px;
+    color: #000000;
+    border: none;
+    display: block;
+    width: 100%;
+    resize: none;
+    line-height: 1.4;
+    overflow: hidden;
+    height: auto;
+    font-size: 18px;
+    border: 1px solid transparent;
+}
