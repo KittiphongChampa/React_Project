@@ -19,11 +19,14 @@ import ResetPassword from './secondary_screens.js/ResetPassword';
 import VerifyMail_ResetPassword from './secondary_screens.js/VerifyMail_ResetPassword';
 import AllUser from './screens/AllUser';
 import ViewProfile from './screens/ViewProfile';
-
+import AdminPage from './screens/AdminPage';
 
 import Test from './secondary_screens.js/Test';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+// mint
+import EditCoin from './screens/EditCoin';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -46,7 +49,12 @@ root.render(
       <Route path="/verify-resetPassword" element={<VerifyMail_ResetPassword/>} />
       <Route path="/alluser" element={<AllUser />} />
 
+      <Route path="/admin" element={<AdminPage/>} />
+      
       <Route path="/test" element={<Test/>} />
+
+      {/* mint */}
+      <Route path="/editcoin" element={<EditCoin />} />
 
     </Routes>
   </BrowserRouter>

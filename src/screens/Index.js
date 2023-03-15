@@ -8,6 +8,7 @@ export default function Index() {
   const navigate = useNavigate();
   const [userdata, setUserdata] = useState([]);
   const [urs_token, setUrs_token] = useState();
+  console.log(userdata);
 
   useEffect(() => {
     if (localStorage.getItem("token")) {

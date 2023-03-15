@@ -55,7 +55,10 @@ export default function SignIn() {
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.status === "ok") {
+        if (data.status === "ok_admin") {
+          localStorage.setItem("token", data.token);
+          navigate("/admin");
+        } else if (data.status === "ok") {
           localStorage.setItem("token", data.token); //ส่ง token ไว้ที่ตัวแปร token แล้วส่งไปหน้า /
           navigate("/");
         } else if (data.status === "hasDelete") {

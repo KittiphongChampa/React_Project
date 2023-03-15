@@ -167,7 +167,6 @@ export default function PackageToken() {
               <thead>
                 <tr>
                   <th>ลำดับ</th>
-                  <th>ชื่อแพ็คเกจ</th>
                   <th>จำนวนเหรียญ</th>
                   <th>เงินที่ต้องเติม(บาท)</th>
                   <th>Actions</th>
@@ -176,8 +175,7 @@ export default function PackageToken() {
               <tbody>
                 {packageList.map((item, index) => (
                   <tr key={index}>
-                    <td>{item.id}</td>
-                    <td>{item.package}</td>
+                    <td>{item.id}</td> 
                     <td>{item.p_token}</td>
                     <td>{item.p_price}</td>
                     <td>
@@ -211,18 +209,6 @@ export default function PackageToken() {
           <Form onSubmit={handleClick} id="myForm">
             <Container>
               <Row>
-                <div className="mb-3">
-                  <Col md={12}>
-                    <Form.Label>ชื่อแพ็คเกจ</Form.Label>
-                    <Form.Control
-                      type="text"
-                      className="input"
-                      value={packageName}
-                      onChange={(e) => setNamepackage(e.target.value)}
-                      autoFocus
-                    />
-                  </Col>
-                </div>
                 <Col md={6}>
                   <Form.Label>จำนวนเหรียญ</Form.Label>
                   <Form.Control
@@ -269,18 +255,6 @@ export default function PackageToken() {
           <Form onSubmit={handleClick_edit} id="FormEdit">
             <Container>
               <Row>
-                <div className="mb-3">
-                  <Col md={12}>
-                    <Form.Label>ชื่อแพ็คเกจ</Form.Label>
-                    <Form.Control
-                      type="text"
-                      className="input"
-                      value={packageName}
-                      onChange={(e) => setNamepackage(e.target.value)}
-                      autoFocus
-                    />
-                  </Col>
-                </div>
                 <Col md={6}>
                   <Form.Label>จำนวนเหรียญ</Form.Label>
                   <Form.Control

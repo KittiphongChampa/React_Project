@@ -71,6 +71,7 @@ export default function TransactionHistory() {
     }
     return true;
   }) : data;
+  console.log(filteredData);
 
   return (
     <>
@@ -103,7 +104,7 @@ export default function TransactionHistory() {
                     <td>{index+1}</td>
                     <td>{new Date(item.created_at).toLocaleString("th-TH", {day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit'})}</td>
                     <td>เติมเงิน</td>
-                    <td>{item.p_token}</td>
+                    <td>{item.coins}</td>
                     <td>{item.p_price}</td>
                   </tr>
                 ))}
