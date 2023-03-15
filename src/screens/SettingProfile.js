@@ -1,32 +1,35 @@
 
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import React, { useState, useRef } from "react";
-
-// ของข้อย
-
+import { useForm } from "react-hook-form"
 import "../css/indexx.css";
 import "../css/allinput.css";
 import "../css/allbutton.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Helmet } from "react-helmet";
-
-
 import SettingAside from '../components/SettingAside';
 import ProfileImg from "../components/ProfileImg";
 import DefaultTextArea from "../components/DefaultTextArea";
-import { Form } from "react-router-dom";
-const theme = createTheme();
+import Navbar from "../components/Navbar";
+import ChangePasswordModal from "../modal/ChangePasswordModal";
+import Swal from 'sweetalert2/dist/sweetalert2.js'
+import 'sweetalert2/src/sweetalert2.scss'
+
 const title = 'สร้างบัญชี';
 
-export default function SettingProfile() {
 
+
+export default function SettingProfile() {
     const bio = 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Officiis error explicabo minima excepturi tempore beatae, blanditiis dolorum fuga odit libero necessitatibus ducimus repudiandae porro natus dicta qui laboriosam aperiam iste.'
     const username = 'User123'
     const usernameRef = useRef(null);
     const bioRef = useRef(null);
+    const modalChangePassRef = useRef(null);
+    const { register, handleSubmit, formState: { errors } } = useForm();
 
-
-
+    const func = {
+        register: register,
+        errors: errors
+    }
 
     const editProfile = () => {
         const usernameRefElement = usernameRef.current;
@@ -43,25 +46,6 @@ export default function SettingProfile() {
         sendDataBtn.style.display = 'block'
     }
 
-
-
-    const openColorPicker = () => {
-        // const editCoverModal = document.getElementsByClassName("edit-cover-form-modal")[0]
-        // editCoverModal.style.display = 'block'
-        // const colorPicker = document.getElementById("color-input")
-        // colorPicker.click()
-
-        // const colorPicker = document.createElement("input");
-        // colorPicker.type = "color";
-        // colorPicker.click();
-    }
-
-
-    const cancleEditCover = () => {
-        const editCoverModal = document.getElementsByClassName("edit-cover-form-modal")[0]
-        editCoverModal.style.display = 'none'
-
-    }
 
     const addProfileImg = () => {
         var input = document.createElement('input');
@@ -81,35 +65,30 @@ export default function SettingProfile() {
         setUsernameValue(event.target.usernameValue);
 
     };
+
+    const submitChangePassForm = (data) => {
+        console.log(data)
+        console.log("มา")
+    }
+
+    const changePass = () => {
+        const modalChangePassRefElement = modalChangePassRef.current;
+        const modalClass = modalChangePassRefElement.classList
+        modalClass.add("open")
+    }
+
+    const openColorInput = () => {
+        const btnElementClass = document.getElementsByClassName("submit-color-btn")[0].classList
+        btnElementClass.add('show-btn')
+
+    }
     return (
-        <ThemeProvider theme={theme}>
+        <>
             <Helmet>
                 <title>{title}</title>
             </Helmet>
-
-            <div className="edit-cover-form-modal">
-
-                <div className="container">
-                    <div className="cover-form">
-                        <from>
-                            <div className="text-align-right close-btn">X</div>
-                            <div className="setting-img-box text-align-center">
-                                <div className="setting-cover">
-                                    <input type="color" id="color-input" />
-                                </div>
-
-                                <ProfileImg src="b3.png" onPress={addProfileImg} />
-                            </div>
-
-
-                            <div className="text-align-center" id='changeColorCoverBtn'>
-                                <button className="gradiant-btn" type="submit">บันทึกข้อมูล</button>
-                                <button className="lightblue-btn" type="cancle" onClick={cancleEditCover}>ยกเลิก</button>
-                            </div>
-                        </from>
-                    </div>
-                </div>
-            </div>
+            <ChangePasswordModal ref={modalChangePassRef} />
+            <Navbar />
             <div className="setting-container">
                 <SettingAside onActive='1' />
                 <div className="setting-content-box">
@@ -122,13 +101,12 @@ export default function SettingProfile() {
                             <form>
                                 <div className="setting-img-box text-align-center">
                                     <div className="setting-cover">
-                                        <input type="color" id="color-input" />
-                                        <div onClick={openColorPicker}>
-                                            <p>แก้ไขสีปก</p>
-                                        </div>
+                                        <input className="" type="color" id="color-input" onClick={openColorInput} />
                                     </div>
-                                    <ProfileImg src="b3.png" onPress={addProfileImg} />
-                                    <div className="boii" > <button className="boi" type="submit">บันทึกข้อมูล</button></div>
+                                    <ProfileImg src="add-image.png" onPress={addProfileImg} />
+                                    <div className="submit-color-btn-area" >
+                                        <button className="submit-color-btn" type="submit">บันทึกข้อมูล</button>
+                                    </div>
 
                                 </div>
 
@@ -147,12 +125,12 @@ export default function SettingProfile() {
                                         ref={bioRef}
                                         disabled={true} />
                                 </div>
-                                <div className="text-align-center" id='sendDataBtn'>
+                                <div className="text-align-center mt-3" id='sendDataBtn'>
                                     <button className="gradiant-btn" type="submit">บันทึกข้อมูล</button>
-                                    <button className="lightblue-btn" type="cancle">ยกเลิก</button>
+                                    <button className="cancle-btn" type="cancle">ยกเลิก</button>
                                 </div>
                             </form>
-                            <div className="text-align-center" id='editProfileBtn'>
+                            <div className="text-align-center  mt-3" id='editProfileBtn'>
                                 <button className="edit-profile-btn" onClick={editProfile}>แก้ไขโปรไฟล์</button>
                             </div>
                         </div>
@@ -166,15 +144,15 @@ export default function SettingProfile() {
 
                             <div>
                                 <p className="onInput">อีเมล</p>
-                                <p>aaaa@gmail.com <button className="change-pass">เปลี่ยนอีเมล</button></p>
+                                <p>aaaa@gmail.com <button className="change-pass" >เปลี่ยนอีเมล</button></p>
                                 <p className="onInput">รหัสผ่าน</p>
-                                <button className="change-pass">เปลี่ยนรหัสผ่าน</button>
+                                <button className="change-pass" onClick={changePass}>เปลี่ยนรหัสผ่าน</button>
                             </div>
                         </div>
                     </div>
 
                 </div>
             </div>
-        </ThemeProvider>
+        </>
     );
 }

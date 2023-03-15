@@ -15,13 +15,17 @@ import Editprofile from './screens/Editprofile';
 import Addtoken from './screens/Addtoken';
 import Test from './screens/Test';
 
-// ของข้อย
 import Login_M from './screens/Login_M';
 import Register_M from './screens/Register_M';
 import CreateAccount from './screens/CreateAccount';
 import BuyCoin from './screens/BuyCoin';
 import SettingProfile from './screens/SettingProfile';
 import SettingCoin from './screens/SettingCoin';
+import TestPage from './screens/TestPage';
+import ForgetPassword from './screens/ForgetPassword';
+import NewPassword from './screens/NewPassword';
+import AdminManagement from './screens/AdminManagement';
+import UserProfile from './screens/UserProfile';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -46,10 +50,14 @@ root.render(
       <Route path="/register_M" element={<Register_M />} />
       <Route path="/createAccount" element={<CreateAccount />} />
       <Route path="/buyCoin" element={<BuyCoin />} />
-      {/* <Route path="/setting/:menuSettingPage" element={<Setting />} /> */}
       <Route path="/setting-profile" element={<SettingProfile />} />
       <Route path="/setting-coin" element={<SettingCoin />} />
-
+      <Route path="/testpage" element={<TestPage />} />
+      <Route path="/forgetpassword" element={<ForgetPassword />} />
+      <Route path="/newpassword" element={<NewPassword />} />
+      <Route path="/adminmanagement" element={<AdminManagement />} />
+      <Route path="/userprofile" element={<UserProfile />} />
+      
     </Routes>
   </BrowserRouter>
 );

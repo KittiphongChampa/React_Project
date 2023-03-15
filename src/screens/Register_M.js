@@ -19,10 +19,6 @@ const title = 'สมัครสมาชิก';
 
 
 export default function SignIn() {
-    const emailRef = useRef(null);
-    const passRef = useRef(null);
-
-
     return (
         <ThemeProvider theme={theme}>
             <Helmet>
@@ -42,11 +38,11 @@ export default function SignIn() {
                             <div class="input-login-box">
                                 <h1>{title} </h1>
                                 <form>
-                                    <DefaultInput headding='อีเมล' type='email' ref={emailRef} />
+                                    <DefaultInput headding='อีเมล' type='email'  />
                                     <button type='submit'>ส่งรหัสยืนยันน</button>
                                 </form>
                                 <form>
-                                    <DefaultInput headding='ใส่รหัสยืนยัน' type='text' ref={passRef} />
+                                    <DefaultInput headding='ใส่รหัสยืนยัน' type='text'  />
                                     <div class="text-align-center">
                                         <button class="lightblue-btn" type="submit">ยืนยันอีเมล</button>
                                     </div>

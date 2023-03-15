@@ -1,17 +1,12 @@
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import React, { useState, useEffect, useRef } from "react";
-
-// ของข้อย
-
 import "../css/indexx.css";
 import "../css/allbutton.css";
 import "../css/alltab.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Helmet } from "react-helmet";
-// import Tab from 'react-bootstrap/Tab';
-// import Tabs from 'react-bootstrap/Tabs';
-// import Table from 'react-bootstrap/Table';
+import Navbar from "../components/Navbar";
 import { Table, Tabs, Tab } from 'react-bootstrap';
 
 
@@ -19,22 +14,22 @@ import { Table, Tabs, Tab } from 'react-bootstrap';
 import SettingAside from '../components/SettingAside';
 
 
-const theme = createTheme();
 const title = 'ประวัติการใช้เหรียญ';
 
 export default function SettingCoin() {
 
     return (
-        <ThemeProvider theme={theme}>
+        <>
             <Helmet>
                 <title>{title}</title>
             </Helmet>
+            <Navbar />
             <div className="setting-container">
                 <SettingAside onActive='1' />
                 <div className="setting-content-box">
                     <div className="common-setting-page">
                         <div>
-                            <h2 className="setting-headding">เหรียญๆๆไว้ใส่ประวัติการเติมและการใช้</h2>
+                            <h2 className="setting-headding">ประวัติการเติมเหรียญและใช้เหรียญ</h2>
                             <Tabs
                                 defaultActiveKey="buycoin"
                                 id="justify-tab"
@@ -42,7 +37,7 @@ export default function SettingCoin() {
                                 justify
                             >
                                 <Tab eventKey="buycoin" title="ประวัติการเติมเหรียญ">
-                                    <p className="text-align-right">เดี๊ยนตั้งใจจะใช้ตรงนี้เป็นตัวกรองจ้า</p>
+                                    <p className="text-align-right">ตัวกรอง</p>
                                     <Table striped>
                                         <thead>
                                             <tr>
@@ -65,11 +60,7 @@ export default function SettingCoin() {
                                                 <td>Thornton</td>
                                                 <td>@fat</td>
                                             </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td colSpan={2}>Larry the Bird</td>
-                                                <td>@twitter</td>
-                                            </tr>
+                            
                                         </tbody>
                                     </Table>
 
@@ -88,6 +79,6 @@ export default function SettingCoin() {
 
                 </div>
             </div>
-        </ThemeProvider>
+        </>
     );
 }

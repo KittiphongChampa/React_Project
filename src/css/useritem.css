@@ -1,0 +1,7 @@
+.user-item{
+    box-sizing: border-box;
+    border: 1px solid #BCACDC;
+    box-shadow: 0px 20px 45px -12px rgba(2, 49, 240, 0.1);
+    border-radius: 20px;
+}
+

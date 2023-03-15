@@ -1,11 +1,13 @@
 /* *-------Navbar---------- */
 
 .inline-nav {
-    display: inline-block;
+    display: inline-flex;
+    /* background-color: aqua; */
 }
 
-.inline-nav a {
-    display: inline-block;
+.inline-nav a,
+.inline-nav div {
+    /* display: inline-block; */
     margin-right: 20px;
     padding: 0.5rem 1rem;
     border-radius: 50px;
@@ -23,17 +25,41 @@
 }
 
 .nav-box {
-    background-color: white;
+    background-color: rgb(255, 255, 255);
     height: fit-content;
     border: 0.5px solid #D0D0D0;
-
-
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 99;
 }
 
 .nav-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
+    /* width: 100%; */
     height: 60px;
+    margin-inline: auto;
+    padding-inline: 5%;
+    /* background-color: antiquewhite; */
+}
+
+.show-coin {
+    border: 1px solid #DBD1E0;
+    padding: 5px 30px !important;
+    border-radius: 99px !important;
+    margin: auto;
+    background-color: #f2f6fabe;
+}
+
+.show-coin p{
+    font-weight: 700;
+    color:#333333;
+}
+
+@media (min-width: 2000px) {
+    .nav-container {
+        width: 2000px;
+    }
 }

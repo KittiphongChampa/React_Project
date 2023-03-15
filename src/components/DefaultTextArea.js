@@ -6,7 +6,7 @@ import React, { forwardRef } from "react";
 const DefaultTextArea = forwardRef((props, ref) => {
     return (
         <>
-            <p class="onInput">{props.headding}</p>
+            <label class="onInput">{props.headding}</label>
             <TextareaAutosize className="txtarea" id="bio"
                 value={props.value}
                 onChange={props.onChange}

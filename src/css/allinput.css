@@ -9,7 +9,7 @@ input.defInput {
 
 }
 
-p.onInput {
+.onInput {
     margin-bottom: 0.5rem;
     margin-top: 1rem;
     color: #495C83;
@@ -24,7 +24,6 @@ p.onInput {
     word-break: break-all;
     border-radius: 5px;
     color: #000000;
-    border: none;
     display: block;
     width: 100%;
     resize: none;
@@ -33,4 +32,8 @@ p.onInput {
     height: auto;
     font-size: 18px;
     border: 1px solid transparent;
+}
+
+.validate-input{
+    word-wrap: break-word
 }
