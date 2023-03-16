@@ -16,7 +16,11 @@ export default function NewInput(props) {
     const disabled = props.inputSetting.disabled
     const minLength = props.inputSetting.minLength
     const maxLength = props.inputSetting.maxLength
-    setValue(name,props.defaultValue)
+    setValue(name, props.defaultValue);
+    // useEffect(() => {
+    //     setValue(name, props.defaultValue);
+    // }, [setValue(name, props.defaultValue)]);
+    
     let ErrorMin = `กรุณาใส่ตัวอักษรอย่างน้อย ${minLength} ตัว`
     let ErrorPattern =''
     let ErrorMax = `ใส่ตัวอักษรไม่เกิน ${minLength} ตัว`

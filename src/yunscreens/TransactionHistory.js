@@ -61,7 +61,7 @@ export default function TransactionHistory() {
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
     const diffMonths = (today.getFullYear() - itemDate.getFullYear()) * 12 + (today.getMonth() - itemDate.getMonth());
     if (filter === "today") {
-      return diffDays === 0;
+      return diffDays === 1;
     } else if (filter === "week") {
       return diffDays <= 7;
     }else if (filter === "month"){

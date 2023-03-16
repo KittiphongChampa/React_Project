@@ -95,3 +95,27 @@
     background-color: rgb(255, 255, 255);
     border-radius: 100px;
 }
+
+.group-btn-area {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.message-btn {
+    border-radius: 100px;
+    border: 1px solid #7A86B6;
+    padding: 5px;
+    background-color: white;
+
+}
+
+.follow-btn {
+    border-radius: 100px;
+    border: 1px solid #7A86B6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 20px;
+    background-color: white;
+}

@@ -9,7 +9,7 @@ input.defInput {
 
 }
 
-p.onInput {
+.onInput {
     margin-bottom: 0.5rem;
     margin-top: 1rem;
     color: #495C83;

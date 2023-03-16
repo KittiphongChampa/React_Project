@@ -46,3 +46,22 @@
     mix-blend-mode: difference;
     user-select: none;
 }
+/* ----------------------- */
+
+.profile-img-show {
+    box-sizing: border-box;
+    border-radius: 100px;
+    width: 70px;
+    height: 70px;
+    background-color: #ffffff;
+    overflow: hidden;
+    margin-right: 20px;
+    box-shadow: 0px 31px 55px -12px rgba(74, 105, 232, 0.24);
+}
+
+
+.profile-img-show img {
+    object-fit: cover;
+    height: 100%;
+
+}

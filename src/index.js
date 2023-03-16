@@ -6,20 +6,20 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Register from './screens/Register';
 import Login from './screens/Login';
-import Welcome from './screens/Welcome';
-import Index from './screens/Index';
-import Profile from './screens/Profile';
-import TransactionHistory from './screens/TransactionHistory';
+import Welcome from './yunscreens/Welcome';
+import Index from './yunscreens/Index';
+import Profile from './yunscreens/Profile';
+import TransactionHistory from './yunscreens/TransactionHistory';
 import Verify from './secondary_screens.js/Verify';
-import Editprofile from './screens/Editprofile';
-import Buytoken from './screens/Buytoken';
-import PackageToken from './screens/PackageToken';
+import Editprofile from './yunscreens/Editprofile';
+import Buytoken from './yunscreens/Buytoken';
+import PackageToken from './yunscreens/PackageToken';
 import ForgotPassword from './secondary_screens.js/ForgotPassword';
 import ResetPassword from './secondary_screens.js/ResetPassword';
 import VerifyMail_ResetPassword from './secondary_screens.js/VerifyMail_ResetPassword';
-import AllUser from './screens/AllUser';
-import ViewProfile from './screens/ViewProfile';
-import AdminPage from './screens/AdminPage';
+import AllUser from './yunscreens/AllUser';
+import ViewProfile from './yunscreens/ViewProfile';
+import AdminPage from './yunscreens/AdminPage';
 
 import Test from './secondary_screens.js/Test';
 
@@ -27,6 +27,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 // mint
 import EditCoin from './screens/EditCoin';
+import UserProfile from './screens/UserProfile';
+import BuyCoin from './screens/BuyCoin';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -55,6 +57,9 @@ root.render(
 
       {/* mint */}
       <Route path="/editcoin" element={<EditCoin />} />
+      <Route path="/userprofile" element={<UserProfile />} />
+      <Route path="/userprofile" element={<UserProfile />} />
+      <Route path="/buycoin" element={<BuyCoin />} />
 
     </Routes>
   </BrowserRouter>

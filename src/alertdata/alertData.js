@@ -28,3 +28,24 @@ export const deleteCoinIsConfirmed = {
     iconColor: '#7E9AFA',
     confirmButtonText: 'ตกลง',
 }
+
+export const addCoinIsConfirmed = {
+  title: "เพิ่มแพ็กเกจแล้ว",
+  icon: "success",
+  iconColor: "#7E9AFA",
+  confirmButtonText: "ตกลง",
+};
+
+export const editCoinIsConfirmed = {
+  title: "แก้ไขแพ็กเกจแล้ว",
+  icon: "success",
+  iconColor: "#7E9AFA",
+  confirmButtonText: "ตกลง",
+};
+
+export const IsError = {
+  title: "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง",
+  icon: "error",
+  iconColor: "red",
+  confirmButtonText: "ตกลง",
+};

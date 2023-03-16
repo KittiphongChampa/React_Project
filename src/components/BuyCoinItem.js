@@ -4,8 +4,9 @@ import "../css/indexx.css";
 
 export default function BuyCoinItem(props) {
 
+
     return (
-        <div className="buycoin-item-border">
+        <div className="buycoin-item-border" style={{cursor: "pointer"}} onClick={props.onClick}>
         
         <div className="buycoin-item">
             
