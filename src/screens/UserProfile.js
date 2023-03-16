@@ -19,12 +19,12 @@ import inputSetting from "../function/function";
 import ProfileImg from "../components/ProfileImg";
 import Profile from './Profile';
 
-const title = 'ลืมรหัสผ่าน';
+const title = 'ตั้งเป็นชื่อ user';
 const bgImg = ""
-const body = { backgroundColor: "pink" }
+const body = { backgroundColor: "#F4F1F9" }
 
 
-export default function ForgetPassword() {
+export default function UserProfile() {
 
 
     return (
@@ -33,19 +33,60 @@ export default function ForgetPassword() {
                 <title>{title}</title>
             </Helmet>
             <Navbar />
-            <div class="body-lesspadding " style={body}>
-                <div className="cover">
-                    <div className="container sss">
+            <div class="body-lesspadding qwe" style={body}>
+
+                <div className="cover-grid">
+                    <div className="cover">color</div>
+                    <div className="container px-5 profile-page">
                         <div className="user-profile-area">
-                            <div className="user-col-profile"></div>
+                            <div className="user-col-profile">
+                                <ProfileImg src="b3.png" type="show" />
+                                <p className="username-profile fs-5">ณัฐพิมล เมืองวุฒทานันท์ นันันันันันนันสวัสดีสวัสดี</p>
+                                <p className="follower-profile">follower</p>
+                                <div className="group-btn-area">
+                                    <button className="message-btn">แชท</button>
+                                    <button className="follow-btn">ติดตาม</button>
+                                </div>
+                                <p className="bio-profile">
+                                    xxxxxxxxxxxxxxxxxxxxxxxxxxxxx,dsl odifbodiufbis  ihdsofindsifndsiofnspd;f idosfinsdnkflkdsnfl iusdbfidsbfsbfie sxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxofindsifndsiofnspd;f idosfinsdnkflepfonesfpose sepofnesfeofnepfnspofsefms;ofm;m esffuhdsfn dofhs
+                                </p>
+                            </div>
                             <div className="user-col-about">
-                                <div className="user-about-menu"></div>
-                                <div className="user-about-content"></div>
+                                <div className="user-about-menu">
+                                    <p>overview</p>
+                                    <p>about me</p>
+                                </div>
+                                <div className="user-about-content">
+                                    <div className="user-about-review mb-4"><p className="fs-3">4.0</p> <p>จาก 5 รีวิว</p></div>
+                                    <div className="user-about-text">
+                                        <div>
+                                            <p>งานสำเร็จแล้ว 10 งาน</p>
+                                            <p>ใช้งานล่าสุดเมื่อ 12 ชั่วโมงที่แล้ว</p>
+                                            <p>ตอบกลับภายใน 1 ชั่วโมง</p>
+                                        </div>
+                                        <div>
+                                            <p>คอมมิชชัน เปิด</p>
+                                            <p>คิวว่าง 1 คิว</p>
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <div className="user-profile-area-2">
+                            ไไว้ใส่คอนเท้น
+                        </div>
                     </div>
+
                 </div>
-                
+
+
+
+
+
+
                 {/* <div class="container">
                     <div class="cover-img-relative">
                         <div class="profile-desc-box">

@@ -1,6 +1,9 @@
 import "../css/allinput.css";
+import React, { useState, useEffect } from "react";
 
 export default function NewInput(props) {
+
+
 
     const name = props.inputSetting.name
     const headding = props.inputSetting.headding
@@ -12,7 +15,7 @@ export default function NewInput(props) {
     const minLength = props.inputSetting.minLength
     const maxLength = props.inputSetting.maxLength
     let ErrorMin = `กรุณาใส่ตัวอักษรอย่างน้อย ${minLength} ตัว`
-    let ErrorPattern =''
+    let ErrorPattern = ''
     let ErrorMax = `ใส่ตัวอักษรไม่เกิน ${minLength} ตัว`
     let ErrorReq = `กรุณากรอกข้อมูลฟิลด์นี้`
     if (name === "email") {
@@ -22,11 +25,17 @@ export default function NewInput(props) {
         ErrorPattern = ""
     }
 
+    
+    // useEffect(() => {
+    //     props.setValue(name, '1234');
+    // }, []);
+
     return (
         <>
             <label class="onInput">{headding}</label>
             <input disabled={disabled}
                 type={type}
+                defaultValue="111"
                 {...props.register(name, { required: required, pattern: pattern, minLength: minLength, maxLength: maxLength })}
                 className={`defInput ${errors[name] ? "border-danger" : ""}`} />
             {errors[name] && errors[name].type === "pattern" && (<p class="validate-input"> {ErrorPattern}</p>)}

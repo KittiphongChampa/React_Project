@@ -21,6 +21,7 @@ p {
 
 .body-lesspadding {
     min-height: 100vh;
+    max-height: fit-content;
     background-position: center;
     background-size: cover;
     background-attachment: fixed;
@@ -118,9 +119,9 @@ p {
     color: #495C83;
 }
 
-.text-align-center {
+/* .text-align-center {
     text-align: center;
-}
+} */
 
 /* .text-align-center button:nth-child(2) {
     margin-left: 10px;
@@ -133,6 +134,12 @@ p {
 .text-align-center a {
     text-decoration: none;
     color: #495C83;
+}
+
+.verify-email {
+    height: fit-content;
+    width: fit-content;
+    position: relative;
 }
 
 /*@media screen and (min-width: 2000px) {
@@ -694,66 +701,171 @@ input[type="color"]::-webkit-color-swatch {
 
 
 
+.qwe {
+    display: flex;
+    flex-direction: column;
+}
 
-.cover{
+/* .cover-relative {
+    box-sizing: border-box;
+    background-color: rgb(0, 255, 68);
+    width: 100%;
+    position: relative;
+    height: fit-content;
+    display: block;
+}
+
+.cover {
+    box-sizing: border-box;
     background-color: red;
     width: 100%;
     height: 350px;
-    position: relative;
+} */
+
+.cover-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    height: fit-content;
+    box-sizing: border-box;
+    background-color: #F4F1F9;
 }
 
-.sss{
-    margin-inline: auto;
-    position: absolute;
-    top: 50px;
-    height: 100vh;
+.cover {
+    background-color: #402738;
     width: 100%;
-    padding: 0 !important;
-    background-color: rgba(255, 255, 255, 0.774);
+    height: 300px;
+    grid-row-start: 1;
+    grid-column-start: 1;
 }
 
-.user-profile-area{
+.profile-page {
+    grid-row-start: 1;
+    grid-column-start: 1;
+    box-sizing: border-box;
+    margin-top: 90px;
+    margin-inline: auto;
+    /* position: absolute;
+    top: 40%; */
+    height: fit-content;
+    width: 100%;
+    /* padding: 0 !important; */
+    padding-bottom: 50px;
+    /* background-color: rgb(181, 208, 181); */
+    /* left: 50%;
+    transform: translate(-50%, 0); */
+}
+
+.user-profile-area {
+
     display: flex;
+    /* flex-wrap: wrap; */
     gap: 10px;
-    height: 500px;
-    
+    min-height: 570px;
+    max-height: 700px;
+    /* background-color: rgb(5, 87, 187); */
+
 
 }
 
-.user-col-profile{
-    flex:1;
-    background-color: white;
-    height: 100%;
+.user-col-profile {
+    box-sizing: border-box;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    word-wrap: break-word;
+    word-break: break-all;
+    padding-inline: 40px;
+    text-align: center;
+    flex: 0 0 430px;
     background: rgba(255, 255, 255, 0.9);
     box-shadow: 0px 20px 45px -12px rgba(2, 49, 240, 0.1);
     backdrop-filter: blur(10px);
     border-radius: 319px 319px 43px 38px;
-
-
-}
-
-.user-col-about{
-    box-sizing: border-box;
-    flex:2;
-    height: 100%;
-    padding-top: 150px;
     display: flex;
     flex-direction: column;
-    gap:10px;
-    background-color: #495C83;
+    gap: 5px;
+
+
 }
 
-.user-about-menu{
-    background-color: white;
+.user-col-about {
+    box-sizing: border-box;
+    flex: 1 1 50%;
+    padding-top: 170px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: transparent;
+    overflow: hidden;
+    /* background-color: #785eb1; */
+}
+
+.user-about-menu {
+    /* order: 1; */
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
+    border-radius: 20px 20px 0px 0px;
     width: 100%;
+    flex: 0 0 70px;
+    display: flex;
+    align-items: center;
+    padding-inline: 20px;
+}
+
+.user-about-menu p {
+    background-color: palegoldenrod;
+    border-radius: 100px;
+    width: fit-content;
+    height: fit-content;
+    padding: 5px 20px;
+
+}
+
+.user-about-content {
+    /* order: 0; */
+    background-color: rgba(255, 255, 255, 0.9);
+    width: 100%;
+    box-sizing: border-box;
     flex: 1;
+    backdrop-filter: blur(20px);
+    border-radius: 0px 0px 20px 20px;
+    padding: 50px;
 }
 
-.user-about-content{
-    background-color: white;
-    width: 100%;
-    flex: 2;
+.user-about-text {
+    
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px auto;
+    /* grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); */
 }
 
+.user-about-text div{
+    word-break: keep-all;
+    word-wrap: normal;
+    white-space: nowrap;
+    text-overflow: clip;
+    flex:1;
+}
 
+.user-about-text p {
 
+    /* width: 100%; */
+    /* background-color: #402738; */
+}
+
+.username-profile {
+    font-weight: 700;
+
+    color: #525764;
+    padding-inline: 40px;
+}
+
+.follower-profile {
+    color: gray;
+}
+
+.bio-profile {
+    margin-top: 20px !important;
+    color: rgb(17, 17, 17);
+}

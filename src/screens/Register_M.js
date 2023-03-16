@@ -38,11 +38,13 @@ export default function SignIn() {
                             <div class="input-login-box">
                                 <h1>{title} </h1>
                                 <form>
-                                    <DefaultInput headding='อีเมล' type='email'  />
-                                    <button type='submit'>ส่งรหัสยืนยันน</button>
+                                    <div className="verify-email">
+                                        <DefaultInput headding='อีเมล' type='email' />
+                                        <button type='submit'>ส่งรหัสยืนยันน</button>
+                                    </div>
                                 </form>
                                 <form>
-                                    <DefaultInput headding='ใส่รหัสยืนยัน' type='text'  />
+                                    <DefaultInput headding='ใส่รหัสยืนยัน' type='text' />
                                     <div class="text-align-center">
                                         <button class="lightblue-btn" type="submit">ยืนยันอีเมล</button>
                                     </div>

@@ -130,7 +130,7 @@ export default function SettingProfile() {
                                     <button className="cancle-btn" type="cancle">ยกเลิก</button>
                                 </div>
                             </form>
-                            <div className="text-align-center  mt-3" id='editProfileBtn'>
+                            <div className="text-align-center" id='editProfileBtn'>
                                 <button className="edit-profile-btn" onClick={editProfile}>แก้ไขโปรไฟล์</button>
                             </div>
                         </div>
