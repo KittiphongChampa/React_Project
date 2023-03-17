@@ -35,8 +35,15 @@ export default function NewInput(props) {
             <input disabled={disabled}
                 type={type}
                 defaultValue="111"
-                {...props.register(name, { required: required, pattern: pattern, minLength: minLength, maxLength: maxLength })}
-                className={`defInput ${errors[name] ? "border-danger" : ""}`} />
+                register(name, { required: required, pattern: pattern, minLength: minLength, maxLength: maxLength })
+            className={`defInput ${errors[name] ? "border-danger" : ""}`} />
+            {errors[name] && errors[name].type === "pattern" && (<p class="validate-input"> {ErrorPattern}</p>)}
+        
+        
+
+
+
+
             {errors[name] && errors[name].type === "pattern" && (<p class="validate-input"> {ErrorPattern}</p>)}
             {errors[name] && errors[name].type === "required" && (<p class="validate-input"> {ErrorReq}</p>)}
             {errors[name] && errors[name].type === "minLength" && (<p class="validate-input"> {ErrorMin}</p>)}

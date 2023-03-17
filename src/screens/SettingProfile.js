@@ -125,7 +125,7 @@ export default function SettingProfile() {
                                         ref={bioRef}
                                         disabled={true} />
                                 </div>
-                                <div className="text-align-center mt-3" id='sendDataBtn'>
+                                <div className="text-align-center" id='sendDataBtn'>
                                     <button className="gradiant-btn" type="submit">บันทึกข้อมูล</button>
                                     <button className="cancle-btn" type="cancle">ยกเลิก</button>
                                 </div>

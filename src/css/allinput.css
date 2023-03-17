@@ -1,5 +1,3 @@
-
-
 input.defInput {
     background: rgba(255, 255, 255, 0.54);
     border: 1px solid #9D9EB8;
@@ -14,6 +12,32 @@ input.defInput {
     margin-top: 1rem;
     color: #495C83;
     font-weight: 700;
+}
+
+.verify-email {
+    height: fit-content;
+    width: 100%;
+    display: flex;
+}
+
+.verify-email .defInput {
+    border-right: none !important;
+    border-radius: 100px 0px 0px 100px !important;
+    flex: 1;
+}
+
+input:focus {
+    background-color: aquamarine;
+}
+
+.verify-email button {
+    border: 1px solid #9D9EB8;
+    border-radius: 0px 100px 100px 0px;
+    background-color: transparent;
+    border-left: none;
+    word-wrap: unset;
+    font-weight: 700;
+    padding-inline: 20px;
 }
 
 .input-login-box {
@@ -34,6 +58,6 @@ input.defInput {
     border: 1px solid transparent;
 }
 
-.validate-input{
+.validate-input {
     word-wrap: break-word
 }

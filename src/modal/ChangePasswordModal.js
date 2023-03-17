@@ -13,11 +13,12 @@ import 'sweetalert2/src/sweetalert2.scss'
 import * as alertData from '../alertdata/alertData';
 
 const ChangePasswordModal = forwardRef((props, ref) => {
-    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const { register, handleSubmit, setValue, formState: { errors, isSubmitting, isDirty, isValid }, reset } = useForm();
 
     const func = {
         register: register,
-        errors: errors
+        errors: errors,
+        setValue: setValue
     }
 
     const submitChangePassForm = (data) => {
@@ -55,7 +56,7 @@ const ChangePasswordModal = forwardRef((props, ref) => {
         <div className="modal-area" id="modalArea" ref={ref}>
             <div className="container">
                 <div className="form-modal">
-                    <div className="text-align-right close-btn" onClick={closeModal}><Icon.X/></div>
+                    <div className="text-align-right close-btn" onClick={closeModal}><Icon.X /></div>
                     <div className="form-area">
                         <form onSubmit={handleSubmit(submitChangePassForm)}>
                             <h2 className="text-align-center">เปลี่ยนรหัสผ่านใหม่</h2>

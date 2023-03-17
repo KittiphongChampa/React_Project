@@ -1,6 +1,6 @@
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form"
 
@@ -18,6 +18,8 @@ import UserBox from "../components/UserBox";
 import inputSetting from "../function/function";
 import ProfileImg from "../components/ProfileImg";
 import Profile from './Profile';
+import ChangeProfileImgModal from "../modal/ChangeProfileImgModal";
+import { ChangeCoverModal, openInputColor } from "../modal/ChangeCoverModal"
 
 const title = 'ตั้งเป็นชื่อ user';
 const bgImg = ""
@@ -26,21 +28,55 @@ const body = { backgroundColor: "#F4F1F9" }
 
 export default function UserProfile() {
 
+    const modalChangeProfileImgRef = useRef(null)
+    const modalChangeCoverRef = useRef(null)
+
+
+
+    const openModal = (modal) => {
+        if (modal === "profile") {
+            const modalChangeProfileImgRefElement = modalChangeProfileImgRef.current;
+
+            const modalClass = modalChangeProfileImgRefElement.classList
+            modalClass.add("open")
+        } else {
+            const modalChangeCoverRefElement = modalChangeCoverRef.current;
+            const modalClass = modalChangeCoverRefElement.classList
+            modalClass.add("open")
+            openInputColor()
+            // modalChangeCoverRefElement.getElementById("color-input")
+            // console.log(modalChangeCoverRefElement);
+        }
+    }
+
+    // const openColorInput = () => {
+    //     const modalChangeCoverRefElement = modalChangeCoverRef.current;
+
+
+    // }
+
 
     return (
         <>
             <Helmet>
                 <title>{title}</title>
             </Helmet>
+            <ChangeProfileImgModal ref={modalChangeProfileImgRef} />
+            <ChangeCoverModal ref={modalChangeCoverRef} />
+
             <Navbar />
-            <div class="body-lesspadding qwe" style={body}>
+            <div class="body-nopadding" style={body}>
 
                 <div className="cover-grid">
-                    <div className="cover">color</div>
+                    <div className="cover" onClick={openModal}>
+                        <div className="cover-color"></div>
+                        <div className="cover-hover"><p className="fs-5">เปลี่ยนสีปก</p></div>
+
+                    </div>
                     <div className="container px-5 profile-page">
                         <div className="user-profile-area">
                             <div className="user-col-profile">
-                                <ProfileImg src="b3.png" type="show" />
+                                <ProfileImg src="b3.png" type="show" onPress={() => openModal("profile")} />
                                 <p className="username-profile fs-5">ณัฐพิมล เมืองวุฒทานันท์ นันันันันันนันสวัสดีสวัสดี</p>
                                 <p className="follower-profile">follower</p>
                                 <div className="group-btn-area">
