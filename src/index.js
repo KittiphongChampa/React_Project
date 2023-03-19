@@ -58,7 +58,6 @@ root.render(
       {/* mint */}
       <Route path="/editcoin" element={<EditCoin />} />
       <Route path="/userprofile" element={<UserProfile />} />
-      <Route path="/userprofile" element={<UserProfile />} />
       <Route path="/buycoin" element={<BuyCoin />} />
 
     </Routes>

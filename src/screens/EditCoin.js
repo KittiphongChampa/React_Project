@@ -17,24 +17,60 @@ import { useForm } from "react-hook-form";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import "sweetalert2/src/sweetalert2.scss";
 import * as alertData from "../alertdata/alertData";
-const title = "เติมเหรียญ";
+const title = "จัดการเหรียญ";
 const bgImg = "url('mainmoon.jpg')";
 const body = { backgroundImage: bgImg };
 
 export default function EditCoin() {
-  const { reset } = useForm();
+
+  const [showModal, setShowModal] = useState("")
+  const [selectedItem, setSelectedItem] = useState([]);
+
+  const [packageList, setPackageList] = useState([]);
+
+  let price = ""
+  let coins = ""
+  let headding = "เพิ่มแพ็กเกจเติมเงิน";
+  let package_Id = "";
+
+  // const { reset } = useForm();
   const modalChangeCoinRef = useRef(null);
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors, isSubmitting, isDirty, isValid },
+    reset,
+  } = useForm();
+
+    const func = {
+        register: register,
+        errors: errors,
+      setValue: setValue,
+      isValid: isValid,
+      handleSubmit:handleSubmit
+        
+    }
+  
 
   const openModal = (edit) => {
     if (edit !== "edit") {
-      setHeadding("เพิ่มแพ็กเกจเติมเงิน");
-      setPrice(null);
-      setCoins(null);
+      headding ="เพิ่มแพ็กเกจเติมเงิน";
+      price = null
+      coins=null
     }
-    const modalChangePassRefElement = modalChangeCoinRef.current;
-    const modalChangePassClass = modalChangePassRefElement.classList;
-    modalChangePassClass.add("open");
+
+    console.log({ coins })
+    console.log({price})
+    const modalComponent = <AddEditDeleteCoinModal {...func} package_Id={package_Id} headding={headding}
+        coinValue={coins} priceValue={price} setShowModal={setShowModal}
+        // name="coins"
+      />
+    setShowModal(modalComponent)
+    console.log("เปิดโมดอลลล")
   };
+  
   const navigate = useNavigate();
   const jwt_token = localStorage.getItem("token");
 
@@ -72,25 +108,14 @@ export default function EditCoin() {
     getPackage_token();
   }, []);
 
-  const [selectedItem, setSelectedItem] = useState([]);
-
-  const [packageList, setPackageList] = useState([]);
-
-  const [package_Id, setPackageID] = useState("");
-  const [price, setPrice] = useState("");
-  const [coins, setCoins] = useState("");
-  const [headding, setHeadding] = useState("เพิ่มแพ็กเกจเติมเงิน");
-
-  // let headding = "เพิ่มแพ็กเกจเติมเงิน";
-  // let coinValue = null;
-  // let priceValue = null;
-
   const updatePackage = (item) => {
+ 
+    coins = item.p_token
+    price = item.p_price
+
     setSelectedItem(item);
-    setPackageID(item.id);
-    setPrice(item.p_price);
-    setCoins(item.p_token);
-    setHeadding("แก้ไขแพ็กเกจเติมเงิน");
+    package_Id=item.id;
+    headding ="แก้ไขแพ็กเกจเติมเงิน";
     openModal("edit");
   };
 
@@ -115,19 +140,15 @@ export default function EditCoin() {
       }
     });
   };
+  // console.log({coins});
+
 
   return (
     <>
       <Helmet>
         <title>{title}</title>
       </Helmet>
-      <AddEditDeleteCoinModal
-        package_Id={package_Id}
-        headding={headding}
-        ref={modalChangeCoinRef}
-        coinValue={coins}
-        priceValue={price}
-      />
+      {showModal}
 
       <div
         className="body"
@@ -142,7 +163,7 @@ export default function EditCoin() {
         {/* <Navbar /> */}
 
         <div className="container">
-          <div className="buycoin-clearpage">
+          <div className="buycoin-soloCard">
             <h1 className="text-center">{title} </h1>
             <button class="gradiant-outline-btn" onClick={openModal}>
               <div class="in-dradiant-outline-btn">
@@ -152,6 +173,7 @@ export default function EditCoin() {
             <div className="buycoin-content">
               {packageList.map((item, index) => (
                 <div key={index}>
+                  
                   <EditDeleteCoinItem
                     onClickupdate={() => updatePackage(item)}
                     onClickdelete={() => deletePackage(item.id)}

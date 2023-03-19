@@ -80,7 +80,7 @@ export default function SignIn() {
       <div className="body" style={body}>
         {/* <Navbar /> */}
         <div className="container">
-          <div className="login-clearpage">
+          <div className="login-soloCard">
             <div className="">
               <img className="login-img" src="ภาพตัด.png" alt="" />
             </div>

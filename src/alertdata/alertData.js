@@ -49,3 +49,10 @@ export const IsError = {
   iconColor: "red",
   confirmButtonText: "ตกลง",
 };
+
+export const BuycoinSuccess = {
+  title: "ซื้อเหรียญสำเร็จ",
+  icon: "success",
+  iconColor: "#7E9AFA",
+  confirmButtonText: "ตกลง",
+}

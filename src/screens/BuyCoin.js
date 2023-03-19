@@ -34,11 +34,14 @@ export default function BuyCoin() {
   const navigate = useNavigate();
   const jwt_token = localStorage.getItem("token");
   const [userdata, setUserdata] = useState([]);
+  const [admindata, setAdmindata] = useState([]);
+  console.log(userdata.id);
+  console.log(admindata.admin_id);
+
   const [packageList, setPackageList] = useState([]);
-
-
   const [selectedItem, setSelectedItem] = useState({});
-  console.log(selectedItem);
+  // console.log(selectedItem);
+  
   const [popuptoken, setpopup] = useState(false);
   const Close = () => setpopup(false);
   
@@ -59,6 +62,7 @@ export default function BuyCoin() {
     // }
     getPackage_token();
   }, []);
+
   const getPackage_token = async () => {
     await axios
       .get("http://localhost:3333/buytoken", {
@@ -69,9 +73,11 @@ export default function BuyCoin() {
       .then((response) => {
         const data = response.data;
         if (data.status === "ok") {
-          //   setUserdata(data.users[0]);
           setPackageList(data.package_token);
           setUserdata(data.users[0]);
+        } else if (data.status === "admin_ok") {
+          setPackageList(data.package_token);
+          setAdmindata(data.admins[0]);
         } else {
           // toast.error(data.message, toastOptions);
         }
@@ -85,7 +91,7 @@ export default function BuyCoin() {
     OmiseCard.configure({
       publicKey: "pkey_test_5po2mkzsky7484ta8n0",
       currency: "THB",
-      frameLabel: "Token Shop",
+      frameLabel: "Buy Coin",
       submitLabel: "Pay NOW",
       buttonLabel: "Pay with Omise",
     });
@@ -104,7 +110,8 @@ export default function BuyCoin() {
     OmiseCard.open({
       amount: selectedItem.p_price*100,
       onCreateTokenSuccess: (token) => {
-        axios
+        if(userdata.id !== undefined){
+          axios
           .post("http://localhost:3333/omiseAPI", {
             email: userdata.urs_email,
             name: userdata.urs_name,
@@ -116,35 +123,89 @@ export default function BuyCoin() {
           })
           .then((response) => {
             const data = response.data;
-            console.log(data);
             if (data.status === "successful") {
               axios
                 .put("http://localhost:3333/token/update", {
                   id_transaction: selectedItem.id,
                   amount: selectedItem.p_token,
+                  price: selectedItem.p_price,
                   urs_token: userdata.urs_token,
                   id: userdata.id,
                 })
                 .then((response) => {
                   const data = response.data;
                   if (data.status === "ok") {
-                    alert(data.message);
-                    navigate("/buytoken");
-                    window.location = "/buytoken";
+                    // alert(data.message);
+                    Swal.fire({ ...alertData.BuycoinSuccess }).then(() => {
+                      window.location.reload(false);
+                    });
                   } else if (data.status === "error") {
-                    // toast.error(data.message, toastOptions);
+                    Swal.fire({ ...alertData.IsError }).then(() => {
+                      window.location.reload(false);
+                    });
                   } else {
-                    // toast.error(data.message, toastOptions);
+                    Swal.fire({ ...alertData.IsError }).then(() => {
+                      window.location.reload(false);
+                    });
                   }
                 });
             } else {
-              // toast.error(data.message, toastOptions);
+              Swal.fire({ ...alertData.IsError }).then(() => {
+                window.location.reload(false);
+              });
             }
           });
+        } else if (admindata.admin_id !== undefined) {
+          axios
+          .post("http://localhost:3333/omiseAPI", {
+            email: admindata.admin_email,
+            name: admindata.admin_name,
+            amount: selectedItem.p_price*100,
+            token: token,
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+          .then((response) => {
+            const data = response.data;
+            if (data.status === "successful") {
+              axios
+                .put("http://localhost:3333/token/update", {
+                  id_transaction: selectedItem.id,
+                  amount: selectedItem.p_token,
+                  price: selectedItem.p_price,
+                  admin_token: admindata.admin_token,
+                  id: admindata.admin_id,
+                })
+                .then((response) => {
+                  const data = response.data;
+                  if (data.status === "ok") {
+                    // alert(data.message);
+                    Swal.fire({ ...alertData.BuycoinSuccess }).then(() => {
+                      window.location.reload(false);
+                    });
+                  } else if (data.status === "error") {
+                    Swal.fire({ ...alertData.IsError }).then(() => {
+                      window.location.reload(false);
+                    });
+                  } else {
+                    Swal.fire({ ...alertData.IsError }).then(() => {
+                      window.location.reload(false);
+                    });
+                  }
+                });
+            } else {
+              Swal.fire({ ...alertData.IsError }).then(() => {
+                window.location.reload(false);
+              });
+            }
+          });
+        }
       },
       onFormClosed: () => {},
     });
   };
+
   const handleClick = (e) => {
     e.preventDefault();
     creditCardConfigure();
@@ -172,7 +233,7 @@ export default function BuyCoin() {
         {/* <Navbar /> */}
 
         <div className="container">
-          <div className="buycoin-clearpage">
+          <div className="buycoin-soloCard">
             <h1 className="text-center">{title} </h1>
             <div className="buycoin-content">
                 {packageList.map((item, index) => (

@@ -153,7 +153,7 @@ export default function SignUp() {
       >
         {/* <Navbar /> */}
         <div className="container">
-          <div className="createaccount-clearpage">
+          <div className="createaccount-soloCard">
             <div className="createaccount-col-text">
               <h1 className="text-center">{title} </h1>
 

@@ -35,6 +35,9 @@ export default function Index() {
         if (data.status === "ok") {
           setUserdata(data.users[0]);
           setUrs_token(data.urs_token);
+        } else if (data.status === "no_access"){
+          alert(data.message);
+          navigate("/admin");
         } else {
           localStorage.removeItem("token");
           navigate("/login");

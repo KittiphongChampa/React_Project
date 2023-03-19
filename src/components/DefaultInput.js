@@ -4,7 +4,7 @@ import React, { forwardRef } from "react";
 export default function DefaultInput(props) {
   return (
     <>
-      <p className="onInput">{props.headding}</p>
+      <label className="onInput">{props.headding}</label>
       <input
         className="defInput"
         type={props.type}

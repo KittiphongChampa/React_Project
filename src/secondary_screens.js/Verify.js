@@ -65,6 +65,9 @@ export default function Verify() {
   };
 
   const handleSubmitotp = async (event) => {
+    // const submitOtpBtn = document.getElementById("submit-otp-btn")
+    // submitOtpBtn.classList.remove("disabled-btn")
+    // submitOtpBtn.removeAttribute("disabled")
     event.preventDefault();
     setIsLoading(true);
     if (handleValidation()) {
@@ -83,6 +86,9 @@ export default function Verify() {
       .then((data) => {
         if (data.status === "ok") {
           toast.success("Send OTP success", toastOptions);
+          const submitOtpBtn = document.getElementById("submit-otp-btn")
+          submitOtpBtn.classList.remove("disabled-btn")
+          submitOtpBtn.removeAttribute("disabled")
         } else {
           toast.error("Send OTP Failed " + data.message, toastOptions);
         }
@@ -147,7 +153,7 @@ export default function Verify() {
         >
           {/* <Navbar /> */}
           <div className="container">
-            <div className="login-clearpage">
+            <div className="login-soloCard">
               <div className="">
                 <img className="login-img" src="ภาพตัด.png" alt="" />
               </div>
@@ -161,15 +167,21 @@ export default function Verify() {
                     </div>
                   ) : ( */}
 
-                  <form onSubmit={handleSubmitotp}>
-                    <DefaultInput
+                <form onSubmit={handleSubmitotp}>
+                  <label class="onInput">อีเมล</label>
+                                    <div className="verify-email">
+                                        <input id="email"
+                      name="email" class="defInput" onChange={(e) => handleChange(e)}/>
+                      <button type='submit'>ส่งรหัสยืนยัน</button>
+                      </div>
+                    {/* <DefaultInput
                       headding="อีเมล"
                       type="email"
                       id="email"
                       name="email"
                       onChange={(e) => handleChange(e)}
                     />
-                    <button type="submit">ส่งรหัสยืนยัน</button>
+                    <button type="submit">ส่งรหัสยืนยัน</button> */}
                   </form>
 
                   {/* )} */}
@@ -183,7 +195,7 @@ export default function Verify() {
                       onChange={(e) => handleChange(e)}
                     />
                     <div className="text-align-center">
-                      <button className="lightblue-btn" type="submit">
+                      <button className="lightblue-btn disabled-btn" id="submit-otp-btn" disabled type="submit">
                         ยืนยันอีเมล
                       </button>
                     </div>

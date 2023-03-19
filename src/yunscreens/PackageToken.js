@@ -154,9 +154,12 @@ export default function PackageToken() {
         }
       });
   };
+  const [myState, setMyState] = useState(0);
+  console.log(myState);
 
   return (
     <>
+    <input type="number" value={myState} onChange={(e) => setMyState(e.target.value)} />
       <Container>
         <div className="columns mt-5 is-centered">
           <div className="column is-half">
