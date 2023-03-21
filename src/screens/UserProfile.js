@@ -3,8 +3,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form"
-
-// ของข้อย
+import * as Icon from 'react-feather';
 
 import "../css/indexx.css";
 import "../css/allbutton.css";
@@ -30,39 +29,29 @@ export default function UserProfile() {
 
     const modalChangeProfileImgRef = useRef(null)
     const modalChangeCoverRef = useRef(null)
-
+    const [showCoverModal, setShowCoverModal] = useState(null)
+    const [showProfileModal, setShowProfileModal] = useState(null)
 
 
     const openModal = (modal) => {
         if (modal === "profile") {
-            const modalChangeProfileImgRefElement = modalChangeProfileImgRef.current;
-
-            const modalClass = modalChangeProfileImgRefElement.classList
-            modalClass.add("open")
+            const ProfileModal = <ChangeProfileImgModal setShowProfileModal={setShowProfileModal} />
+            setShowProfileModal(ProfileModal)
         } else {
-            const modalChangeCoverRefElement = modalChangeCoverRef.current;
-            const modalClass = modalChangeCoverRefElement.classList
-            modalClass.add("open")
-            openInputColor()
-            // modalChangeCoverRefElement.getElementById("color-input")
-            // console.log(modalChangeCoverRefElement);
+            const CoverModal = <ChangeCoverModal setShowCoverModal={setShowCoverModal} />
+            setShowCoverModal(CoverModal)
+            // openInputColor()
+
         }
     }
-
-    // const openColorInput = () => {
-    //     const modalChangeCoverRefElement = modalChangeCoverRef.current;
-
-
-    // }
-
 
     return (
         <>
             <Helmet>
                 <title>{title}</title>
             </Helmet>
-            <ChangeProfileImgModal ref={modalChangeProfileImgRef} />
-            <ChangeCoverModal ref={modalChangeCoverRef} />
+            {showCoverModal}
+            {showProfileModal}
 
             <Navbar />
             <div class="body-nopadding" style={body}>
@@ -71,17 +60,17 @@ export default function UserProfile() {
                     <div className="cover" onClick={openModal}>
                         <div className="cover-color"></div>
                         <div className="cover-hover"><p className="fs-5">เปลี่ยนสีปก</p></div>
-
                     </div>
-                    <div className="container px-5 profile-page">
+                    <div className="container profile-page">
                         <div className="user-profile-area">
                             <div className="user-col-profile">
                                 <ProfileImg src="b3.png" type="show" onPress={() => openModal("profile")} />
                                 <p className="username-profile fs-5">ณัฐพิมล เมืองวุฒทานันท์ นันันันันันนันสวัสดีสวัสดี</p>
                                 <p className="follower-profile">follower</p>
                                 <div className="group-btn-area">
-                                    <button className="message-btn">แชท</button>
+                                    <button className="message-btn"><Icon.MessageCircle/></button>
                                     <button className="follow-btn">ติดตาม</button>
+                                    <button className="follow-btn">แก้ไขโปรไฟล์</button>
                                 </div>
                                 <p className="bio-profile">
                                     xxxxxxxxxxxxxxxxxxxxxxxxxxxxx,dsl odifbodiufbis  ihdsofindsifndsiofnspd;f idosfinsdnkflkdsnfl iusdbfidsbfsbfie sxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxofindsifndsiofnspd;f idosfinsdnkflepfonesfpose sepofnesfeofnepfnspofsefms;ofm;m esffuhdsfn dofhs
@@ -109,10 +98,12 @@ export default function UserProfile() {
 
                                     </div>
                                 </div>
+
                             </div>
+                            
                         </div>
-                        <div className="user-profile-area-2">
-                            ไไว้ใส่คอนเท้น
+                        <div className="user-profile-contentCard">
+                            ทั้งหมด คอมมิชชัน แกลลอรี่ รีวิว
                         </div>
                     </div>
 

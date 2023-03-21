@@ -27,7 +27,7 @@ export default function SettingCoin() {
             <div className="setting-container">
                 <SettingAside onActive='1' />
                 <div className="setting-content-box">
-                    <div className="common-setting-page">
+                    <div className="settingCard">
                         <div>
                             <h2 className="setting-headding">ประวัติการเติมเหรียญและใช้เหรียญ</h2>
                             <Tabs

@@ -14,57 +14,47 @@ import * as alertData from '../alertdata/alertData';
 import ProfileImg from "../components/ProfileImg";
 
 const openInputColor = () => {
-    document.getElementById("color-input").click()
+
 }
 
-const ChangeCoverModal = forwardRef((props, ref) => {
+const ChangeCoverModal = (props) => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
-    const func = {
-        register: register,
-        errors: errors
-    }
+    useEffect(() => {
+        setTimeout(() => {
+            const colorInput = document.getElementById("color-input")
+            colorInput.click();
+        }, 300);
+
+    }, [])
 
     const submitChangeCoverForm = (data) => {
-
-
         Swal.fire({ ...alertData.changeProfileImgConfirm }).then((result) => {
             if (result.isConfirmed) {
                 console.log()
                 Swal.fire({ ...alertData.changeProfileImgIsConfirmed }).then(() => {
-                    console.log(va)
+                    console.log()
                     window.location.reload(false);
                 })
             }
         })
-
-
     }
 
     const closeModal = () => {
-        const cancleBtn = document.getElementById("modalArea").classList
-        cancleBtn.remove("open")
-        reset()
+        const closeBtn = document.getElementsByClassName("form-modal")[0]
+        closeBtn.classList.add("closing")
+
+        setTimeout(() => {
+            props.setShowCoverModal(null);
+            closeBtn.remove("closing")
+        }, 300);
     }
 
-    useEffect(() => {
-        
-
-    }, []);
-
-    const [va, setva] = useState("ค่าดีฟ้อล");
-    console.log(va)
-
-    const newSet = () => {
-        setva("ค่าใหม่")
-        console.log(va)
-
-    }
 
 
 
     return (
-        <div className="modal-area" id="modalArea" ref={ref} onClick={props.onClick}>
+        <div className="modal-area" id="modalArea" onClick={props.onClick}>
             <div className="container">
                 <div className="form-modal">
                     <div className="text-align-right close-btn" onClick={closeModal}><Icon.X /></div>
@@ -73,7 +63,7 @@ const ChangeCoverModal = forwardRef((props, ref) => {
                             <h2 className="text-align-center">เปลี่ยนสีปก</h2>
                             <div className="setting-img-box text-align-center">
                                 <div className="setting-cover">
-                                    <input className="" type="color" id="color-input" style={{ cursor: "pointer" }} />
+                                    <input {...register("cover")} type="color" id="color-input" style={{ cursor: "pointer" }} />
                                 </div>
                                 <ProfileImg src="add-image.png" type="only-show" />
                                 <div className="submit-color-btn-area" >
@@ -82,7 +72,7 @@ const ChangeCoverModal = forwardRef((props, ref) => {
 
                             </div>
                             <div className="text-align-center">
-                                <button className="gradiant-btn" type="submit" onClick={newSet}>บันทึก</button>
+                                <button className="gradiant-btn" type="submit">บันทึก</button>
                                 <button className="cancle-btn" type="button" onClick={closeModal}>ยกเลิก</button>
                             </div>
                         </form>
@@ -92,7 +82,7 @@ const ChangeCoverModal = forwardRef((props, ref) => {
             </div>
         </div>
     )
-})
+}
 
 
 

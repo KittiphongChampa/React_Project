@@ -12,7 +12,7 @@ import Swal from 'sweetalert2/dist/sweetalert2.js'
 import 'sweetalert2/src/sweetalert2.scss'
 import * as alertData from '../alertdata/alertData';
 
-const ChangePasswordModal = forwardRef((props, ref) => {
+const ChangePasswordModal = (props, ref) => {
     const { register, handleSubmit, setValue, formState: { errors, isSubmitting, isDirty, isValid }, reset } = useForm();
 
     const func = {
@@ -46,14 +46,18 @@ const ChangePasswordModal = forwardRef((props, ref) => {
     }
 
     const closeModal = () => {
-        const cancleBtn = document.getElementById("modalArea").classList
-        cancleBtn.remove("open")
-        reset()
+        const closeBtn = document.getElementsByClassName("form-modal")[0]
+        closeBtn.classList.add("closing")
+
+        setTimeout(() => {
+            props.setShowPsswordModal(null);
+            closeBtn.remove("closing")
+        }, 300);
     }
 
 
     return (
-        <div className="modal-area" id="modalArea" ref={ref}>
+        <div className="modal-area" id="modalArea" >
             <div className="container">
                 <div className="form-modal">
                     <div className="text-align-right close-btn" onClick={closeModal}><Icon.X /></div>
@@ -77,7 +81,7 @@ const ChangePasswordModal = forwardRef((props, ref) => {
             </div>
         </div>
     )
-})
+}
 
 
 

@@ -19,12 +19,19 @@ const body = { backgroundImage: bgImg }
 
 
 export default function SignIn() {
+
+    const [modal, setModal] = useState("")
+
     const modalChangeCoinRef = useRef(null)
 
     const openModal = () => {
-        const modalChangePassRefElement = modalChangeCoinRef.current;
-        const modalChangePassClass = modalChangePassRefElement.classList
-        modalChangePassClass.add("open")
+        // const modalChangePassRefElement = modalChangeCoinRef.current;
+        // const modalChangePassClass = modalChangePassRefElement.classList
+        // modalChangePassClass.add("open")
+        const modalComponent = <AddEditDeleteCoinModal ref={modalChangeCoinRef} setModal={setModal} value="ค่าเก่า"/>
+        setModal(modalComponent)
+        console.log("ทำงาน")
+
     }
 
 
@@ -33,7 +40,10 @@ export default function SignIn() {
             <Helmet>
                 <title>{title}</title>
             </Helmet>
-            <AddEditDeleteCoinModal ref={modalChangeCoinRef} />
+            {modal}
+
+
+            {/* <AddEditDeleteCoinModal ref={modalChangeCoinRef} /> */}
 
 
             <div className='body' style={{ backgroundImage: "url('mainmoon.jpg')", backgroundPosition: 'center', backgroundSize: 'cover', backgroundAttachment: 'fixed', backgroundRepeat: 'no-repeat' }}>
@@ -41,9 +51,10 @@ export default function SignIn() {
 
 
                 <div className="container">
-                    <div className="buycoin-clearpage">
+                    <div className="buycoin-soloCard">
 
                         <h1 className="text-center">{title} </h1>
+                        {/* <button onClick={openModal}>เปิดโมดอล</button> */}
                         <button class="gradiant-outline-btn" onClick={openModal}>
                             <div class="in-dradiant-outline-btn"><Icon.PlusCircle /> เพิ่มแพ็กเกจเติมเงิน</div>
                         </button>

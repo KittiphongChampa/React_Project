@@ -28,7 +28,7 @@ export default function SignIn() {
             <div class="body" style={body}>
                 <Navbar />
                 <div class="container">
-                    <div class="login-clearpage">
+                    <div class="login-soloCard">
                         <div class="">
                             <img class="login-img" src="ภาพตัด.png" alt="" />
                         </div>

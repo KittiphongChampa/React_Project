@@ -26,6 +26,7 @@ import ForgetPassword from './screens/ForgetPassword';
 import NewPassword from './screens/NewPassword';
 import AdminManagement from './screens/AdminManagement';
 import UserProfile from './screens/UserProfile';
+import HomePage from './screens/HomePage';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -57,7 +58,8 @@ root.render(
       <Route path="/newpassword" element={<NewPassword />} />
       <Route path="/adminmanagement" element={<AdminManagement />} />
       <Route path="/userprofile" element={<UserProfile />} />
-      
+      <Route path="/homepage" element={<HomePage />} />
+
     </Routes>
   </BrowserRouter>
 );
