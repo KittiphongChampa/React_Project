@@ -17,6 +17,7 @@ export default function NewInput(props) {
     const minLength = props.inputSetting.minLength
     const maxLength = props.inputSetting.maxLength
     setValue(name, props.defaultValue);
+
     // useEffect(() => {
     //     setValue(name, props.defaultValue);
     // }, [setValue(name, props.defaultValue)]);
@@ -42,6 +43,8 @@ export default function NewInput(props) {
                 type={type}
                 {...props.register(name, { required: required, pattern: pattern, minLength: minLength, maxLength: maxLength })}
                 className={`defInput ${errors[name] ? "border-danger" : ""}`} />
+
+                
             {errors[name] && errors[name].type === "pattern" && (<p class="validate-input"> {ErrorPattern}</p>)}
             {errors[name] && errors[name].type === "required" && (<p class="validate-input"> {ErrorReq}</p>)}
             {errors[name] && errors[name].type === "minLength" && (<p class="validate-input"> {ErrorMin}</p>)}

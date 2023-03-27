@@ -34,8 +34,6 @@ export default function Verify() {
     }
   }, []);
 
-  
-
   const [values, setValues] = useState({
     email: "",
     otp: "",
@@ -75,30 +73,30 @@ export default function Verify() {
       const jsondata = {
         email,
       };
-    await fetch("http://localhost:3333/verify", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(jsondata),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.status === "ok") {
-          toast.success("Send OTP success", toastOptions);
-          const submitOtpBtn = document.getElementById("submit-otp-btn")
-          submitOtpBtn.classList.remove("disabled-btn")
-          submitOtpBtn.removeAttribute("disabled")
-        } else {
-          toast.error("Send OTP Failed " + data.message, toastOptions);
-        }
+      await fetch("http://localhost:3333/verify", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(jsondata),
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.status === "ok") {
+            toast.success("Send OTP success", toastOptions);
+            const submitOtpBtn = document.getElementById("submit-otp-btn");
+            submitOtpBtn.classList.remove("disabled-btn");
+            submitOtpBtn.removeAttribute("disabled");
+          } else {
+            toast.error("Send OTP Failed " + data.message, toastOptions);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
     }
   };
 
@@ -134,33 +132,32 @@ export default function Verify() {
   };
 
   const theme = createTheme();
-  const title = 'สมัครสมาชิก';
+  const title = "สมัครสมาชิก";
   return (
     <>
-
-        <Helmet>
-          <title>{title}</title>
-        </Helmet>
-        <div
-          className="body"
-          style={{
-            backgroundImage: "url('mainmoon.jpg')",
-            backgroundPosition: "center",
-            backgroundSize: "cover",
-            backgroundAttachment: "fixed",
-            backgroundRepeat: "no-repeat",
-          }}
-        >
-          {/* <Navbar /> */}
-          <div className="container">
-            <div className="login-soloCard">
-              <div className="">
-                <img className="login-img" src="ภาพตัด.png" alt="" />
-              </div>
-              <div className="login-col-text">
-                <div className="input-login-box">
-                  <h1>{title} </h1>
-{/* 
+      <Helmet>
+        <title>{title}</title>
+      </Helmet>
+      <div
+        className="body"
+        style={{
+          backgroundImage: "url('mainmoon.jpg')",
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+          backgroundAttachment: "fixed",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        {/* <Navbar /> */}
+        <div className="container">
+          <div className="login-soloCard">
+            <div className="">
+              <img className="login-img" src="ภาพตัด.png" alt="" />
+            </div>
+            <div className="login-col-text">
+              <div className="input-login-box">
+                <h1>{title} </h1>
+                {/* 
                   {isLoading ? (
                     <div style={{ display: "flex", justifyContent: "center" }}>
                       <Lottie animationData={loading} loop={true} />
@@ -169,12 +166,16 @@ export default function Verify() {
 
                 <form onSubmit={handleSubmitotp}>
                   <label class="onInput">อีเมล</label>
-                                    <div className="verify-email">
-                                        <input id="email"
-                      name="email" class="defInput" onChange={(e) => handleChange(e)}/>
-                      <button type='submit'>ส่งรหัสยืนยัน</button>
-                      </div>
-                    {/* <DefaultInput
+                  <div className="verify-email">
+                    <input
+                      id="email"
+                      name="email"
+                      class="defInput"
+                      onChange={(e) => handleChange(e)}
+                    />
+                    <button type="submit">ส่งรหัสยืนยัน</button>
+                  </div>
+                  {/* <DefaultInput
                       headding="อีเมล"
                       type="email"
                       id="email"
@@ -182,29 +183,35 @@ export default function Verify() {
                       onChange={(e) => handleChange(e)}
                     />
                     <button type="submit">ส่งรหัสยืนยัน</button> */}
-                  </form>
+                </form>
 
-                  {/* )} */}
+                {/* )} */}
 
-                  <form onSubmit={handleSubmit}>
-                    <DefaultInput
-                      headding="ใส่รหัสยืนยัน"
-                      type="text"
-                      id="otp"
-                      name="otp"
-                      onChange={(e) => handleChange(e)}
-                    />
-                    <div className="text-align-center">
-                      <button className="lightblue-btn disabled-btn" id="submit-otp-btn" disabled type="submit">
-                        ยืนยันอีเมล
-                      </button>
-                    </div>
-                  </form>
-                </div>
+                <form onSubmit={handleSubmit}>
+                  <DefaultInput
+                    headding="ใส่รหัสยืนยัน"
+                    type="text"
+                    id="otp"
+                    name="otp"
+                    onChange={(e) => handleChange(e)}
+                  />
+                  
+                  <div className="text-align-center">
+                    <button
+                      className="lightblue-btn disabled-btn"
+                      id="submit-otp-btn"
+                      disabled
+                      type="submit"
+                    >
+                      ยืนยันอีเมล
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
       <ToastContainer />
     </>

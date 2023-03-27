@@ -3,11 +3,11 @@ import "../css/profileimg.css";
 export default function ProfileImg(props) {
     let imgbrowse = "imgbrowse"
     let display = "flex" 
-    // if (props.type === "show") {
-    //     imgbrowse = null
-    //     display = "none" 
+    if (props.type === "only-show") {
+        imgbrowse = null
+        display = "none" 
         
-    // }
+    }
     return (
         <>
             <div className={`profile-img ${imgbrowse}`} onClick={props.onPress}>

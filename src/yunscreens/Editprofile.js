@@ -40,6 +40,8 @@ export default function Editprofile() {
   const [userdata, setUserdata] = useState([]);
   const [name, setName ] = useState("");
   const [bio, setBio ] = useState("");
+  console.log(userdata.urs_name);
+  console.log(name);
   const [bankname, setBankname ] = useState("");
   const [bankuser, setBankuser ] = useState("");
   const [banknum, setBanknum ] = useState("");

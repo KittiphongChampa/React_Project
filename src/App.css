@@ -12,3 +12,7 @@ img.mystyle {
   width: 100%; 
   height: 250px;
 }
+.search-box{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

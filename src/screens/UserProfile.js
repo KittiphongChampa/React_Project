@@ -1,27 +1,26 @@
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import React, { useState, useEffect } from "react";
+import * as Icon from 'react-feather';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form"
-
-// ของข้อย
-
 import "../css/indexx.css";
 import "../css/allbutton.css";
 import "../css/profileimg.css";
-//import { Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Helmet } from "react-helmet";
 import DefaultInput from "../components/DefaultInput";
-// import Navbar from "../components/Navbar";
-// import UserBox from "../components/UserBox";
 import inputSetting from "../function/function";
 import ProfileImg from "../components/ProfileImg";
 import Profile from '../yunscreens/Profile';
+import { NavbarUser, NavbarAdmin, NavbarHomepage } from "../components/Navbar";
 
-// import ChangeProfileImgModal from "../modal/ChangeProfileImgModal";
-// import { ChangeCoverModal, openInputColor } from "../modal/ChangeCoverModal"
+
+import ChangeProfileImgModal from "../modal/ChangeProfileImgModal";
+import { ChangeCoverModal, openInputColor } from "../modal/ChangeCoverModal"
+// import { Button } from 'react-bootstrap/Button';
+import Button from "react-bootstrap/Button";
 
 const title = 'ตั้งเป็นชื่อ user';
 const bgImg = ""
@@ -35,6 +34,7 @@ export default function UserProfile() {
     console.log(userdata);
     const [showCoverModal, setShowCoverModal] = useState(null)
     const [showProfileModal, setShowProfileModal] = useState(null)
+
     useEffect(() => {
         if (localStorage.getItem("token")) {
           if (window.location.pathname === "/login") {
@@ -66,15 +66,14 @@ export default function UserProfile() {
     };
     
     const openModal = (modal) => {
-        // if (modal === "profile") {
-        //     const ProfileModal = <ChangeProfileImgModal setShowProfileModal={setShowProfileModal} />
-        //     setShowProfileModal(ProfileModal)
-        // } else {
-        //     const CoverModal = <ChangeCoverModal setShowCoverModal={setShowCoverModal} />
-        //     setShowCoverModal(CoverModal)
-        //     // openInputColor()
-
-        // }
+        if (modal === "profile") {
+            const ProfileModal = <ChangeProfileImgModal profile={userdata.urs_profile_img} setShowProfileModal={setShowProfileModal} />
+            setShowProfileModal(ProfileModal)
+        } else {
+            const CoverModal = <ChangeCoverModal profile={userdata.urs_profile_img} setShowCoverModal={setShowCoverModal} />
+            setShowCoverModal(CoverModal)
+            // openInputColor()
+        }
     }
 
 
@@ -83,7 +82,10 @@ export default function UserProfile() {
             <Helmet>
                 <title>{title}</title>
             </Helmet>
+            {showCoverModal}
+            {showProfileModal}
             {/* <Navbar /> */}
+            <NavbarUser/>
             <div class="body-nopadding" style={body}>
 
                 <div className="cover-grid">
@@ -96,14 +98,15 @@ export default function UserProfile() {
                             <div className="user-profile-area">
                                 <div className="user-col-profile">
                                     <ProfileImg src={userdata.urs_profile_img} type="show"
-                                        // onPress={() => openModal("profile")}
+                                        onPress={() => openModal("profile")}
                                     />
                                     {/* <ProfileImg src="b3.png" type="show" onPress={() => openModal("profile")} /> */}
                                     <p className="username-profile fs-5">{userdata.urs_name}</p>
                                     <p className="follower-profile">follower</p>
                                     <div className="group-btn-area">
-                                        <button className="message-btn">แชท</button>
+                                        <button className="message-btn"><Icon.MessageCircle /></button>
                                         <button className="follow-btn">ติดตาม</button>
+                                        <a href="/setting-profile"><button className="follow-btn" >แก้ไขโปรไฟล์</button></a>
                                     </div>
                                     <p className="bio-profile">
                                         {userdata.urs_bio}
@@ -127,8 +130,6 @@ export default function UserProfile() {
                                                 <p>คิวว่าง 1 คิว</p>
 
                                             </div>
-
-
                                         </div>
                                     </div>
                                 </div>

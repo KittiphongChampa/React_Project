@@ -53,12 +53,25 @@ export default function AdminPage() {
   return (
     <>
       <h1>Welcome,{admindata.admin_name}</h1>
+      <Button variant="contained" onClick={() => navigate("/buycoin")}>
+        เติมเงิน
+      </Button>
+      <Button variant="contained" onClick={() => navigate("/admin/transaction")}>
+        ดูประวัติการเติมเงิน
+      </Button>
       <Button variant="contained" onClick={() => navigate("/editcoin")}>
-        Edit Coins
+        จัดการแพ็คเกจการเติมเงิน
       </Button>
-      <Button variant="contained" onClick={() => navigate("/alluser")}>
+      <Button variant="contained" onClick={() => navigate("/admin/alluser")}>
+        จัดการบัญชีผู้ใช้งาน
+      </Button>
+      <Button variant="contained" onClick={() => navigate("#")}>
+        จัดการแอดมิน
+      </Button>
+
+      {/* <Button variant="contained" onClick={() => navigate("/alluser")}>
         AllUser
-      </Button>
+      </Button> */}
       <Button variant="contained" onClick={handleLogout}>
         Logout
       </Button>

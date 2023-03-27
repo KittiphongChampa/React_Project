@@ -5,7 +5,7 @@ import "../css/indexx.css";
 import "../css/allbutton.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Helmet } from "react-helmet";
-// import Navbar from "../components/Navbar";
+import { NavbarUser, NavbarAdmin, NavbarHomepage } from "../components/Navbar";
 import BuyCoinItem from "../components/BuyCoinItem";
 import EditDeleteCoinItem from "../components/EditDeleteCoinItem";
 import { Table, Tabs, Tab } from "react-bootstrap";
@@ -35,8 +35,10 @@ export default function BuyCoin() {
   const jwt_token = localStorage.getItem("token");
   const [userdata, setUserdata] = useState([]);
   const [admindata, setAdmindata] = useState([]);
-  console.log(userdata.id);
-  console.log(admindata.admin_id);
+  const [role, setRole] = useState();
+  console.log(role);
+  // console.log(userdata.id);
+  // console.log(admindata.admin_id);
 
   const [packageList, setPackageList] = useState([]);
   const [selectedItem, setSelectedItem] = useState({});
@@ -50,16 +52,14 @@ export default function BuyCoin() {
     setpopup(true);
   };
 
-
-
   useEffect(() => {
-    // if (localStorage.getItem("token")) {
-    //   if (window.location.pathname === "/login") {
-    //     navigate("/buytoken");
-    //   }
-    // } else {
-    //   navigate("/login");
-    // }
+    if (localStorage.getItem("token")) {
+      if (window.location.pathname === "/login") {
+        navigate("/buytoken");
+      }
+    } else {
+      navigate("/login");
+    }
     getPackage_token();
   }, []);
 
@@ -75,9 +75,11 @@ export default function BuyCoin() {
         if (data.status === "ok") {
           setPackageList(data.package_token);
           setUserdata(data.users[0]);
+          setRole('1');
         } else if (data.status === "admin_ok") {
           setPackageList(data.package_token);
           setAdmindata(data.admins[0]);
+          setRole('2');
         } else {
           // toast.error(data.message, toastOptions);
         }
@@ -200,6 +202,8 @@ export default function BuyCoin() {
               });
             }
           });
+        } else {
+          console.log('error');
         }
       },
       onFormClosed: () => {},
@@ -230,7 +234,8 @@ export default function BuyCoin() {
           backgroundRepeat: "no-repeat",
         }}
       >
-        {/* <Navbar /> */}
+         {role === '1' ? <NavbarUser /> : role === '2' ? <NavbarAdmin /> : null}
+
 
         <div className="container">
           <div className="buycoin-soloCard">

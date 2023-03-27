@@ -1,3 +1,10 @@
+export const LoginError = {
+  title: "อีเมลล์หรือรหัสผ่านไม่ถูกต้อง",
+  icon: "error",
+  iconColor: "red",
+  confirmButtonText: "ตกลง",
+};
+
 export const changePassConfirm = {
     title: 'ต้องการเปลี่ยนรหัสผ่านใหม่หรือไม่?',
     icon: 'question',
@@ -10,6 +17,13 @@ export const changePassIsConfirmed = {
     title: 'เปลี่ยนรหัสผ่านใหม่แล้ว',
     icon: 'success',
     iconColor: '#7E9AFA',
+    confirmButtonText: 'ตกลง',
+}
+
+export const changePassIsError = {
+    title: 'รหัสผ่านปัจจุบันไม่ถูกต้อง',
+    icon: 'error',
+    iconColor: 'red',
     confirmButtonText: 'ตกลง',
 }
 
@@ -56,3 +70,26 @@ export const BuycoinSuccess = {
   iconColor: "#7E9AFA",
   confirmButtonText: "ตกลง",
 }
+
+export const changeProfileImgConfirm = {
+    title: 'ต้องการเปลี่ยนภาพโปรไฟล์หรือไม่?',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'ตกลง',
+    cancleButtonText: "ยกเลิก",
+}
+
+export const changeProfileImgIsConfirmed = {
+    title: 'เปลี่ยนภาพโปรไฟล์แล้ว',
+    icon: 'success',
+    iconColor: '#7E9AFA',
+    confirmButtonText: 'ตกลง',
+}
+
+export const sendOtpSuccess = {
+  title: 'รหัสถูกต้อง',
+  icon: 'success',
+  iconColor: '#7E9AFA',
+  confirmButtonText: 'ตกลง',
+}
+

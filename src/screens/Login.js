@@ -8,6 +8,9 @@ import { Helmet } from "react-helmet";
 import DefaultInput from "../components/DefaultInput";
 // import Navbar from "../components/Navbar";
 import BgBody from "../components/BgBody";
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import "sweetalert2/src/sweetalert2.scss";
+import * as alertData from "../alertdata/alertData";
 
 const title = 'เข้าสู่ระบบ';
 const bgImg = "url('mainmoon.jpg')"
@@ -40,12 +43,12 @@ export default function SignIn() {
       email,
       password
     };
-    if (email === "") {
-      alert("Email is required");
-    }
-    if (password === "") {
-      alert("password is required");
-    }
+    // if (email === "") {
+    //   alert("Email is required");
+    // }
+    // if (password === "") {
+    //   alert("password is required");
+    // }
     fetch("http://localhost:3333/login", {
       method: "POST",
       headers: {
@@ -64,7 +67,9 @@ export default function SignIn() {
         } else if (data.status === "hasDelete") {
           alert("User has Delete");
         } else {
-          alert("Login Failed");
+          Swal.fire({ ...alertData.LoginError }).then(() => {
+            // window.location.reload(false);
+          })
         }
       })
       .catch((error) => {
@@ -107,9 +112,7 @@ export default function SignIn() {
                     <a href="/forgot-password">ลืมรหัสผ่าน</a>
                   </div>
                   <div className="text-align-center">
-                    <button className="lightblue-btn" type="submit">
-                      เข้าสู่ระบบ
-                    </button>
+                    <button className="lightblue-btn" type="submit">เข้าสู่ระบบ</button>
                   </div>
                 </form>
                 <div className="text-align-center">

@@ -74,7 +74,6 @@ export default function SignUp() {
     let input = document.createElement('input');
     input.type = 'file';
     input.onchange = (e) => {
-        // var image = e.target.files[0];
         const image = e.target.files[0];
         setFile(image);
         setPreviewUrl(URL.createObjectURL(image));
@@ -173,12 +172,33 @@ export default function SignUp() {
                   disabled={true}
                 />
                 <DefaultInput 
-                  headding="ชื่อผู้ใช้" 
+                  headding="ชื่อที่แสดง" 
                   type="text" 
                   id="username"
                   name="username"
                   onChange={(e) => handleChange(e)}
                 />
+                {/* <DefaultInput 
+                  headding="ชื่อ" 
+                  type="text" 
+                  id="firstname"
+                  name="firstname"
+                  onChange={(e) => handleChange(e)}
+                />
+                <DefaultInput 
+                  headding="นามสกุล" 
+                  type="text" 
+                  id="lastname"
+                  name="lastname"
+                  onChange={(e) => handleChange(e)}
+                />
+                <DefaultInput 
+                  headding="วันเกิด" 
+                  type="date" 
+                  id="birthday"
+                  name="birthday"
+                  onChange={(e) => handleChange(e)}
+                /> */}
                 <DefaultInput 
                   headding="รหัสผ่าน" 
                   type="password" 
@@ -193,13 +213,19 @@ export default function SignUp() {
                   name="confirmpassword"
                   onChange={(e) => handleChange(e)}
                 />
+                <div class="form-check">
+  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
+  <label class="form-check-label" for="flexCheckDefault">
+    ยอมรับเงื่อนไขการใช้บริการ
+  </label>
+</div>
                 <div className="text-align-center">
                   <button className="gradiant-btn" type="submit">
                     ยืนยันการสร้างบัญชี
                   </button>
-                  <button className="lightblue-btn" onClick={() => navigate("/login")}>
+                  {/* <button className="lightblue-btn" onClick={() => navigate("/login")}>
                     ยกเลิก
-                  </button>
+                  </button> */}
                 </div>
               </form>
 

@@ -5,7 +5,7 @@ import "../css/indexx.css";
 import "../css/allbutton.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Helmet } from "react-helmet";
-// import Navbar from "../components/Navbar";
+import { NavbarUser, NavbarAdmin, NavbarHomepage } from "../components/Navbar";
 import BuyCoinItem from "../components/BuyCoinItem";
 import EditDeleteCoinItem from "../components/EditDeleteCoinItem";
 import { Table, Tabs, Tab } from "react-bootstrap";
@@ -161,6 +161,7 @@ export default function EditCoin() {
         }}
       >
         {/* <Navbar /> */}
+        <NavbarAdmin />
 
         <div className="container">
           <div className="buycoin-soloCard">

@@ -6,29 +6,32 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Register from './screens/Register';
 import Login from './screens/Login';
-import Welcome from './yunscreens/Welcome';
-import Index from './yunscreens/Index';
+import Welcome from './screens/Welcome';
+import Index from './screens/Index';
 import Profile from './yunscreens/Profile';
 import TransactionHistory from './yunscreens/TransactionHistory';
-import Verify from './secondary_screens.js/Verify';
+import Verify from './secondary_screens/Verify';
 import Editprofile from './yunscreens/Editprofile';
 import Buytoken from './yunscreens/Buytoken';
 import PackageToken from './yunscreens/PackageToken';
-import ForgotPassword from './secondary_screens.js/ForgotPassword';
-import ResetPassword from './secondary_screens.js/ResetPassword';
-import VerifyMail_ResetPassword from './secondary_screens.js/VerifyMail_ResetPassword';
+import ForgotPassword from './secondary_screens/ForgotPassword';
+import ResetPassword from './secondary_screens/ResetPassword';
+import VerifyMail_ResetPassword from './yunscreens/VerifyMail_ResetPassword';
 import AllUser from './yunscreens/AllUser';
 import ViewProfile from './yunscreens/ViewProfile';
 import AdminPage from './yunscreens/AdminPage';
 
-import Test from './secondary_screens.js/Test';
-
+import Test from './yunscreens/Test';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 // mint
 import EditCoin from './screens/EditCoin';
 import UserProfile from './screens/UserProfile';
 import BuyCoin from './screens/BuyCoin';
+import AdminManagement from './screens/AdminManagement';
+import SettingProfile from './screens/SettingProfile';
+import SettingCoin from './screens/SettingCoin';
+import NewPassword from './yunscreens/NewPassword'
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -43,12 +46,11 @@ root.render(
       <Route path="/profile" element={<Profile />} />
       <Route path="/profile/:id" element={<ViewProfile />} />
       <Route path="/editprofile" element={<Editprofile />} />
-      <Route path="/transaction" element={<TransactionHistory />} />
       <Route path="/buytoken" element={<Buytoken/>} />
       <Route path="/packagetoken" element={<PackageToken/>} />
       <Route path="/forgot-password" element={<ForgotPassword/>} />
       <Route path="/reset-password" element={<ResetPassword/>} />
-      <Route path="/verify-resetPassword" element={<VerifyMail_ResetPassword/>} />
+      {/* <Route path="/verify-resetPassword" element={<VerifyMail_ResetPassword/>} /> */}
       <Route path="/alluser" element={<AllUser />} />
 
       <Route path="/admin" element={<AdminPage/>} />
@@ -59,6 +61,13 @@ root.render(
       <Route path="/editcoin" element={<EditCoin />} />
       <Route path="/userprofile" element={<UserProfile />} />
       <Route path="/buycoin" element={<BuyCoin />} />
+      <Route path="/setting-profile" element={<SettingProfile />} />
+      <Route path="/newpassword" element={<NewPassword />} />
+
+      {/*admin*/}
+      <Route path="/setting-coin" element={<SettingCoin />} />
+      <Route path="/admin/alluser" element={<AdminManagement />} />
+      <Route path="/admin/transaction" element={<TransactionHistory />} />
 
     </Routes>
   </BrowserRouter>
