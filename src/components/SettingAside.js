@@ -10,17 +10,32 @@ import * as ggIcon from '@mui/icons-material';
 
 
 
-const SettingAside = () => {
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+const SettingAside = (props) => {
+    // <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    let profileActive = null
+    let coinActive = null
+
+    switch (props.onActive) {
+        case "profile":
+            profileActive = "active"
+            console.log("profile active");
+            break;
+        case "coin":
+            coinActive = "active"
+            break;
+        default:
+            break;
+    }
+
+
 
     return (
         <div class="setting-menu">
-            <h2>การตั้งค่า</h2>
-            <div><Icon.User /><span>โปรไฟล์</span><Link to="/setting-profile">profile</Link></div>
-            
-            <div><ggIcon.CurrencyExchange /><span><Link to="/setting-coin" >ประวัติการใช้เหรียญ</Link></span></div>
-            <div><Icon.User /><span>ถอนเงิน</span></div>
-            <div><Icon.Trash2 /><span>ลบบัญชีผู้ใช้งาน</span></div>
+            {/* <h2>การตั้งค่า</h2> */}
+            <Link style={{ textDecoration: 'none' }} to="/setting-profile"><div className={profileActive}><Icon.User /><p>โปรไฟล์</p></div></Link>
+            <Link style={{ textDecoration: 'none' }} to="/setting-coin" ><div className={coinActive}><ggIcon.CurrencyExchange /><p>ประวัติการใช้เหรียญ</p></div></Link >
+            <Link style={{ textDecoration: 'none' }} to="/setting-coin" ><div ><Icon.User /><p>ถอนเงิน</p></div></Link>
+            <Link style={{ textDecoration: 'none' }} to="/setting-coin" ><div><Icon.Trash2 /><p>ลบบัญชีผู้ใช้งาน</p></div></Link>
         </div>
     )
 }

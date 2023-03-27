@@ -27,7 +27,7 @@ input.defInput {
 }
 
 input:focus {
-    background-color: aquamarine;
+    background-color: #f0f4ff;
 }
 
 .verify-email button {

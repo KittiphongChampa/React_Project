@@ -9,7 +9,7 @@ import { Helmet } from "react-helmet";
 import SettingAside from '../components/SettingAside';
 import ProfileImg from "../components/ProfileImg";
 import DefaultTextArea from "../components/DefaultTextArea";
-import Navbar from "../components/Navbar";
+import {NavbarUser,NavbarAdmin,NavbarHomepage} from "../components/Navbar";
 import ChangePasswordModal from "../modal/ChangePasswordModal";
 import { ChangeCoverModal, openInputColor } from "../modal/ChangeCoverModal"
 import Swal from 'sweetalert2/dist/sweetalert2.js'
@@ -106,7 +106,7 @@ export default function SettingProfile() {
     const openProfileModal = () => {
         const ProfileModal = <ChangeProfileImgModal setShowProfileModal={setShowProfileModal} />
         setShowProfileModal(ProfileModal)
-        
+
     }
 
     const openCoverModal = () => {
@@ -129,9 +129,9 @@ export default function SettingProfile() {
             {showProfileModal}
             {showCoverModal}
 
-            <Navbar />
+            <NavbarUser />
             <div className="setting-container">
-                <SettingAside onActive='1' />
+                <SettingAside onActive='profile' />
                 <div className="setting-content-box">
 
                     <div className="settingCard">
@@ -197,9 +197,10 @@ export default function SettingProfile() {
 
                             <div>
                                 <p className="onInput">อีเมล</p>
-                                <p>aaaa@gmail.com <button className="change-pass" >เปลี่ยนอีเมล</button></p>
+                                {/* <button class="button">I'm A Button!</button> */}
+                                <p>aaaa@gmail.com <button className="change-email gradient-border-btn" ><p>เปลี่ยนอีเมล</p></button></p>
                                 <p className="onInput">รหัสผ่าน</p>
-                                <button className="change-pass" onClick={openPassModal}>เปลี่ยนรหัสผ่าน</button>
+                                <button className="change-pass gradient-border-btn" onClick={openPassModal}><p>เปลี่ยนรหัสผ่าน</p></button>
                             </div>
                         </div>
                     </div>

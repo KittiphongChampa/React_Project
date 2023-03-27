@@ -1,26 +1,44 @@
 /* *-------Navbar---------- */
 
+a,
+a:hover,
+a:visited {
+    all: unset;
+    cursor: pointer;
+}
+
+
 .inline-nav {
     display: inline-flex;
+    align-items: center;
     /* background-color: aqua; */
 }
 
-.inline-nav a,
-.inline-nav div {
+.inline-nav a:not(.in-dropdown),
+.inline-nav div:not(.dropdown-nav, .dropdown-area) {
     /* display: inline-block; */
     margin-right: 20px;
-    padding: 0.5rem 1rem;
-    border-radius: 50px;
+    padding: 0.5rem 0.6rem;
+    border-radius: 100px;
     text-decoration: none;
     color: black;
 }
 
-.nav-icon {
-    width: 20px;
+.inline-nav.inhomepage a {
+    color: white !important;
 }
 
-.inline-nav a:hover {
-    background-color: rgb(53, 167, 255);
+
+.nav-icon {
+    width: 20px;
+
+    /* line-height: 0 !important;
+    background-color: navajowhite; */
+}
+
+.inline-nav>a:hover {
+    background-color: #7E9AFA;
+    color: white;
 
 }
 
@@ -39,10 +57,66 @@
     justify-content: space-between;
     align-items: center;
     /* width: 100%; */
-    height: 60px;
+    height: fit-content;
     margin-inline: auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
     padding-inline: 5%;
     /* background-color: antiquewhite; */
+}
+
+.dropdown-nav {
+    position: relative;
+    /* background-color: pink; */
+    width: 3rem;
+    height: 3rem;
+}
+
+.dropdown-nav button {
+    border: none;
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+    border-radius: 100px;
+    background-size: cover;
+}
+
+.dropdown-area {
+    display: flex;
+    flex-direction: column;
+    /* word-wrap: normal; */
+    background-color: white;
+    white-space: nowrap;
+    width: fit-content;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    list-style: none;
+    border-radius: 20px;
+    border: 1px solid #969cb1;
+    overflow: hidden;
+    color: #2c3248;
+
+}
+
+.dropdown-area a {
+    padding: 1.2rem 2rem;
+}
+
+.dropdown-area.close {
+    display: none;
+}
+
+.dropdown-area.open {
+    display: flex;
+}
+
+.dropdown-area li {
+    padding: 1rem 2rem;
+}
+
+.dropdown-area a:hover {
+    background-color: #CDD8FF;
 }
 
 .show-coin {
@@ -53,9 +127,9 @@
     background-color: #f2f6fabe;
 }
 
-.show-coin p{
+.show-coin p {
     font-weight: 700;
-    color:#333333;
+    color: #333333;
 }
 
 @media (min-width: 2000px) {

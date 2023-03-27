@@ -12,7 +12,7 @@ import "../css/profileimg.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Helmet } from "react-helmet";
 import DefaultInput from "../components/DefaultInput";
-import Navbar from "../components/Navbar";
+import {NavbarUser,NavbarAdmin,NavbarHomepage} from "../components/Navbar";
 import UserBox from "../components/UserBox";
 import inputSetting from "../function/function";
 import ProfileImg from "../components/ProfileImg";
@@ -41,7 +41,6 @@ export default function UserProfile() {
             const CoverModal = <ChangeCoverModal setShowCoverModal={setShowCoverModal} />
             setShowCoverModal(CoverModal)
             // openInputColor()
-
         }
     }
 
@@ -53,7 +52,7 @@ export default function UserProfile() {
             {showCoverModal}
             {showProfileModal}
 
-            <Navbar />
+            <NavbarUser />
             <div class="body-nopadding" style={body}>
 
                 <div className="cover-grid">
@@ -68,7 +67,7 @@ export default function UserProfile() {
                                 <p className="username-profile fs-5">ณัฐพิมล เมืองวุฒทานันท์ นันันันันันนันสวัสดีสวัสดี</p>
                                 <p className="follower-profile">follower</p>
                                 <div className="group-btn-area">
-                                    <button className="message-btn"><Icon.MessageCircle/></button>
+                                    <button className="message-btn"><Icon.MessageCircle /></button>
                                     <button className="follow-btn">ติดตาม</button>
                                     <button className="follow-btn">แก้ไขโปรไฟล์</button>
                                 </div>
@@ -78,8 +77,8 @@ export default function UserProfile() {
                             </div>
                             <div className="user-col-about">
                                 <div className="user-about-menu">
-                                    <p>overview</p>
-                                    <p>about me</p>
+                                    <button className="sub-menu selected">overview</button>
+                                    <button className="sub-menu">about me</button>
                                 </div>
                                 <div className="user-about-content">
                                     <div className="user-about-review mb-4"><p className="fs-3">4.0</p> <p>จาก 5 รีวิว</p></div>
@@ -100,10 +99,13 @@ export default function UserProfile() {
                                 </div>
 
                             </div>
-                            
+
                         </div>
                         <div className="user-profile-contentCard">
-                            ทั้งหมด คอมมิชชัน แกลลอรี่ รีวิว
+                            <button className="sub-menu selected">ทั้งหมด</button>
+                            <button className="sub-menu">คอมมิชชัน</button>
+                            <button className="sub-menu">แกลลอรี่</button>
+                            <button className="sub-menu">รีวิว</button>
                         </div>
                     </div>
 

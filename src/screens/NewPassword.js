@@ -12,7 +12,7 @@ import "../css/allbutton.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Helmet } from "react-helmet";
 import DefaultInput from "../components/DefaultInput";
-import Navbar from "../components/Navbar";
+import { NavbarUser, NavbarAdmin, NavbarHomepage } from "../components/Navbar";
 import NewInput from "../components/NewInput";
 import inputSetting from "../function/function";
 
@@ -40,7 +40,7 @@ export default function NewPassword() {
                 <title>{title}</title>
             </Helmet>
             <div class="body" style={body}>
-                <Navbar />
+                {/* <NavbarUser /> */}
                 <div class="container">
                     <div class="login-soloCard">
                         <div class="">

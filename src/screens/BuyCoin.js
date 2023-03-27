@@ -6,7 +6,7 @@ import "../css/indexx.css";
 import "../css/allbutton.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Helmet } from "react-helmet";
-import Navbar from "../components/Navbar";
+import {NavbarUser,NavbarAdmin,NavbarHomepage} from "../components/Navbar";
 import BuyCoinItem from "../components/BuyCoinItem";
 import EditDeleteCoinItem from "../components/EditDeleteCoinItem";
 import { Table, Tabs, Tab } from 'react-bootstrap';
@@ -47,7 +47,7 @@ export default function SignIn() {
 
 
             <div className='body' style={{ backgroundImage: "url('mainmoon.jpg')", backgroundPosition: 'center', backgroundSize: 'cover', backgroundAttachment: 'fixed', backgroundRepeat: 'no-repeat' }}>
-                <Navbar />
+                <NavbarUser />
 
 
                 <div className="container">

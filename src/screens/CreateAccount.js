@@ -10,7 +10,7 @@ import "../css/allbutton.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Helmet } from "react-helmet";
 import DefaultInput from "../components/DefaultInput";
-import Navbar from "../components/Navbar";
+import {NavbarUser,NavbarAdmin,NavbarHomepage} from "../components/Navbar";
 import ProfileImg from "../components/ProfileImg";
 // import ImportScript from "../components/ImportScript";
 
@@ -50,7 +50,7 @@ export default function CreateAccount() {
 
             <div className='body' style={{ backgroundImage: "url('mainmoon.jpg')", backgroundPosition: 'center', backgroundSize: 'cover', backgroundAttachment: 'fixed', backgroundRepeat: 'no-repeat' }}>
 
-                <Navbar />
+                <NavbarUser />
                 <div className="container">
                     <div className="createaccount-soloCard">
                         <div className="createaccount-col-text">

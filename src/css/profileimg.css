@@ -2,21 +2,32 @@
     position: relative;
     box-sizing: border-box;
     border-radius: 100px;
-    width: 141px;
-    height: 141px;
-    background-color: #ffffff;
+    /* width: 141px;
+    height: 141px; */
+    /* background-color: #ffffff; */
     margin-inline: auto;
+    width: fit-content;
+    height: fit-content;
     overflow: hidden;
     box-shadow: 0px 31px 55px -12px rgba(74, 105, 232, 0.24);
+    /* display: flex;
+    justify-content: center; */
+    background-color: #ffffff;
+
 }
 
 .profile-img img {
+    border-radius: 100px;
+    width: 141px;
+    height: 141px;
+    box-sizing: border-box;
     object-fit: cover;
-    height: 100%;
+    background-color: #ffffff;
+    /* height: 100%; */
 
 }
 
-.imgbrowse {
+.profile-img.imgbrowse {
     border: 2px dashed rgb(144, 144, 144);
 }
 
@@ -46,6 +57,7 @@
     mix-blend-mode: difference;
     user-select: none;
 }
+
 /* ----------------------- */
 
 .profile-img-show {

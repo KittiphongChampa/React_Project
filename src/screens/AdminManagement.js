@@ -10,7 +10,7 @@ import "../css/profileimg.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Helmet } from "react-helmet";
 import DefaultInput from "../components/DefaultInput";
-import Navbar from "../components/Navbar";
+import { NavbarUser, NavbarAdmin, NavbarHomepage } from "../components/Navbar";
 import UserBox from "../components/UserBox";
 import inputSetting from "../function/function";
 import ProfileImg from "../components/ProfileImg";
@@ -29,9 +29,9 @@ export default function ForgetPassword() {
             <Helmet>
                 <title>{title}</title>
             </Helmet>
-            <Navbar />
+            <NavbarAdmin />
             <div class="body-lesspadding container-fluid" style={body}>
-                
+
                 <div class="white-page container">
 
                     <h1 className="text-align-center">การจัดการแอดมิน</h1>

@@ -9,7 +9,7 @@ import "../css/allbutton.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Helmet } from "react-helmet";
 import DefaultInput from "../components/DefaultInput";
-import Navbar from "../components/Navbar";
+import { NavbarUser, NavbarAdmin, NavbarHomepage } from "../components/Navbar";
 
 
 const theme = createTheme();
@@ -28,7 +28,7 @@ export default function SignIn() {
 
             <div class='body' style={{ backgroundImage: "url('mainmoon.jpg')", backgroundPosition: 'center', backgroundSize: 'cover', backgroundAttachment: 'fixed', backgroundRepeat: 'no-repeat' }}>
 
-                <Navbar />
+                {/* <NavbarUser /> */}
                 <div class="container">
                     <div class="login-soloCard">
                         <div class="">

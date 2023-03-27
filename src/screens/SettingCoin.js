@@ -1,12 +1,10 @@
 
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import React, { useState, useEffect, useRef } from "react";
 import "../css/indexx.css";
 import "../css/allbutton.css";
-import "../css/alltab.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Helmet } from "react-helmet";
-import Navbar from "../components/Navbar";
+import {NavbarUser,NavbarAdmin,NavbarHomepage} from "../components/Navbar";
 import { Table, Tabs, Tab } from 'react-bootstrap';
 
 
@@ -23,7 +21,7 @@ export default function SettingCoin() {
             <Helmet>
                 <title>{title}</title>
             </Helmet>
-            <Navbar />
+            <NavbarUser />
             <div className="setting-container">
                 <SettingAside onActive='1' />
                 <div className="setting-content-box">
@@ -60,7 +58,7 @@ export default function SettingCoin() {
                                                 <td>Thornton</td>
                                                 <td>@fat</td>
                                             </tr>
-                            
+
                                         </tbody>
                                     </Table>
 
