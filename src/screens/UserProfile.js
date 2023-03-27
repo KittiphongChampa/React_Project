@@ -104,8 +104,8 @@ export default function UserProfile() {
                                     <p className="username-profile fs-5">{userdata.urs_name}</p>
                                     <p className="follower-profile">follower</p>
                                     <div className="group-btn-area">
-                                        <button className="message-btn"><Icon.MessageCircle /></button>
-                                        <button className="follow-btn">ติดตาม</button>
+                                        {/* <button className="message-btn"><Icon.MessageCircle /></button>
+                                        <button className="follow-btn">ติดตาม</button> */}
                                         <a href="/setting-profile"><button className="follow-btn" >แก้ไขโปรไฟล์</button></a>
                                     </div>
                                     <p className="bio-profile">

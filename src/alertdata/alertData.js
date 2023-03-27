@@ -93,3 +93,18 @@ export const sendOtpSuccess = {
   confirmButtonText: 'ตกลง',
 }
 
+export const deleteAccountConfirm = {
+  title: 'คุณต้องการลบบัญชีหรือไม่',
+  icon: 'question',
+  iconColor: '#7E9AFA',
+  showCancelButton: true,
+  confirmButtonText: 'ตกลง',
+  cancleButtonText: "ยกเลิก",
+}
+
+export const deleteAccountIsConfirmed = {
+  title: 'ลบบัญชีผู้ใช้แล้ว',
+  icon: 'success',
+  iconColor: '#7E9AFA',
+  confirmButtonText: 'ตกลง',
+}

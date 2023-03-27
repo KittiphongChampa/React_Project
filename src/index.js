@@ -9,7 +9,7 @@ import Login from './screens/Login';
 import Welcome from './screens/Welcome';
 import Index from './screens/Index';
 import Profile from './yunscreens/Profile';
-import TransactionHistory from './yunscreens/TransactionHistory';
+import TransactionHistory from './screens/TransactionHistory';
 import Verify from './secondary_screens/Verify';
 import Editprofile from './yunscreens/Editprofile';
 import Buytoken from './yunscreens/Buytoken';

@@ -5,6 +5,17 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Container from "react-bootstrap/Container";
+import { Helmet } from "react-helmet";
+import * as Icon from "react-feather";
+import "../css/indexx.css";
+import "../css/allbutton.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { NavbarUser, NavbarAdmin, NavbarHomepage } from "../components/Navbar";
+
+
+const title = "ประวัติการเติมเงิน";
+const bgImg = "url('mainmoon.jpg')";
+const body = { backgroundImage: bgImg };
 
 const toastOptions = {
   position: "bottom-right",
@@ -79,7 +90,72 @@ export default function TransactionHistory() {
 
   return (
     <>
-      <Container>
+      <Helmet>
+        <title>{title}</title>
+      </Helmet>
+
+      <div
+        className="body"
+        style={{
+          backgroundImage: "url('mainmoon.jpg')",
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+          backgroundAttachment: "fixed",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        {/* <Navbar /> */}
+        <NavbarAdmin />
+        <div className="container">
+          <div className="buycoin-soloCard">
+            <h1 className="text-center">{title} </h1>
+
+              <label className="form-label">Filter:</label>
+              <select className="form-select" onChange={handleFilterChange}>
+                <option value="">All</option>
+                <option value="today">Today</option>
+                <option value="week">This Week</option>
+                <option value="month">This month</option>
+                <option value="year">This Year</option>
+              </select>
+              <div>
+                <table className="table is-striped is-fullwidth">
+                  <thead>
+                    <tr>
+                      <th>#ลำดับ</th>
+                      <th>วัน/เวลา</th>
+                      <th>บริการ</th>
+                      <th>เหรียญ</th>
+                      <th>บาท</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredData.map((item, index) => (
+                      <tr key={index}>
+                        <td>{index + 1}</td>
+                        <td>
+                          {new Date(item.created_at).toLocaleString("th-TH", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            second: "2-digit",
+                          })}
+                        </td>
+                        <td>เติมเงิน</td>
+                        <td>{item.coins}</td>
+                        <td>{item.p_price}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+          </div>
+        </div>
+      </div>
+
+      {/* <Container>
         <div className="columns mt-5 is-centered">
           <div className="column is-half">
             <div className="mb-3">
@@ -125,7 +201,7 @@ export default function TransactionHistory() {
             </table>
           </div>
         </div>
-      </Container>
+      </Container> */}
       <ToastContainer />
     </>
   );

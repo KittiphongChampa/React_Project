@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Button from "@mui/material/Button";
+import { NavbarUser, NavbarAdmin, NavbarHomepage } from "../components/Navbar";
 
 export default function AdminPage() {
   const navigate = useNavigate();
@@ -52,7 +53,10 @@ export default function AdminPage() {
   };
   return (
     <>
-      <h1>Welcome,{admindata.admin_name}</h1>
+      <NavbarAdmin />
+      <div className="container test">
+      <h1>Dashboard</h1>
+      <h3>Welcome,{admindata.admin_name}</h3>
       <Button variant="contained" onClick={() => navigate("/buycoin")}>
         เติมเงิน
       </Button>
@@ -75,6 +79,7 @@ export default function AdminPage() {
       <Button variant="contained" onClick={handleLogout}>
         Logout
       </Button>
+      </div>
     </>
   );
 }

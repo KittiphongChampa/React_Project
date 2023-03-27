@@ -22,6 +22,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
+import * as alertData from "../alertdata/alertData";
 
 const title = "ตั้งค่าโปรไฟล์";
 const toastOptions = {
@@ -191,6 +192,33 @@ export default function SettingProfile() {
     btnElementClass.add("show-btn");
   };
 
+  const UserDelete = () => {
+    Swal.fire({ ...alertData.deleteAccountConfirm }).then((result) => {
+      if (result.isConfirmed) { 
+        const tested = "";
+        axios
+          .put("http://localhost:3333/delete_account", tested,{
+            headers: {
+              Authorization: "Bearer " + token
+            },
+          })
+          .then((response) => {
+            const data = response.data;
+            if (data.status === "ok") {
+              Swal.fire({ ...alertData.deleteAccountIsConfirmed }).then(() => {
+                // window.location.reload(false);
+                localStorage.removeItem("token");
+                window.location = "/welcome";
+              });
+            } else if (data.status === "error") {
+              toast.error(data.message, toastOptions);
+            } else {
+              toast.error("ไม่พบผู้ใช้งาน", toastOptions);
+            }
+          });
+          }
+    })
+  };
 
   return (
     <>
@@ -312,8 +340,8 @@ export default function SettingProfile() {
 
           
           <div className="settingCard" style={{border:"none",padding:"0"}}>
-            <Button variant="outline-danger" className="text-align-center">ลบบัญชีผู้ใช้</Button>
-            </div>
+            <Button variant="outline-danger" className="text-align-center" onClick={UserDelete}>ลบบัญชีผู้ใช้</Button>
+          </div>
                 
                 {/* <p className="onInput">อีเมล</p>
                 <p>
@@ -329,9 +357,6 @@ export default function SettingProfile() {
                 >
                   <p>เปลี่ยนรหัสผ่าน</p>
                 </button> */}
-             
-            
-
 
         </div>
       </div>

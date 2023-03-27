@@ -3,8 +3,7 @@
 a,
 a:hover,
 a:visited {
-    all: unset;
-    cursor: pointer;
+    color: rgb(17, 17, 17);
 }
 
 
