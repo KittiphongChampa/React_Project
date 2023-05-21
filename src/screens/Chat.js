@@ -13,7 +13,9 @@ const Chat = () => {
   const socket = useRef();
   const [contacts, setContacts] = useState([]);
   const [currentChat, setCurrentChat] = useState(undefined);
-  //   const [currentUser, setCurrentUser] = useState(undefined);
+    // const [currentUser, setCurrentUser] = useState(undefined);
+
+    const test = 0;
 
   const token = localStorage.getItem("token");
   const [userdata, setUserdata] = useState([]);
