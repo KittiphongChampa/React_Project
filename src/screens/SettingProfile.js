@@ -122,8 +122,11 @@ export default function SettingProfile() {
       .then((response) => {
         const data = response.data;
         if (data.status === "ok") {
-          alert("Update Success");
-          window.location = "/setting-profile";
+          // alert("Update Success");
+          // window.location = "/setting-profile";
+          Swal.fire({ ...alertData.success }).then(() => {
+            window.location.reload(false);
+          })
         } else {
           //   toast.error(data.message, toastOptions);
         }

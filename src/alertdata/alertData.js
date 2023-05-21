@@ -108,3 +108,10 @@ export const deleteAccountIsConfirmed = {
   iconColor: '#7E9AFA',
   confirmButtonText: 'ตกลง',
 }
+
+export const success = {
+  title: 'บันทึกสำเร็จ',
+  icon: 'success',
+  iconColor: '#7E9AFA',
+  confirmButtonText: 'ตกลง',
+}

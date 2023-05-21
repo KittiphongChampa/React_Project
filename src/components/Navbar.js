@@ -13,7 +13,8 @@ const NavbarUser = (props) => {
     const dropdownRef = useRef();
     const [userdata, setUserdata] = useState([]);
     const [urs_token, setUrs_token] = useState();
-    console.log('urs_type '+userdata.urs_type);
+    // console.log('urs_type '+userdata.urs_type);
+
     useEffect(() => {
         getUser();
         let handler = (event) => {
@@ -77,7 +78,7 @@ const NavbarUser = (props) => {
                             <img src={userdata.urs_profile_img} style={{width: "50px", height: "45px", borderRadius:"45px"}}/>
                         </button>
                         <div className={`dropdown-area ${open ? 'open' : 'close'}`} >
-                            <a href="/userprofile" className="in-dropdown"><Icon.User className='nav-icon mx-2' />ตั้งค่าโปรไฟล์</a>
+                            <a href="/profile" className="in-dropdown"><Icon.User className='nav-icon mx-2' />ตั้งค่าโปรไฟล์</a>
                             {userdata.urs_type === 1 ? (
                                 <>
                                     <a href="#" className="in-dropdown"><ggIcon.GridView className='nav-icon mx-2' />Dashborad</a>
@@ -199,13 +200,13 @@ const NavbarAdmin = (props) => {
         event.preventDefault();
         localStorage.removeItem("token");
         navigate("/welcome");
-      };
+    };
     return (
         <div class="nav-box" >
             <nav class="nav-container">
                 <div class="inline-nav">
                     <a href="#"><Icon.Search className='nav-icon' /></a>
-                    <a href="#"><Icon.Home className='nav-icon' /></a>
+                    <a href="/admin"><Icon.Home className='nav-icon' /></a>
                 </div>
                 <div class="inline-nav">
                     <a href="#"><Icon.Bell className='nav-icon' /><i data-feather="bell" class="nav-icon"></i></a>

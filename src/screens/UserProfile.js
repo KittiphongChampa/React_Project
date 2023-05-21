@@ -22,7 +22,7 @@ import { ChangeCoverModal, openInputColor } from "../modal/ChangeCoverModal"
 // import { Button } from 'react-bootstrap/Button';
 import Button from "react-bootstrap/Button";
 
-const title = 'ตั้งเป็นชื่อ user';
+const title = 'Profile';
 const bgImg = ""
 const body = { backgroundColor: "#F4F1F9" }
 
@@ -31,9 +31,11 @@ export default function UserProfile() {
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
     const [userdata, setUserdata] = useState([]);
-    console.log(userdata);
     const [showCoverModal, setShowCoverModal] = useState(null)
     const [showProfileModal, setShowProfileModal] = useState(null)
+
+    const [myFollower, setMyFollowerIds] = useState([]);
+    const [iFollowing, setIFollowingsIds] = useState([]);
 
     useEffect(() => {
         if (localStorage.getItem("token")) {
@@ -44,7 +46,8 @@ export default function UserProfile() {
           navigate("/login")
         }
         getUser();
-    }, []);
+    }, [myFollower,iFollowing]);
+    
     const getUser = async () => {
         await axios
           .get("http://localhost:3333/profile", {
@@ -56,6 +59,8 @@ export default function UserProfile() {
             const data = response.data;
             if (data.status === "ok") {
               setUserdata(data.users[0]);
+              setMyFollowerIds(data.MyFollowerIds);
+              setIFollowingsIds(data.IFollowingsIds);
             } else if (data.status === "no_access") {
                 alert(data.message);
                 navigate('/admin');
@@ -94,8 +99,8 @@ export default function UserProfile() {
                         <div className="cover-hover"><p className="fs-5">เปลี่ยนสีปก</p></div>
                     </div>
                     <div className="container profile-page">
-                        <div className="userprofile-container">
-                            <div className="user-profile-area">
+                        <div className="user-profile-area">
+                            
                                 <div className="user-col-profile">
                                     <ProfileImg src={userdata.urs_profile_img} type="show"
                                         onPress={() => openModal("profile")}
@@ -114,13 +119,15 @@ export default function UserProfile() {
                                 </div>
                                 <div className="user-col-about">
                                     <div className="user-about-menu">
-                                        <p>overview</p>
-                                        <p>about me</p>
+                                        <button className="sub-menu selected">overview</button>
+                                        <button className="sub-menu">about me</button>
                                     </div>
                                     <div className="user-about-content">
                                         <div className="user-about-review mb-4"><p className="fs-3">4.0</p> <p>จาก 5 รีวิว</p></div>
                                         <div className="user-about-text">
                                             <div>
+                                                <p>ผู้ติดตาม {myFollower.length}</p>
+                                                <p>กำลังติดตาม {iFollowing.length}</p>
                                                 <p>งานสำเร็จแล้ว 10 งาน</p>
                                                 <p>ใช้งานล่าสุดเมื่อ 12 ชั่วโมงที่แล้ว</p>
                                                 <p>ตอบกลับภายใน 1 ชั่วโมง</p>
@@ -133,10 +140,13 @@ export default function UserProfile() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="user-profile-contentCard">
-                                ทั้งหมด คอมมิชชัน แกลลอรี่ รีวิว
-                            </div>
+                            
+                        </div>
+                        <div className="user-profile-contentCard">
+                            <button className="sub-menu selected">ทั้งหมด</button>
+                            <button className="sub-menu">คอมมิชชัน</button>
+                            <button className="sub-menu">แกลลอรี่</button>
+                            <button className="sub-menu">รีวิว</button>
                         </div>
                     </div>
 

@@ -118,7 +118,7 @@ export default function Index() {
               <button>
                 <Icon.Search className="nav-icon" />
               </button>
-              <input type="text" placeholder="ค้นหาบลาๆๆๆ" />
+              <input type="text" placeholder="ค้นหาคอมมิชชัน, นักวาด, หัวข้อ" />
             </div>
             <div class="popular-topic">
               <p>หัวข้อยอดนิยม :</p>
@@ -133,7 +133,8 @@ export default function Index() {
               <button className="sub-menu selected">ทั้งหมด</button>
               <button className="sub-menu">คอมมิชชัน</button>
               <button className="sub-menu">แกลลอรี่</button>
-              <button className="sub-menu">รีวิว</button>
+              <button className="sub-menu">นักวาด</button>
+              <button className="sub-menu">หัวข้อ</button>
             </div>
             <div class="content-box">
               <div class="content-top">

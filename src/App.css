@@ -15,6 +15,11 @@ img.mystyle {
 .search-box{
   margin-top: 10px;
   margin-bottom: 10px;
+  background: rgba(255, 255, 255, 0.54);
+  border: 1px solid #9D9EB8;
+  border-radius: 62.5px;
+  padding: 0.5rem 1rem;
+  width: 100%;
 }
 .test{
   margin-top: 80px !important;

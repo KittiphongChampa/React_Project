@@ -31,7 +31,8 @@ import BuyCoin from './screens/BuyCoin';
 import AdminManagement from './screens/AdminManagement';
 import SettingProfile from './screens/SettingProfile';
 import SettingCoin from './screens/SettingCoin';
-import NewPassword from './yunscreens/NewPassword'
+import NewPassword from './yunscreens/NewPassword';
+import Chat from './screens/Chat';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -43,13 +44,14 @@ root.render(
       <Route path="/login" element={<Login />} />
       <Route path="/verify" element={<Verify />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/profile" element={<Profile />} />
+      {/* <Route path="/profile" element={<Profile />} /> */}
       <Route path="/profile/:id" element={<ViewProfile />} />
       <Route path="/editprofile" element={<Editprofile />} />
       <Route path="/buytoken" element={<Buytoken/>} />
       <Route path="/packagetoken" element={<PackageToken/>} />
       <Route path="/forgot-password" element={<ForgotPassword/>} />
       <Route path="/reset-password" element={<ResetPassword/>} />
+      <Route path="/chat" element={<Chat/>} />
       {/* <Route path="/verify-resetPassword" element={<VerifyMail_ResetPassword/>} /> */}
       <Route path="/alluser" element={<AllUser />} />
 
@@ -59,7 +61,7 @@ root.render(
 
       {/* mint */}
       <Route path="/editcoin" element={<EditCoin />} />
-      <Route path="/userprofile" element={<UserProfile />} />
+      <Route path="/profile" element={<UserProfile />} />
       <Route path="/buycoin" element={<BuyCoin />} />
       <Route path="/setting-profile" element={<SettingProfile />} />
       <Route path="/newpassword" element={<NewPassword />} />
