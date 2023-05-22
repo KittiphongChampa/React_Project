@@ -34,6 +34,9 @@ import SettingCoin from './screens/SettingCoin';
 import NewPassword from './yunscreens/NewPassword';
 import Chat from './screens/Chat';
 
+//test
+import ChatContainertest from './yunscreens/ChatContainertest';
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
@@ -45,6 +48,7 @@ root.render(
       <Route path="/verify" element={<Verify />} />
       <Route path="/register" element={<Register />} />
       {/* <Route path="/profile" element={<Profile />} /> */}
+      <Route path="/profile" element={<UserProfile />} />
       <Route path="/profile/:id" element={<ViewProfile />} />
       <Route path="/editprofile" element={<Editprofile />} />
       <Route path="/buytoken" element={<Buytoken/>} />
@@ -61,7 +65,6 @@ root.render(
 
       {/* mint */}
       <Route path="/editcoin" element={<EditCoin />} />
-      <Route path="/profile" element={<UserProfile />} />
       <Route path="/buycoin" element={<BuyCoin />} />
       <Route path="/setting-profile" element={<SettingProfile />} />
       <Route path="/newpassword" element={<NewPassword />} />
@@ -70,6 +73,9 @@ root.render(
       <Route path="/setting-coin" element={<SettingCoin />} />
       <Route path="/admin/alluser" element={<AdminManagement />} />
       <Route path="/admin/transaction" element={<TransactionHistory />} />
+
+    {/* test */}
+      <Route path="/testchat" element={<ChatContainertest />} />
 
     </Routes>
   </BrowserRouter>

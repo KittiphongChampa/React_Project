@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Robot from "../assets/robot.gif";
+import axios from "axios";
+
 export default function Welcome() {
+  const token = localStorage.getItem("token");
   const [userName, setUserName] = useState("");
   
 //   useEffect(async () => {
@@ -11,6 +14,38 @@ export default function Welcome() {
 //       ).username
 //     );
 //   }, []);
+useEffect(() => {
+  getUser();
+}, []);
+const getUser = async () => {
+  // await axios
+  //   .get("http://localhost:3333/index", {
+  //     headers: {
+  //       Authorization: "Bearer " + token,
+  //     },
+  //   })
+  //   .then((response) => {
+  //     const data = response.data;
+  //     if (data.status === "ok") {
+  //         // setUserdata(data.users[0]);
+  //         setCurrentUserName(data.users[0].urs_name);
+  //         setCurrentUserImage(data.users[0].urs_profile_img);
+  //     }
+  //   });
+  try {
+    const response = await axios.get("http://localhost:3333/index", {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+    const data = response.data;
+    if (data.status === "ok") {
+      setUserName(data.users[0].urs_name);
+    }
+  } catch (error) {
+    // Handle error
+  }
+};
 
   return (
     <Container>

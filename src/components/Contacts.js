@@ -3,11 +3,12 @@ import styled from "styled-components";
 import axios from "axios";
 // import Logo from "../assets/logo.svg";
 
-export default function Contacts({ contacts, changeChat }) {
+export default function Contacts({ contacts, changeChat, userdata }) {
   const [currentUserName, setCurrentUserName] = useState(undefined);
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
   const [currentSelected, setCurrentSelected] = useState(undefined);
-
+  // console.log(contacts);
+  
   //   useEffect(async () => {
   //     const data = await JSON.parse(
   //       localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
@@ -18,68 +19,64 @@ export default function Contacts({ contacts, changeChat }) {
 
   const token = localStorage.getItem("token");
 
-  useEffect(() => {//ดึงข้อมูลตัวเอง
-    getUser();
-  }, []);
-
-  const getUser = async () => {
-    await axios
-      .get("http://localhost:3333/profile", {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((response) => {
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const response = await axios.get("http://localhost:3333/index", {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        });
         const data = response.data;
         if (data.status === "ok") {
-            // setUserdata(data.users[0]);
-            setCurrentUserName(data.username);
-            setCurrentUserImage(data.avatarImage);
+          setCurrentUserName(data.users[0].urs_name);
+          setCurrentUserImage(data.users[0].urs_profile_img);
         }
-      });
-  };
+      } catch (error) {
+        // Handle error
+      }
+    };
+    getUser();
+  }, []);
 
   const changeCurrentChat = (index, contact) => {
     setCurrentSelected(index);
     changeChat(contact);
   };
+
   return (
     <>
       {currentUserImage && currentUserImage && (
         <Container>
           <div className="brand">
             {/* <img src={Logo} alt="logo" /> */}
-            <h3>snappy</h3>
+            <h3>yun</h3>
           </div>
+
           <div className="contacts">
             {contacts.map((contact, index) => {
               return (
                 <div
-                  key={contact._id}
+                  key={contact.id}
                   className={`contact ${
                     index === currentSelected ? "selected" : ""
                   }`}
                   onClick={() => changeCurrentChat(index, contact)}
                 >
                   <div className="avatar">
-                    <img
-                      src={`data:image/svg+xml;base64,${contact.avatarImage}`}
-                      alt=""
-                    />
+                    <img src={contact.urs_profile_img} alt="" />
                   </div>
                   <div className="username">
-                    <h3>{contact.username}</h3>
+                    <h3>{contact.urs_name}</h3>
                   </div>
                 </div>
               );
             })}
           </div>
+
           <div className="current-user">
             <div className="avatar">
-              <img
-                src={`data:image/svg+xml;base64,${currentUserImage}`}
-                alt="avatar"
-              />
+              <img src={`${currentUserImage}`} alt="avatar" />
             </div>
             <div className="username">
               <h2>{currentUserName}</h2>
@@ -90,6 +87,7 @@ export default function Contacts({ contacts, changeChat }) {
     </>
   );
 }
+
 const Container = styled.div`
   display: grid;
   grid-template-rows: 10% 75% 15%;

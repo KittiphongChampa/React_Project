@@ -12,64 +12,83 @@ const Chat = () => {
   const navigate = useNavigate();
   const socket = useRef();
   const [contacts, setContacts] = useState([]);
-  const [currentChat, setCurrentChat] = useState(undefined);
-    // const [currentUser, setCurrentUser] = useState(undefined);
+  const [currentChat, setCurrentChat] = useState(undefined);//คนที่เราเลือกสนทนา
 
-    const test = 0;
+  // const [currentUser, setCurrentUser] = useState(undefined);
 
   const token = localStorage.getItem("token");
   const [userdata, setUserdata] = useState([]);
-  console.log(userdata);
 
   useEffect(() => {
-    //ดึงข้อมูลตัวเอง
     getUser();
   }, []);
 
   const getUser = async () => {
-    await axios
-      .get("http://localhost:3333/profile", {
+    try {
+      const response = await axios.get("http://localhost:3333/index", {
         headers: {
           Authorization: "Bearer " + token,
         },
-      })
-      .then((response) => {
-        const data = response.data;
-        if (data.status === "ok") {
-          setUserdata(data.users[0]);
-        }
       });
+      const data = response.data;
+      if (data.status === "ok") {
+        setUserdata(data.users[0]);
+      }
+    } catch (error) {
+      // Handle error
+    }
   };
 
   useEffect(() => {
-    //เกี่ยวกับการแชท
     if (userdata) {
       socket.current = io("http://localhost:3333");
       socket.current.emit("add-user", userdata.id);
     }
+
+    try {
+      axios.get(
+        `http://localhost:3333/allchat/${userdata.id}`
+      ).then((response) => {
+        setContacts(response.data);
+      })
+    } catch (error) {
+      // Handle error
+      console.log('catch');
+    }
+
   }, [userdata]);
 
-  useEffect(async () => {
-    //ดึงข้อมูลของคนที่เราฟอลทั้งหมด
-    if (userdata) {
-      const data = await axios.get(
-        `http://localhost:3333/allchat/${userdata.id}`
-      );
-      setContacts(data.data);
-    } else {
-      navigate("#");
-    }
-  }, [userdata]);
+  // useEffect(async () => {
+  //   if (userdata) {
+  //     try {
+  //       const response = await axios.get(
+  //         `http://localhost:3333/allchat/${userdata.id}`
+  //       );
+  //       // console.log();
+  //       setContacts(response.data);
+  //     } catch (error) {
+  //       // Handle error
+  //       console.log('error');
+  //     }
+  //   } else {
+  //     navigate("#");
+  //   }
+  // }, []);
 
   const handleChatChange = (chat) => {
     setCurrentChat(chat);
   };
 
+
   return (
     <>
       <Container>
         <div className="container">
-          <Contacts contacts={contacts} changeChat={handleChatChange} />
+          <Contacts
+            contacts={contacts}
+            changeChat={handleChatChange}
+            userdata={userdata}
+          />
           {currentChat === undefined ? (
             <Welcome />
           ) : (
@@ -80,6 +99,7 @@ const Chat = () => {
     </>
   );
 };
+
 const Container = styled.div`
   height: 100vh;
   width: 100vw;
