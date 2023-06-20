@@ -50,7 +50,7 @@ export default function Contacts({ contacts, changeChat, userdata }) {
         <Container>
           <div className="brand">
             {/* <img src={Logo} alt="logo" /> */}
-            <h3>yun</h3>
+            <h3>Chat</h3>
           </div>
 
           <div className="contacts">

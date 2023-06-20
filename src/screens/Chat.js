@@ -49,7 +49,7 @@ const Chat = () => {
       axios.get(
         `http://localhost:3333/allchat/${userdata.id}`
       ).then((response) => {
-        setContacts(response.data);
+        setContacts(response.data);//แสดงผลคนที่เราสามารถแชทด้วยได้ทั้งหมด
       })
     } catch (error) {
       // Handle error
