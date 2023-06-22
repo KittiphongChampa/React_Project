@@ -44,7 +44,6 @@ const Chat = () => {
       socket.current = io("http://localhost:3333");
       socket.current.emit("add-user", userdata.id);
     }
-
     try {
       axios.get(
         `http://localhost:3333/allchat/${userdata.id}`
@@ -55,7 +54,6 @@ const Chat = () => {
       // Handle error
       console.log('catch');
     }
-
   }, [userdata]);
 
   // useEffect(async () => {

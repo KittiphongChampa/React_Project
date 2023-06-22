@@ -61,6 +61,7 @@ export default function SignUp() {
 
   const [file, setFile] = useState("");
   const [previewUrl, setPreviewUrl] = useState("");
+  console.log(file);
 
   //หยุน
   // const handleFileChange = (event) => {
@@ -214,11 +215,11 @@ export default function SignUp() {
                   onChange={(e) => handleChange(e)}
                 />
                 <div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
-  <label class="form-check-label" for="flexCheckDefault">
-    ยอมรับเงื่อนไขการใช้บริการ
-  </label>
-</div>
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
+                  <label class="form-check-label" for="flexCheckDefault">
+                    ยอมรับเงื่อนไขการใช้บริการ
+                  </label>
+                </div>
                 <div className="text-align-center">
                   <button className="gradiant-btn" type="submit">
                     ยืนยันการสร้างบัญชี

@@ -8,15 +8,20 @@ import "../css/chat.css";
 // import { sendMessageRoute, recieveMessageRoute } from "../utils/APIRoutes";
 
 export default function ChatContainer({ currentChat, socket }) {
-  // console.log(socket.current.on);
+  const token = localStorage.getItem("token");
+  const [userid, setUserid] = useState();
   const [messages, setMessages] = useState([]);
   const scrollRef = useRef();
-  // const [arrivalMessage, setArrivalMessage] = useState(null);
+  const [arrivalMessage, setArrivalMessage] = useState(null);
   // console.log(arrivalMessage);
-  const [userid, setUserid] = useState();
-  const token = localStorage.getItem("token");
 
-  // useEffect(async () => {
+  const date = new Date();
+  const date_now = date.toLocaleDateString('th-TH', {
+    hour: "2-digit",
+    minute: "2-digit",
+  })
+  const currenttime = date_now.split(" ")[1];
+
   //   const data = await JSON.parse(
   //     localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
   //   );
@@ -26,94 +31,6 @@ export default function ChatContainer({ currentChat, socket }) {
   //   });
   //   setMessages(response.data);
   // }, [currentChat]);
-
-  // useEffect(() => {
-  //   const getUser = async () => {
-  //     try {
-  //       const response = await axios.get("http://localhost:3333/index", {
-  //         headers: {
-  //           Authorization: "Bearer " + token,
-  //         },
-  //       });
-  //       const data = response.data;
-  //       if (data.status === "ok") {
-  //         setUserid(data.users[0].id);
-  //       }else{
-  //         console.log('เข้า else');
-  //       }
-  //       const getChatdata = await axios.post("http://localhost:3333/messages/getmsg", {
-  //           from: data.users[0].id,
-  //           to: currentChat.id,
-  //       }).then((response) => {
-  //         const data = response.data
-  //         setMessages(data);
-  //       })
-  //       // setMessages(getChatdata.data);
-  //     } catch (error) {
-  //       // Handle error
-  //       console.log('catch');
-  //     }
-  //   };
-  //   getUser();
-  // }, [currentChat]);
-
-  // useEffect(() => {
-  //   if (socket.current) {
-  //     socket.current.on("msg-recieve", (msg) => {
-  //       setArrivalMessage({ fromSelf: false, message: msg });
-  //     });
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   arrivalMessage && setMessages((prev) => [...prev, arrivalMessage]);
-  // }, [arrivalMessage]);
-
-  // useEffect(() => {
-  //   scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-  // }, [messages]);
-
-  // const handleSendMsg = async (msg) => {
-  //   //ข้อความถูกส่งมาที่นี่
-  //   socket.current.emit("send-msg", {
-  //     to: currentChat.id,
-  //     from: userid,
-  //     msg,
-  //   });
-
-  //   await axios.post("http://localhost:3333/messages/addmsg", {
-  //     from: userid,
-  //     to: currentChat.id,
-  //     message: msg,
-  //   });
-
-  //   // const msgs = [...messages];
-  //   // msgs.push({ fromSelf: true, message: msg });
-  //   // setMessages(msgs);
-  //   setMessages(prevMessages => [
-  //     ...prevMessages,
-  //     { fromSelf: true, message: msg },
-  //   ]);
-  // };
-
-  const handleSendMsg = async (msg) => { //ส่งแชทและแสดงผลแชทบนหน้าจอ
-    socket.current.emit("send-msg", {
-      to: currentChat.id,
-      from: userid,
-      msg,
-    });
-  
-    await axios.post("http://localhost:3333/messages/addmsg", {
-      from: userid,
-      to: currentChat.id,
-      message: msg,
-    })
-  
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      { fromSelf: true, message: msg },
-    ]);
-  };
 
   useEffect(() => {
     const getUser = async () => {
@@ -143,31 +60,43 @@ export default function ChatContainer({ currentChat, socket }) {
     };
     getUser();
   }, [currentChat, token]);
-  
-  useEffect(() => { //รับแชทและแสดงผลแชทบนหน้าจอ
+
+  const handleSendMsg = async (msg, image) => { //รับค่ามาจากอีกหน้า+ส่งแชทและแสดงผลแชทบนหน้าจอ
+    const formData = new FormData();
+    formData.append("image", image);
+    // console.log(image);
+    socket.current.emit("send-msg", {
+      to: currentChat.id,
+      from: userid,
+      msg,
+      currenttime,
+    });
+    await axios.post("http://localhost:3333/messages/addmsg", {
+      from: userid,
+      to: currentChat.id,
+      message: msg,
+    })
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { fromSelf: true, message: msg, currenttime: currenttime, },
+    ]);
+  };
+
+  useEffect(() => {//รับข้อความ
+    console.log(socket.current);
     if (socket.current) {
-      socket.current.on('msg-recieve', (msg) => {
-        console.log('Received message:', msg);
-        // ทำอะไรกับข้อความที่รับมาเมื่อแชทถูกส่งไปที่คอมโพเนนต์นี้
-        setMessages((prev) => [...prev, messages]);
-        // setArrivalMessage({ fromSelf: false, message: msg });
+      socket.current.on("msg-receive", (msg) => {
+        // console.log('Received message:', msg);
+        setArrivalMessage({ fromSelf: false, message: msg });
       });
-    }else {
-      console.log('ไม่ทำงาน');
     }
-  }, [socket]);
-
-  // useEffect(() => {
-  //   arrivalMessage && setMessages((prev) => [...prev, arrivalMessage]);
-  // }, [arrivalMessage]);
-
-  useEffect(() => {
-    // setMessages((prev) => [...prev, messages]);
-    // setMessages((prevMessages) => [...prevMessages, message]);
   }, []);
 
   useEffect(() => {
-    // scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+    arrivalMessage && setMessages((prevMessages) => [...prevMessages, arrivalMessage]);
+  }, [arrivalMessage]);
+
+  useEffect(() => {
     scrollRef.current?.scrollIntoView({ block: "end" }); // เลื่อนมุมมองไปยังตำแหน่งสุดท้ายของข้อความทั้งหมด
   }, [messages]);
   
@@ -186,33 +115,7 @@ export default function ChatContainer({ currentChat, socket }) {
             <h3>{currentChat.urs_name}</h3>
           </div>
         </div>
-        {/* <Logout /> */}
       </div>
-      {/* <div className="chat-messages">
-        {messages.map((message) => {
-          return (
-            <div ref={scrollRef} key={uuidv4()}>
-              <div
-                className={`message ${
-                  message.fromSelf ? "sended" : "recieved"
-                }`}
-              >
-                <div>
-                  <p>
-                    {new Date(message.created_at).toLocaleString("th-TH", {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </p>
-                </div>
-                <div className="content ">
-                  <p>{message.message}</p>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div> */}
 
       <div className="chat-messages">
         {messages.map((message) => {
@@ -221,12 +124,21 @@ export default function ChatContainer({ currentChat, socket }) {
               {message.fromSelf ? (
                 <div className="message sended">
                   <div className="sending_time">
-                    <p>
+                    <span>
                       {new Date(message.created_at).toLocaleString("th-TH", {
                         hour: "2-digit",
                         minute: "2-digit",
-                      })}
-                    </p>
+                      }) !== "Invalid Date" ? (
+                        <span>
+                          {new Date(message.created_at).toLocaleString("th-TH", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </span>
+                      ) : (
+                        <span>{message.currenttime}</span>
+                      )}
+                    </span>
                   </div>
                   <div className="content">
                     <p>{message.message}</p>
@@ -238,12 +150,12 @@ export default function ChatContainer({ currentChat, socket }) {
                     <p>{message.message}</p>
                   </div>
                   <div className="sending_time">
-                    <p>
+                    <span>
                       {new Date(message.created_at).toLocaleString("th-TH", {
                         hour: "2-digit",
                         minute: "2-digit",
                       })}
-                    </p>
+                    </span>
                   </div>
                 </div>
               )}

@@ -10,7 +10,9 @@ const ChatContainer = () => {
   const [username, setUsername] = useState("");
 
   useEffect(() => {
+    console.log(socket.on);
     socket.on("message", (message) => {
+      console.log('ทำงาน');
       setMessages([...messages, message]);
     });
   }, [messages]);
