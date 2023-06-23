@@ -53,7 +53,7 @@ export default function SignUp() {
     password: "",
     confirmpassword: "",
   });
-  console.log(values);
+  // console.log(values);
 
   const handleChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
@@ -61,7 +61,7 @@ export default function SignUp() {
 
   const [file, setFile] = useState("");
   const [previewUrl, setPreviewUrl] = useState("");
-  console.log(file);
+  // console.log(file);
 
   //หยุน
   // const handleFileChange = (event) => {

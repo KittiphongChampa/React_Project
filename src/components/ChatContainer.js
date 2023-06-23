@@ -20,7 +20,8 @@ export default function ChatContainer({ currentChat, socket }) {
     hour: "2-digit",
     minute: "2-digit",
   })
-  const currenttime = date_now.split(" ")[1];
+  const timestamp_chat = date_now.split(" ")[1];
+  // const timestamp_chat = date_now;
 
   //   const data = await JSON.parse(
   //     localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
@@ -61,15 +62,12 @@ export default function ChatContainer({ currentChat, socket }) {
     getUser();
   }, [currentChat, token]);
 
-  const handleSendMsg = async (msg, image) => { //รับค่ามาจากอีกหน้า+ส่งแชทและแสดงผลแชทบนหน้าจอ
-    const formData = new FormData();
-    formData.append("image", image);
-    // console.log(image);
+  const handleSendMsg = async (msg) => { //รับค่ามาจากอีกหน้า+ส่งแชทและแสดงผลแชทบนหน้าจอ
     socket.current.emit("send-msg", {
       to: currentChat.id,
       from: userid,
       msg,
-      currenttime,
+      timestamp_chat,
     });
     await axios.post("http://localhost:3333/messages/addmsg", {
       from: userid,
@@ -78,16 +76,39 @@ export default function ChatContainer({ currentChat, socket }) {
     })
     setMessages((prevMessages) => [
       ...prevMessages,
-      { fromSelf: true, message: msg, currenttime: currenttime, },
+      { fromSelf: true, message: msg, timestamp_chat: timestamp_chat, },
     ]);
   };
+  
+  const handleSendImage = async (image) => {
+    const formData = new FormData();
+    formData.append("from", userid);
+    formData.append("to", currentChat.id);
+    formData.append("image", image);
+    console.log(formData);
+    await axios.post("http://localhost:3333/messages/addmsg", formData, {
+
+    }).then((response) => {
+      const data = response.data;
+      let msg = data.image_chat;
+      socket.current.emit("send-msg", {
+        to: currentChat.id,
+        from: userid,
+        msg,
+        timestamp_chat,
+      });
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { fromSelf: true, message: msg, timestamp_chat: timestamp_chat, },
+      ]);
+    })
+  }
 
   useEffect(() => {//รับข้อความ
-    console.log(socket.current);
     if (socket.current) {
       socket.current.on("msg-receive", (msg) => {
-        // console.log('Received message:', msg);
-        setArrivalMessage({ fromSelf: false, message: msg });
+        console.log('Received message:', msg);
+        setArrivalMessage({ fromSelf: false, message: msg , timestamp_chat: timestamp_chat, });
       });
     }
   }, []);
@@ -136,25 +157,43 @@ export default function ChatContainer({ currentChat, socket }) {
                           })}
                         </span>
                       ) : (
-                        <span>{message.currenttime}</span>
+                        <span>{message.timestamp_chat}</span>
                       )}
                     </span>
                   </div>
+
                   <div className="content">
-                    <p>{message.message}</p>
+                    {message.message.split("images")[0] === "http://localhost:3333/" ? (
+                      <img src={message.message} width={100} />
+                    ) : (
+                      <p>{message.message}</p>
+                    )}
                   </div>
                 </div>
               ) : (
                 <div className="message recieved">
                   <div className="content">
-                    <p>{message.message}</p>
+                    {message.message.split("images")[0] === "http://localhost:3333/" ? (
+                      <img src={message.message} width={100} />
+                    ) : (
+                      <p>{message.message}</p>
+                    )}
                   </div>
                   <div className="sending_time">
                     <span>
                       {new Date(message.created_at).toLocaleString("th-TH", {
                         hour: "2-digit",
                         minute: "2-digit",
-                      })}
+                      }) !== "Invalid Date" ? (
+                        <span>
+                          {new Date(message.created_at).toLocaleString("th-TH", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </span>
+                      ) : (
+                        <span>{message.timestamp_chat}</span>
+                      )}
                     </span>
                   </div>
                 </div>
@@ -164,7 +203,7 @@ export default function ChatContainer({ currentChat, socket }) {
         })}
       </div>
 
-      <ChatInput handleSendMsg={handleSendMsg} />
+      <ChatInput handleSendMsg={handleSendMsg} handleSendImage={handleSendImage} />
     </Container>
   );
 }

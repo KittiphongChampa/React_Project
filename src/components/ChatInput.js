@@ -10,11 +10,12 @@ import Form from "react-bootstrap/Form";
 import io from "socket.io-client";
 import "../css/chat.css";
 
-export default function ChatInput({ handleSendMsg }) {
+export default function ChatInput({ handleSendMsg, handleSendImage }) {
   const [msg, setMsg] = useState("");
-
   const [image, setImage] = useState(null);
   const [fileName, setFileName] = useState("No selected file");
+  const [previewUrl, setPreviewUrl] = useState("");
+
 
   // const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   // const handleEmojiPickerhideShow = () => {
@@ -32,14 +33,14 @@ export default function ChatInput({ handleSendMsg }) {
       handleSendMsg(msg);
       setMsg("");
     } else {
-      console.log(image);
-      handleSendMsg(image);
+      // console.log(image);
+      handleSendImage(image);
     }
   };
 
   const [form_image, setForm_image] = useState(false);
   const Close_form_image = () => {
-    setImage(null);
+    setPreviewUrl(null);
     setForm_image(false);
   };
   const openModal = () => setForm_image(true);
@@ -47,11 +48,10 @@ export default function ChatInput({ handleSendMsg }) {
   const handleDrop = (event) => {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
+    setImage(file);
     setFileName(file.name);
-    setImage(URL.createObjectURL(file));
+    setPreviewUrl(URL.createObjectURL(file));
   };
-  // console.log('image : '+image);
-  // console.log('file name : '+fileName);
 
   const handleDragOver = (event) => {
     event.preventDefault();
@@ -104,6 +104,7 @@ export default function ChatInput({ handleSendMsg }) {
         </div>
         <Modal.Body class="d-flex justify-content-center">
           <form
+            id="sendImage"
             onClick={() => document.querySelector(".input-field").click()}
             className="dragNdrop"
             onDrop={handleDrop}
@@ -112,29 +113,27 @@ export default function ChatInput({ handleSendMsg }) {
           >
             <input
               type="file"
-              accept="image/*"
+              accept="image/png ,image/gif ,image/jpeg"
               className="input-field"
               hidden
               onChange={({ target: { files } }) => {
                 files[0] && setFileName(files[0].name);
                 if (files) {
-                  setImage(URL.createObjectURL(files[0]));
+                  setImage(files[0]);
+                  setPreviewUrl(URL.createObjectURL(files[0]));
                 }
               }}
             />
-            {image ? (
-              <img src={image} alt={fileName} className="imagePreview" />
+            {previewUrl ? (
+              <img src={previewUrl} alt={fileName} className="imagePreview" />
             ) : (
               <h4>Drop images here</h4>
             )}
-            {/* <button type="submit">
-              Send
-            </button> */}
           </form>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="danger" onClick={Close_form_image}>Close</Button>
-          <Button variant="primary" type="submit">Send</Button>
+          <Button variant="primary" type="submit" form="sendImage" onClick={Close_form_image}>Send</Button>
         </Modal.Footer>
       </Modal>
     </>

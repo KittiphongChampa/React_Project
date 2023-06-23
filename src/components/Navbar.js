@@ -87,7 +87,7 @@ const NavbarUser = (props) => {
                                 <></>
                             )}
                             <a href="/setting-coin" className="in-dropdown"><ggIcon.CurrencyExchange className='nav-icon mx-2' />ประวัติการซื้อ/ใช้เหรียญ</a>
-                            <a href="#" className="in-dropdown"><Icon.MessageCircle className='nav-icon mx-2' />แชทและออเดอร์</a>
+                            <a href="/chat" className="in-dropdown"><Icon.MessageCircle className='nav-icon mx-2' />แชทและออเดอร์</a>
                             <a href="#" className="in-dropdown"><ggIcon.Payments className='nav-icon mx-2' />ถอนเงิน</a>
                             <a href="/buycoin" className="in-dropdown"><ggIcon.MonetizationOn className='nav-icon mx-2' />เติมเหรียญ</a>
                             <a href="#" className="in-dropdown"><Icon.HelpCircle className='nav-icon mx-2' />ช่วยเหลือ</a>
