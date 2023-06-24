@@ -36,6 +36,7 @@ import Chat from './screens/Chat';
 
 //test
 import ChatContainertest from './yunscreens/ChatContainertest';
+import ManageCommission from "./screens/ManageCommission";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -56,6 +57,7 @@ root.render(
       <Route path="/forgot-password" element={<ForgotPassword/>} />
       <Route path="/reset-password" element={<ResetPassword/>} />
       <Route path="/chat" element={<Chat/>} />
+      <Route path="/manage-commission" element={<ManageCommission/>}/>
       {/* <Route path="/verify-resetPassword" element={<VerifyMail_ResetPassword/>} /> */}
       <Route path="/alluser" element={<AllUser />} />
 

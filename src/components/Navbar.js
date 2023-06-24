@@ -67,7 +67,7 @@ const NavbarUser = (props) => {
                 <div class="inline-nav">
                     <a href="#"><Icon.Bell className='nav-icon' /><i data-feather="bell" class="nav-icon"></i></a>
                     <a href="#"><Icon.MessageCircle className='nav-icon' /><i data-feather="message-circle" class="nav-icon"></i></a>
-                    <a href="#"><Icon.PlusSquare className='nav-icon' /></a>
+                    <a href="/manage-commission"><Icon.PlusSquare className='nav-icon' /></a>
                     <div className="show-coin">
                         <p>{urs_token} P</p>
                     </div>

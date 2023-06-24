@@ -19,7 +19,7 @@ import { ChangeCoverModal, openInputColor } from "../modal/ChangeCoverModal"
 import CmsItem from "../components/CmsItem";
 
 
-const title = 'ตั้งเป็นชื่อ user';
+const title = 'หน้าแรก';
 const bgImg = "";
 const body = { backgroundImage: "url('seamoon.jpg')" }
 
