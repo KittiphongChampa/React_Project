@@ -17,6 +17,7 @@ import Profile from './Profile';
 import ChangeProfileImgModal from "../modal/ChangeProfileImgModal";
 import { ChangeCoverModal, openInputColor } from "../modal/ChangeCoverModal"
 import CmsItem from "../components/CmsItem";
+import { Link } from 'react-router-dom';
 
 const title = 'ตั้งเป็นชื่อ user';
 const bgImg = ""
@@ -47,7 +48,7 @@ export default function HomePage() {
                         </div>
                     </div>
 
-                    <div className=" content-container user-profile-contentCard">
+                    <div className=" content-container user-profile-contentCard" >
                         <div class="content-type">
                             <button className="sub-menu selected">ทั้งหมด</button>
                             <button className="sub-menu">คอมมิชชัน</button>
@@ -59,7 +60,7 @@ export default function HomePage() {
                                 <h2>คอมมิชชันล่าสุด</h2>
                             </div>
                             <div class="content-items">
-                                <CmsItem />
+                                <Link to="/cmsdetail"><CmsItem /></Link>
                                 <CmsItem />
                                 <CmsItem />
                                 <CmsItem />

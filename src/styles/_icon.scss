@@ -1,0 +1,25 @@
+.fill-icon {
+    font-size: 20px !important;
+    color: rgb(255, 205, 40);
+    padding: 0 !important;
+    vertical-align: text-top !important;
+}
+
+.plus-icon {
+    width: 48px;
+    height: 48px;
+    background-color: aqua;
+    border-radius: 200px;
+    padding: 0.7rem;
+    color: black;
+}
+
+.send-icon {
+    width: 48px;
+    height: 48px;
+    padding: 0.7rem;
+    border-radius: 200px;
+    display: flex;
+    width: 100%;
+    align-items: center;
+}

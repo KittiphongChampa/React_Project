@@ -89,7 +89,7 @@ a:visited {
     white-space: nowrap;
     width: fit-content;
     position: absolute;
-    top: 100%;
+    top: 100%; /*ลงมาอยู่ล่าง ถ้าtop 0 จะอยู่บนสุด*/
     right: 0;
     list-style: none;
     border-radius: 20px;

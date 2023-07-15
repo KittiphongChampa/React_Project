@@ -28,6 +28,9 @@ import AdminManagement from './screens/AdminManagement';
 import UserProfile from './screens/UserProfile';
 import HomePage from './screens/HomePage';
 import FirstPage from './screens/FirstPage';
+import CmsDetail from './screens/CmsDetail';
+import ChatBox from './screens/ChatBox';
+
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -61,6 +64,11 @@ root.render(
       <Route path="/userprofile" element={<UserProfile />} />
       <Route path="/homepage" element={<HomePage />} />
       <Route path="/firstpage" element={<FirstPage />} />
+
+
+      {/*------มาใหม่---- */}
+      <Route path="/cmsdetail" element={<CmsDetail />} />
+      <Route path="/chatbox" element={<ChatBox />} />
 
     </Routes>
   </BrowserRouter>
