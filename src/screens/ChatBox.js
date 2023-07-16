@@ -65,11 +65,13 @@ export default function ChatBox() {
 
 
     useEffect(() => {
-        chat.current.scrollIntoView({ behavior: 'smooth' });
-    }, [messages]);
+        chat.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messages, currentChat]);
+
 
     const toBottom = () => {
-        setMessages(prevMessages => [...prevMessages, <ChatMessage message={message} chatType="1" />]);
+        setMessages(prevMessages => [...prevMessages, <ChatMessage message={message} chatType="2" />]);
+
     };
 
     function menuChat(event, menu) {
@@ -97,8 +99,8 @@ export default function ChatBox() {
             <div className={"chat-item " + (currentChat == props.id ? "selected" : "")} onClick={props.onClick} id={props.id}>
                 <img src="b3.png"></img>
                 <div>
-                    {!isToggled && <><p className="order">ออเดอร์ xxxxx</p>
-                        <p className="message">ข้อความ..</p>
+                    {!isToggled && <><p className="order">ออเsssssดอร์ xssssssxxxx</p>
+                        <p className="message">ข้อควsssssssssssssssssss</p>
                         <p className="time"><span className="stat">00:12 น.</span></p></>}
 
 
@@ -117,15 +119,6 @@ export default function ChatBox() {
     const chatSelected = (id) => {
         setCurrentChat(id)
         console.log('chat user ืำงาน')
-        // let oo = document.querySelector('.chat-item.selected')
-        // oo.classList.remove('selected')
-
-        // const o = document.getElementById(id)
-        // o.classList.add('selected')
-
-
-
-        // oos.classList.add('arrow')
     }
 
 
@@ -147,6 +140,42 @@ export default function ChatBox() {
         show.forEach((chat) => {
             chat.style.display = 'block'
         });
+    }
+
+    function SelectedChat(props) {
+
+
+
+
+        return <>
+            <div className="chat-header">
+                <div className="chat-name">
+                    <img src="b3.png"></img>
+                    <div><p>Full color by boobii : bust-up full color</p><p>สั่งโดยxxxx</p></div>
+                </div>
+                <div className="status-chat-header">
+                    <p>คิว1</p><p>รอจ่ายเงิน</p>
+                </div>
+                <p className="menu-icon-chat"><Icon.Menu className='' /></p>
+            </div>
+            <div className="chat" >
+                <div className="time-message">10.54 น.</div>
+                <div className="system-message">ข้อความระบบ</div>
+                <ChatMessage message={message} chatType="1" />
+                <ChatMessage message={message} chatType="2" />
+                <ChatMessage message="ฮิ" chatType="1" />
+                <ChatMessage message="ฮุ" chatType="1" />
+                <div className="system-message">ข้อความระบบ</div>
+                <div className="system-message">ข้อความระบบ</div>
+                {messages}
+                <div ref={chat}></div>
+
+            </div >
+
+            <div className="chat-sender">
+                <Icon.Plus className='plus-icon' /><input type="text" placeholder="พิมพ์ข้อความ..."></input><button onClick={toBottom}><Icon.Send className='send-icon' /></button>
+            </div>
+        </>
     }
 
     return (
@@ -185,7 +214,7 @@ export default function ChatBox() {
                                 height={24}
                                 width={48}
                             />
-                            <p className="ms-2">เปิดดูคิวและสถานะs</p></div>
+                            <p className="ms-2 text-white">เปิดดูคิวและสถานะ</p></div>
                     </div>
                     {/* <div></div> */}
 
@@ -194,73 +223,18 @@ export default function ChatBox() {
                         <UserChat id="1" onClick={() => chatSelected('1')} />
                         <UserChat id="2" onClick={() => chatSelected('2')} />
                         <UserChat id="3" onClick={() => chatSelected('3')} />
-
-                        {/* <div className="chat-item selected">
-                            <img src="b3.png"></img>
-                            <div>
-                                <p>xxxx</p>
-                                <p>bust-up full color..</p>
-                                <p><span className="q">คิวที่1</span><span className="stat">รอชำระเงิน</span></p>
-                            </div>
-                        </div>
-                        <div className="qq">
-                            <div className="arrow" />
-                        </div> */}
-
-
-
-                        {/* <div /> */}
-                        {/* <div className="chat-item">
-                            <img src="b3.png"></img>
-                            <div>
-                                <p></p>
-                                <p>bust-up full color..</p>
-                                <p></p>
-                            </div>
-                        </div> */}
-
-
-
                     </div>
                 </div>
 
 
                 {/* -----ดิฟ2  กดแล้วให้เปลี่ยนตรงนี้------*/}
                 <div className="chat-room">
-                    <div className="chat-header">
-                        <div className="chat-name">
-                            <img src="b3.png"></img>
-                            <div><p>Full color by boobii : bust-up full color</p><p>สั่งโดยxxxx</p></div>
-                        </div>
-                        <div className="status-chat-header">
-                            <p>คิว1</p><p>รอจ่ายเงิน</p>
-                        </div>
-                        <p className="menu-icon-chat"><Icon.Menu className='' /></p>
-                    </div>
-                    <div className="chat" >
-                        <div className="time-message">10.54 น.</div>
-                        <div className="system-message">ข้อความระบบ</div>
-                        <ChatMessage message={message} chatType="1" />
-                        <ChatMessage message={message} chatType="2" />
-                        <ChatMessage message="ฮิ" chatType="1" />
-                        <ChatMessage message="ฮุ" chatType="1" />
-                        <div className="system-message">ข้อความระบบ</div>
-                        <div className="system-message">ข้อความระบบ</div>
-                        {messages}
-                        <div ref={chat}></div>
-
-                    </div >
-
-
-                    {/* <div className="their-message">ข้อความของเขา</div>
-                    <div className="my-message">ข้อความของเรา</div> */}
-
-                    <div className="chat-sender">
-                        <Icon.Plus className='plus-icon' /><input type="text" placeholder="พิมพ์ข้อความ..."></input><button onClick={toBottom}><Icon.Send className='send-icon' /></button>
-                    </div>
+                    {currentChat ? <SelectedChat /> : <p>ไม่มีแชทปจบ</p>}
                 </div>
 
             </div >
         </>
     );
 }
+
+

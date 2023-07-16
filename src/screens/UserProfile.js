@@ -1,48 +1,97 @@
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
+import * as Icon from 'react-feather';
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form"
-import * as Icon from 'react-feather';
-
 import "../css/indexx.css";
 import "../css/allbutton.css";
 import "../css/profileimg.css";
-//import { Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Helmet } from "react-helmet";
 import DefaultInput from "../components/DefaultInput";
-import {NavbarUser,NavbarAdmin,NavbarHomepage} from "../components/Navbar";
-import UserBox from "../components/UserBox";
 import inputSetting from "../function/function";
 import ProfileImg from "../components/ProfileImg";
-import Profile from './Profile';
+// import Profile from '../yunscreens/Profile';
+import { NavbarUser, NavbarAdmin, NavbarHomepage } from "../components/Navbar";
+
+
 import ChangeProfileImgModal from "../modal/ChangeProfileImgModal";
 import { ChangeCoverModal, openInputColor } from "../modal/ChangeCoverModal"
+// import { Button } from 'react-bootstrap/Button';
+import Button from "react-bootstrap/Button";
+import CmsItem from "../components/CmsItem";
+import { Link } from 'react-router-dom';
 
-const title = 'ตั้งเป็นชื่อ user';
+const title = 'Profile';
 const bgImg = ""
 const body = { backgroundColor: "#F4F1F9" }
 
 
 export default function UserProfile() {
-
-    const modalChangeProfileImgRef = useRef(null)
-    const modalChangeCoverRef = useRef(null)
+    const navigate = useNavigate();
+    const token = localStorage.getItem("token");
+    const [userdata, setUserdata] = useState([]);
     const [showCoverModal, setShowCoverModal] = useState(null)
     const [showProfileModal, setShowProfileModal] = useState(null)
 
+    const [myFollower, setMyFollowerIds] = useState([]);
+    const [iFollowing, setIFollowingsIds] = useState([]);
+
+    // useEffect(() => {
+    //     if (localStorage.getItem("token")) {
+    //         if (window.location.pathname === "/login") {
+    //             navigate("/profile")
+    //         }
+    //     } else {
+    //         navigate("/login")
+    //     }
+    //     getUser();
+    // }, [myFollower, iFollowing]);
+
+    // const getUser = async () => {
+    //     await axios
+    //         .get("http://localhost:3333/profile", {
+    //             headers: {
+    //                 Authorization: "Bearer " + token,
+    //             },
+    //         })
+    //         .then((response) => {
+    //             const data = response.data;
+    //             if (data.status === "ok") {
+    //                 setUserdata(data.users[0]);
+    //                 setMyFollowerIds(data.MyFollowerIds);
+    //                 setIFollowingsIds(data.IFollowingsIds);
+    //             } else if (data.status === "no_access") {
+    //                 alert(data.message);
+    //                 navigate('/admin');
+    //             } else {
+    //                 //   toast.error("ไม่พบผู้ใช้งาน", toastOptions);
+    //             }
+    //         });
+    // };
+
+    function menuProfile(event, menu) {
+        let oldSelected = document.querySelector('.sub-menu.selected')
+        oldSelected.classList.remove('selected')
+        event.target.classList.add('selected')
+        setprofileMenuSelected(menu)
+    }
 
     const openModal = (modal) => {
         if (modal === "profile") {
-            const ProfileModal = <ChangeProfileImgModal setShowProfileModal={setShowProfileModal} />
+            const ProfileModal = <ChangeProfileImgModal profile={userdata.urs_profile_img} setShowProfileModal={setShowProfileModal} />
             setShowProfileModal(ProfileModal)
         } else {
-            const CoverModal = <ChangeCoverModal setShowCoverModal={setShowCoverModal} />
+            const CoverModal = <ChangeCoverModal profile={userdata.urs_profile_img} setShowCoverModal={setShowCoverModal} />
             setShowCoverModal(CoverModal)
             // openInputColor()
         }
     }
+
+    const [profileMenuSelected, setprofileMenuSelected] = useState('cms')
+
 
     return (
         <>
@@ -51,7 +100,7 @@ export default function UserProfile() {
             </Helmet>
             {showCoverModal}
             {showProfileModal}
-
+            {/* <Navbar /> */}
             <NavbarUser />
             <div class="body-nopadding" style={body}>
 
@@ -62,17 +111,21 @@ export default function UserProfile() {
                     </div>
                     <div className="container profile-page">
                         <div className="user-profile-area">
+
                             <div className="user-col-profile">
-                                <ProfileImg src="b3.png" type="show" onPress={() => openModal("profile")} />
-                                <p className="username-profile fs-5">ณัฐพิมล เมืองวุฒทานันท์ นันันันันันนันสวัสดีสวัสดี</p>
+                                <ProfileImg src={userdata.urs_profile_img} type="show"
+                                    onPress={() => openModal("profile")}
+                                />
+                                {/* <ProfileImg src="b3.png" type="show" onPress={() => openModal("profile")} /> */}
+                                <p className="username-profile fs-5">{userdata.urs_name}</p>
                                 <p className="follower-profile">follower</p>
                                 <div className="group-btn-area">
-                                    <button className="message-btn"><Icon.MessageCircle /></button>
-                                    <button className="follow-btn">ติดตาม</button>
-                                    <button className="follow-btn">แก้ไขโปรไฟล์</button>
+                                    {/* <button className="message-btn"><Icon.MessageCircle /></button>
+                                        <button className="follow-btn">ติดตาม</button> */}
+                                    <a href="/setting-profile"><button className="follow-btn" >แก้ไขโปรไฟล์</button></a>
                                 </div>
                                 <p className="bio-profile">
-                                    xxxxxxxxxxxxxxxxxxxxxxxxxxxxx,dsl odifbodiufbis  ihdsofindsifndsiofnspd;f idosfinsdnkflkdsnfl iusdbfidsbfsbfie sxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxofindsifndsiofnspd;f idosfinsdnkflepfonesfpose sepofnesfeofnepfnspofsefms;ofm;m esffuhdsfn dofhs
+                                    {userdata.urs_bio}
                                 </p>
                             </div>
                             <div className="user-col-about">
@@ -84,6 +137,8 @@ export default function UserProfile() {
                                     <div className="user-about-review mb-4"><p className="fs-3">4.0</p> <p>จาก 5 รีวิว</p></div>
                                     <div className="user-about-text">
                                         <div>
+                                            <p>ผู้ติดตาม {myFollower.length}</p>
+                                            <p>กำลังติดตาม {iFollowing.length}</p>
                                             <p>งานสำเร็จแล้ว 10 งาน</p>
                                             <p>ใช้งานล่าสุดเมื่อ 12 ชั่วโมงที่แล้ว</p>
                                             <p>ตอบกลับภายใน 1 ชั่วโมง</p>
@@ -93,70 +148,69 @@ export default function UserProfile() {
                                             <p>คิวว่าง 1 คิว</p>
 
                                         </div>
-
-
                                     </div>
                                 </div>
-
                             </div>
 
                         </div>
                         <div className="user-profile-contentCard">
-                            <button className="sub-menu selected">ทั้งหมด</button>
-                            <button className="sub-menu">คอมมิชชัน</button>
-                            <button className="sub-menu">แกลลอรี่</button>
-                            <button className="sub-menu">รีวิว</button>
+                            {/* <button className="sub-menu selected" onClick={(event) => menuProfile(event, 'all')}>ทั้งหมด</button> */}
+                            <button className="sub-menu selected" onClick={(event) => menuProfile(event, 'cms')}>คอมมิชชัน</button>
+                            <button className="sub-menu" onClick={(event) => menuProfile(event, 'gallery')}>แกลลอรี่</button>
+                            <button className="sub-menu" onClick={(event) => menuProfile(event, 'review')}>รีวิว</button>
+                            {profileMenuSelected === "cms" ? <AllCms /> : null}
+                            {profileMenuSelected === "gallery" ? <AllArtworks /> : null}
+                            {profileMenuSelected === "review" ? <AllReviews /> : null}
+
+                            {/* <div className="headding-seeall"><p className="h2">รีวิว</p> <p>ดูรีวิวทั้งหมด</p></div>
+                            <div className="headding-seeall"><p className="h2">แกลอรี่</p> <p>ดูทั้งหมด</p></div> */}
+
                         </div>
+
+
+
                     </div>
 
                 </div>
 
-
-
-
-
-
-                {/* <div class="container">
-                    <div class="cover-img-relative">
-                        <div class="profile-desc-box">
-                            <div class="profile-img-profile-page">
-                                <img src="b3.png" alt="" />
-                            </div>
-                            <div class="profile-desc-text">
-                                <p class="profile-name">บู๋บี๋</p>
-                                <p class="profile-follower">ผู้ติดตาม 0 คน</p>
-                                <p class="profile-bio">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries</p>
-
-
-                                <button class="profile-chat-btn">แชท</button>
-                                <button class="profile-follow-btn">ติดตาม</button>
-
-
-                            </div>
-                        </div>
-                        <div class="common-profile-page">
-
-                            <div class="profile-overview">
-                                <p>รีวิว</p>
-                                <p>งานที่เสร็จ</p>
-                                <p>ใช้งานล่าสุด</p>
-                            </div>
-
-                        </div>
-
-                        <div class="cover-img-box">
-                            <div class="cover-img"></div>
-                            <p>ว่าง</p>
-                        </div>
-                    </div>
-
-                    <div class="content-type">
-                        <a href="">ทั้งหมด</a><a href="">คอมมิชชัน</a><a href="">แกลอรี่</a>
-                    </div>
-                </div> */}
             </div>
+
+
 
 
         </>
     );
+}
+
+
+function AllCms(props) {
+    return <>
+        <p className="h3 mt-3 mb-2">คอมมิชชัน</p>
+        <div class="content-items">
+            <Link to="/cmsdetail"><CmsItem src="AB1.png" price="100" headding="Chibi Style" desc="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"/></Link>
+            <Link to="/cmsdetail"><CmsItem src="Blaze_Taylor.png" price="500" headding="SD Style" desc="รับวาดรูปxxxx" /></Link>
+            {/* <Link to="/cmsdetail"><CmsItem src="bird.png" price="100" headding="หัวข้อ3" desc="รับวาดรูปxxxx" /></Link> */}
+            {/* <Link to="/cmsdetail"><CmsItem src="b3.png" price="100" headding="หัวข้อ4" desc="รับวาดรูปxxxx" /></Link> */}
+        </div>
+
+    </>
+}
+
+function AllArtworks(props) {
+    return <>
+        <p className="h3 mt-3 mb-2">แกลอรี่</p>
+        <div className="profile-gallery">
+            <img src="b3.png" />
+            <img src="AB1.png" />
+            <img src="mainmoon.jpg" />
+            <img src="b3.png" />
+            <img src="b3.png" />
+        </div>
+    </>
+}
+
+function AllReviews(props) {
+    return <>
+        <p className="h3 mt-3 mb-2">รีวิว</p>
+    </>
 }

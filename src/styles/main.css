@@ -9,10 +9,10 @@
 .plus-icon {
   width: 48px;
   height: 48px;
-  background-color: aqua;
+  background-color: #061228;
   border-radius: 200px;
   padding: 0.7rem;
-  color: black;
+  color: white;
 }
 
 .send-icon {
@@ -48,6 +48,12 @@
   height: 100%;
   -o-object-fit: contain;
      object-fit: contain;
+  overflow: hidden;
+}
+
+.oneline-textoverflow, .chatbox-container .chat-list .chat-item p.time, .chatbox-container .chat-list .chat-item p.message, .chatbox-container .chat-list .chat-item p.order {
+  text-overflow: ellipsis;
+  white-space: nowrap;
   overflow: hidden;
 }
 
@@ -281,6 +287,11 @@ div.select-package-item div {
   border-radius: 1.25rem;
   border: 1px solid #d4d6ff;
   background: rgba(255, 255, 255, 0.61);
+  overflow: hidden;
+  width: 100%;
+}
+.chatbox-container .chat-list .chat-item:hover {
+  background-color: rgb(221, 225, 231);
 }
 .chatbox-container .chat-list .chat-item img {
   width: 3.5rem;
@@ -291,9 +302,11 @@ div.select-package-item div {
   margin-right: 1rem;
 }
 .chatbox-container .chat-list .chat-item p.order {
+  width: 80%;
   color: #5c5b7b;
 }
 .chatbox-container .chat-list .chat-item p.message {
+  width: 80%;
   color: #525764;
   padding-bottom: 0.3rem;
   font-weight: 400;
@@ -345,7 +358,7 @@ div.select-package-item div {
   border-bottom: 40px solid transparent;
 }
 .chatbox-container .chat-room {
-  flex: 5;
+  flex: 1;
   background-color: #FCFBFF;
   display: flex;
   flex-direction: column;
@@ -397,7 +410,6 @@ div.select-package-item div {
   width: 100%;
 }
 .chatbox-container .chat-room .chat-sender button {
-  background-color: rgb(217, 139, 60);
   border: 0px;
   padding: 0;
   border-radius: 20rem;
@@ -457,4 +469,25 @@ div.select-package-item div {
   width: -moz-fit-content;
   width: fit-content;
   color: white;
+}
+
+.profile-gallery {
+  background-color: #5c5b7b;
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 0.5rem;
+  -moz-column-gap: 0.5rem;
+       column-gap: 0.5rem;
+}
+.profile-gallery img {
+  flex: 1 1 auto;
+  min-height: 5rem;
+  max-height: 20rem;
+}
+
+.headding-seeall {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }/*# sourceMappingURL=main.css.map */

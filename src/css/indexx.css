@@ -5,6 +5,28 @@
     letter-spacing: 0.03rem;
 }
 
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+    z-index: 90;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #D9D9D9;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #1D216B;
+    /* border-radius: 100px; */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(11, 14, 60);
+}
+
 a {
     text-decoration: none;
     color: #000000;
@@ -14,7 +36,6 @@ a {
     text-align: center;
 }
 
-/*เว้น paddingด้านบนเยอะ เช่น ล็อกอิน*/
 .body {
     min-height: 100vh;
     background-position: center;
@@ -34,7 +55,6 @@ p {
     font-weight: 300;
 }
 
-/*เว้นแพดดิ้งไม่ให้ติด navbar นิดๆ เช่น หน้าการจัดการของแอดมิน*/
 .body-lesspadding {
     min-height: 100vh;
     max-height: fit-content;
@@ -46,7 +66,6 @@ p {
     padding-top: 4.375rem;
 }
 
-/*เว้นแพดดิ้งให้ติดต่อใต้ navbar แบบพอดี เช่น หน้าโปรไฟล์*/
 .body-nopadding {
     min-height: 100vh;
     max-height: fit-content;
@@ -861,7 +880,7 @@ input[type="color"]::-webkit-color-swatch {
     grid-column-start: 1;
     box-sizing: border-box;
     margin-top: 5.6rem;
-    /* margin-inline: auto; */
+    margin-inline: auto;
     height: fit-content;
     padding-bottom: 3.1rem;
     margin-inline: auto;
@@ -905,7 +924,6 @@ input[type="color"]::-webkit-color-swatch {
     background: rgba(255, 255, 255, 0.9);
     box-shadow: 0px 1.25rem 45px -12px rgba(2, 49, 240, 0.1);
     backdrop-filter: blur(10px);
-    /*การใส่แบคดรอปฟีลเตอร์ทำให้มันอยู่บนสุด*/
     border-radius: 319px 319px 43px 38px;
     display: flex;
     flex-direction: column;
@@ -1140,6 +1158,7 @@ input[type="color"]::-webkit-color-swatch {
     overflow: hidden;
     border: 1px solid #9B9FAD;
 
+
 }
 
 
@@ -1215,10 +1234,16 @@ input[type="color"]::-webkit-color-swatch {
 .cms-card-headding {
     font-weight: 500;
     color: #58648F;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .cms-card-desc {
     color: rgba(108, 119, 157, 0.69);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 /**--------------------------------------------------------------------------------------------------*/
