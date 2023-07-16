@@ -1,3 +1,24 @@
+export const verifyEmainSuccess = {
+  title: 'ส่ง OTP สำเร็จ โปรดตรวจสอบรหัสยืนยันบนอีเมลของท่าน',
+  icon: 'success',
+  iconColor: '#7E9AFA',
+  confirmButtonText: 'ตกลง',
+}
+
+export const registerSuccess = {
+  title: 'สมัครสมาชิกสำเร็จ',
+  icon: 'success',
+  iconColor: '#7E9AFA',
+  confirmButtonText: 'ตกลง',
+}
+
+export const otpisnotcorrect = {
+  title: 'รหัส OTP ไม่ถูกต้อง กรุณาลองใหม่',
+  icon: 'error',
+  iconColor: 'red',
+  confirmButtonText: 'ตกลง',
+}
+
 export const LoginError = {
   title: "อีเมลล์หรือรหัสผ่านไม่ถูกต้อง",
   icon: "error",
@@ -72,7 +93,7 @@ export const BuycoinSuccess = {
 }
 
 export const changeProfileImgConfirm = {
-    title: 'ต้องการเปลี่ยนภาพโปรไฟล์หรือไม่?',
+    title: 'ต้องการเปลี่ยนสีพื้นหลังหรือไม่?',
     icon: 'question',
     showCancelButton: true,
     confirmButtonText: 'ตกลง',
@@ -115,3 +136,4 @@ export const success = {
   iconColor: '#7E9AFA',
   confirmButtonText: 'ตกลง',
 }
+

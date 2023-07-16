@@ -1,16 +1,3 @@
-// import Avatar from '@mui/material/Avatar';
-// import Button from '@mui/material/Button';
-// import CssBaseline from '@mui/material/CssBaseline';
-// import TextField from '@mui/material/TextField';
-// import FormControlLabel from '@mui/material/FormControlLabel';
-// import Checkbox from '@mui/material/Checkbox';
-// import Link from '@mui/material/Link';
-// import Grid from '@mui/material/Grid';
-// import Box from '@mui/material/Box';
-// import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-// import Typography from '@mui/material/Typography';
-// import Container from '@mui/material/Container';
-// import { createTheme, ThemeProvider } from '@mui/material/styles';
 import React, { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -28,6 +15,9 @@ import DefaultInput from "../components/DefaultInput";
 // import Navbar from "../components/Navbar";
 import ProfileImg from "../components/ProfileImg.js";
 // import ImportScript from "../components/ImportScript";
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import "sweetalert2/src/sweetalert2.scss";
+import * as alertData from "../alertdata/alertData";
 
 const title = "สร้างบัญชี";
 
@@ -43,20 +33,26 @@ export default function SignUp() {
   const navigate = useNavigate();
   const location = useLocation();
   const email = new URLSearchParams(location.search).get("email");
-  console.log(email);
+  // console.log(email);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {}, []);
 
+  const [pdpaAccept, setPdpaAccept] = useState(false);
   const [values, setValues] = useState({
     username: "",
     password: "",
     confirmpassword: "",
   });
-  // console.log(values);
+  console.log(values);
 
   const handleChange = (event) => {
-    setValues({ ...values, [event.target.name]: event.target.value });
+    const { name, value, type, checked } = event.target;
+    if (type === "checkbox") {
+      setPdpaAccept(checked);
+    } else {
+      setValues({ ...values, [event.target.name]: event.target.value });
+    }
   };
 
   const [file, setFile] = useState("");
@@ -94,6 +90,8 @@ export default function SignUp() {
     } else if (password.length < 8) {
       toast.error("password should be greater than 8 characters", toastOptions);
       return false;
+    } else if (pdpaAccept != true) {
+      toast.error("ไม่สามารถสมัครสมาชิกได้เนื่องจากไม่ได้ยอมรับเงื่อนไขการใช้บริการ", toastOptions);
     }
     return true;
   };
@@ -107,6 +105,7 @@ export default function SignUp() {
       formData.append("file", file);
       formData.append("username", values.username);
       formData.append("password", values.password);
+      formData.append("pdpaAccept", pdpaAccept);
       const token = localStorage.getItem("token");
       await axios
         .post("http://localhost:3333/register", formData, {
@@ -119,7 +118,10 @@ export default function SignUp() {
           const data = response.data;
           if (data.status === "ok") {
             localStorage.setItem("token", data.token);
-            navigate("/");
+            // navigate("/");
+            Swal.fire({ ...alertData.registerSuccess }).then(
+              navigate("/")
+            )
           } else if (data.status === "error") {
             toast.error(data.message, toastOptions);
           } else {
@@ -158,8 +160,6 @@ export default function SignUp() {
               <h1 className="text-center">{title} </h1>
 
               <ProfileImg src={previewUrl} onPress={addProfileImg}/>
-              {/* <input type="file" className="file-input" onChange={handleFileChange} accept="image/png ,image/gif ,image/jpeg"/> */}
-              {/* {previewUrl && <img src={previewUrl} alt="Preview" width={250} height={250}/>} */}
 
               <p className="text-center">รูปโปรไฟล์</p>
 
@@ -179,27 +179,6 @@ export default function SignUp() {
                   name="username"
                   onChange={(e) => handleChange(e)}
                 />
-                {/* <DefaultInput 
-                  headding="ชื่อ" 
-                  type="text" 
-                  id="firstname"
-                  name="firstname"
-                  onChange={(e) => handleChange(e)}
-                />
-                <DefaultInput 
-                  headding="นามสกุล" 
-                  type="text" 
-                  id="lastname"
-                  name="lastname"
-                  onChange={(e) => handleChange(e)}
-                />
-                <DefaultInput 
-                  headding="วันเกิด" 
-                  type="date" 
-                  id="birthday"
-                  name="birthday"
-                  onChange={(e) => handleChange(e)}
-                /> */}
                 <DefaultInput 
                   headding="รหัสผ่าน" 
                   type="password" 
@@ -215,7 +194,12 @@ export default function SignUp() {
                   onChange={(e) => handleChange(e)}
                 />
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
+                  <input  class="form-check-input"
+                    type="checkbox"
+                    name="pdpaAccept"
+                    value={pdpaAccept}
+                    id="flexCheckDefault"
+                    onChange={handleChange}/>
                   <label class="form-check-label" for="flexCheckDefault">
                     ยอมรับเงื่อนไขการใช้บริการ
                   </label>

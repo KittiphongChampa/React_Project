@@ -8,7 +8,7 @@ import Register from './screens/Register';
 import Login from './screens/Login';
 import Welcome from './screens/Welcome';
 import Index from './screens/Index';
-import Profile from './yunscreens/Profile';
+// import ProfileTest from './yunscreens/ProfileTest';
 import TransactionHistory from './screens/TransactionHistory';
 import Verify from './secondary_screens/Verify';
 import Editprofile from './yunscreens/Editprofile';
@@ -26,9 +26,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 // mint
 import EditCoin from './screens/EditCoin';
-import UserProfile from './screens/UserProfile';
+import Profile from './screens/Profile';
 import BuyCoin from './screens/BuyCoin';
-import AdminManagement from './screens/AdminManagement';
+import AdminManageUser from './screens/AdminManageUser';
 import SettingProfile from './screens/SettingProfile';
 import SettingCoin from './screens/SettingCoin';
 import NewPassword from './yunscreens/NewPassword';
@@ -37,6 +37,7 @@ import Chat from './screens/Chat';
 //test
 import ChatContainertest from './yunscreens/ChatContainertest';
 import ManageCommission from "./screens/ManageCommission";
+import ChatBox from "./screens/Chatbox";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -48,8 +49,8 @@ root.render(
       <Route path="/login" element={<Login />} />
       <Route path="/verify" element={<Verify />} />
       <Route path="/register" element={<Register />} />
-      {/* <Route path="/profile" element={<Profile />} /> */}
-      <Route path="/profile" element={<UserProfile />} />
+      {/* <Route path="/profileTest" element={<ProfileTest />} /> */}
+      <Route path="/profile" element={<Profile />} />
       <Route path="/profile/:id" element={<ViewProfile />} />
       <Route path="/editprofile" element={<Editprofile />} />
       <Route path="/buytoken" element={<Buytoken/>} />
@@ -71,9 +72,11 @@ root.render(
       <Route path="/setting-profile" element={<SettingProfile />} />
       <Route path="/newpassword" element={<NewPassword />} />
 
+      <Route path="/chatbox" element={<ChatBox />} />
+
       {/*admin*/}
       <Route path="/setting-coin" element={<SettingCoin />} />
-      <Route path="/admin/alluser" element={<AdminManagement />} />
+      <Route path="/admin/alluser" element={<AdminManageUser />} />
       <Route path="/admin/transaction" element={<TransactionHistory />} />
 
     {/* test */}

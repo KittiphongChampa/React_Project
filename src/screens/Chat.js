@@ -104,9 +104,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 1rem;
+  // gap: 1rem;
   align-items: center;
-  background-color: #131324;
+  // background-color: #131324;
   .container {
     height: 85vh;
     width: 85vw;

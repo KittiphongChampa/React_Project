@@ -13,6 +13,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import Lottie from "lottie-react";
 import loading from "../loading.json";
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import "sweetalert2/src/sweetalert2.scss";
+import * as alertData from "../alertdata/alertData";
 
 const toastOptions = {
   position: "bottom-right",
@@ -83,7 +86,8 @@ export default function Verify() {
         .then((response) => response.json())
         .then((data) => {
           if (data.status === "ok") {
-            toast.success("Send OTP success", toastOptions);
+            // toast.success("Send OTP success", toastOptions);
+            Swal.fire({ ...alertData.verifyEmainSuccess })
             const submitOtpBtn = document.getElementById("submit-otp-btn");
             submitOtpBtn.classList.remove("disabled-btn");
             submitOtpBtn.removeAttribute("disabled");
@@ -118,11 +122,12 @@ export default function Verify() {
         .then((response) => response.json())
         .then((data) => {
           if (data.status === "ok") {
-            toast.success(data.message, toastOptions);
+            // toast.success(data.message, toastOptions);
             const queryParams = new URLSearchParams({ email });
             window.location = `/register?${queryParams.toString()}`;
           } else {
-            toast.error(data.message, toastOptions);
+            // toast.error(data.message, toastOptions);
+            Swal.fire({ ...alertData.otpisnotcorrect })
           }
         })
         .catch((error) => {

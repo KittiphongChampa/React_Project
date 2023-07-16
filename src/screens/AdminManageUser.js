@@ -17,13 +17,14 @@ import ProfileImg from "../components/ProfileImg";
 // import Profile from './Profile';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Button } from 'react-bootstrap';
 
 const title = 'จัดการแอดมิน';
 const bgImg = ""
 const body = { backgroundColor: "#F4F1F9" }
 
 
-export default function AdminManagement() {
+export default function AdminManageUser() {
     const navigate = useNavigate();
     const jwt_token = localStorage.getItem("token");
     const [user, setUser] = useState([]);
@@ -74,6 +75,10 @@ export default function AdminManagement() {
         setFilteredUser(filtered);
     };
 
+    const manageUser = () => {
+      console.log('เข้า', );
+    }
+
     return (
         <>
             <Helmet>
@@ -95,8 +100,9 @@ export default function AdminManagement() {
                     <h2>รายชื่อผู้ใช้</h2>
                     <div className="user-item-area">
                         {filteredUser.map((item, index) => (
-                            <div key={index}>
-                                <UserBox src={item.urs_profile_img} username={item.urs_name} userid={item.id} />
+                            <div key={index} onClick={manageUser}>
+                              <UserBox src={item.urs_profile_img} username={item.urs_name} userid={item.id}/>
+                              <button>test</button>
                             </div>
                         ))}
                     </div>

@@ -33,7 +33,7 @@ const toastOptions = {
   theme: "dark",
 };
 
-export default function Profile() {
+export default function ProfileTest() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [userdata, setUserdata] = useState([]);

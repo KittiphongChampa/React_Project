@@ -12,6 +12,7 @@ import Swal from 'sweetalert2/dist/sweetalert2.js'
 import 'sweetalert2/src/sweetalert2.scss'
 import * as alertData from '../alertdata/alertData';
 import ProfileImg from "../components/ProfileImg";
+import axios from "axios";
 
 const openInputColor = () => {
 
@@ -29,6 +30,16 @@ const ChangeCoverModal = (props) => {
     }, [])
 
     const submitChangeCoverForm = (data) => {
+
+        const colorPicker = document.getElementById("color-input");
+        const colorValue = colorPicker.value;
+
+        console.log(colorValue);
+        axios.post("http://localhost:3333/update/cover", {
+
+        })
+
+
         Swal.fire({ ...alertData.changeProfileImgConfirm }).then((result) => {
             if (result.isConfirmed) {
                 console.log()

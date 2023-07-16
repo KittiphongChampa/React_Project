@@ -26,11 +26,11 @@ import * as alertData from "../alertdata/alertData";
 
 const title = "ตั้งค่าโปรไฟล์";
 const toastOptions = {
-    position: "bottom-right",
-    autoClose: 1000,
-    pauseOnHover: true,
-    draggable: true,
-    theme: "dark",
+  position: "bottom-right",
+  autoClose: 1000,
+  pauseOnHover: true,
+  draggable: true,
+  theme: "dark",
 };
 
 export default function SettingProfile() {
@@ -102,9 +102,9 @@ export default function SettingProfile() {
           setBanknum(data.users[0].urs_bank_number);
           // userdata= data.users[0];
         } else if (data.status === "error") {
-            toast.error(data.message, toastOptions);
+          toast.error(data.message, toastOptions);
         } else {
-            toast.error("ไม่พบผู้ใช้งาน", toastOptions);
+          toast.error("ไม่พบผู้ใช้งาน", toastOptions);
         }
       });
   };
@@ -126,7 +126,7 @@ export default function SettingProfile() {
           // window.location = "/setting-profile";
           Swal.fire({ ...alertData.success }).then(() => {
             window.location.reload(false);
-          })
+          });
         } else {
           //   toast.error(data.message, toastOptions);
         }
@@ -166,25 +166,31 @@ export default function SettingProfile() {
   const [showPsswordModal, setShowPsswordModal] = useState(null);
   const [showProfileModal, setShowProfileModal] = useState(null);
   const [showCoverModal, setShowCoverModal] = useState(null);
+  console.log(showCoverModal);
 
   const openPassModal = () => {
     const PasswordModal = (
-      <ChangePasswordModal  setShowPsswordModal={setShowPsswordModal} />
+      <ChangePasswordModal setShowPsswordModal={setShowPsswordModal} />
     );
     setShowPsswordModal(PasswordModal);
   };
 
-
   const openProfileModal = () => {
     const ProfileModal = (
-      <ChangeProfileImgModal profile={userdata.urs_profile_img} setShowProfileModal={setShowProfileModal} />
+      <ChangeProfileImgModal
+        profile={userdata.urs_profile_img}
+        setShowProfileModal={setShowProfileModal}
+      />
     );
     setShowProfileModal(ProfileModal);
   };
 
   const openCoverModal = () => {
     const CoverModal = (
-      <ChangeCoverModal profile={userdata.urs_profile_img} setShowCoverModal={setShowCoverModal} />
+      <ChangeCoverModal
+        profile={userdata.urs_profile_img}
+        setShowCoverModal={setShowCoverModal}
+      />
     );
     setShowCoverModal(CoverModal);
   };
@@ -197,12 +203,12 @@ export default function SettingProfile() {
 
   const UserDelete = () => {
     Swal.fire({ ...alertData.deleteAccountConfirm }).then((result) => {
-      if (result.isConfirmed) { 
+      if (result.isConfirmed) {
         const tested = "";
         axios
-          .put("http://localhost:3333/delete_account", tested,{
+          .put("http://localhost:3333/delete_account", tested, {
             headers: {
-              Authorization: "Bearer " + token
+              Authorization: "Bearer " + token,
             },
           })
           .then((response) => {
@@ -219,8 +225,8 @@ export default function SettingProfile() {
               toast.error("ไม่พบผู้ใช้งาน", toastOptions);
             }
           });
-          }
-    })
+      }
+    });
   };
 
   return (
@@ -233,8 +239,8 @@ export default function SettingProfile() {
       {showCoverModal}
 
       {/* <Navbar /> */}
-      <NavbarUser/>
-      
+      <NavbarUser />
+
       <div className="setting-container">
         <SettingAside onActive="profile" />
         <div className="setting-content-box">
@@ -325,7 +331,7 @@ export default function SettingProfile() {
               <div>
                 <p className="onInput">อีเมล</p>
                 <p>
-                {userdata.urs_email}{" "}
+                  {userdata.urs_email}{" "}
                   <button className="change-email gradient-border-btn">
                     <p>เปลี่ยนอีเมล</p>
                   </button>
@@ -341,12 +347,17 @@ export default function SettingProfile() {
             </div>
           </div>
 
-          
-          <div className="settingCard" style={{border:"none",padding:"0"}}>
-            <Button variant="outline-danger" className="text-align-center" onClick={UserDelete}>ลบบัญชีผู้ใช้</Button>
+          <div className="settingCard" style={{ border: "none", padding: "0" }}>
+            <Button
+              variant="outline-danger"
+              className="text-align-center"
+              onClick={UserDelete}
+            >
+              ลบบัญชีผู้ใช้
+            </Button>
           </div>
-                
-                {/* <p className="onInput">อีเมล</p>
+
+          {/* <p className="onInput">อีเมล</p>
                 <p>
                 {userdata.urs_email}{" "}
                   <button className="change-email gradient-border-btn">
@@ -360,7 +371,6 @@ export default function SettingProfile() {
                 >
                   <p>เปลี่ยนรหัสผ่าน</p>
                 </button> */}
-
         </div>
       </div>
     </>
