@@ -32,9 +32,10 @@ const SettingAside = (props) => {
     return (
         <div class="setting-menu">
             {/* <h2>การตั้งค่า</h2> */}
+            <h1 style={{fontWeight:"200",color:"white",marginBottom:"1rem"}}>การตั้งค่าและความเป็นส่วนตัว</h1>
             <Link style={{ textDecoration: 'none' }} to="/setting-profile"><div className={profileActive}><Icon.User /><p>โปรไฟล์</p></div></Link>
-            <Link style={{ textDecoration: 'none' }} to="/setting-coin" ><div className={coinActive}><ggIcon.CurrencyExchange /><p>ประวัติการใช้เหรียญ</p></div></Link >
-            <Link style={{ textDecoration: 'none' }} to="/setting-coin" ><div ><Icon.User /><p>ถอนเงิน</p></div></Link>
+<Link style={{ textDecoration: 'none' }} to="" ><div className={coinActive}><ggIcon.History /><p>ประวัติการจ้าง</p></div></Link >
+            <Link style={{ textDecoration: 'none' }} to="" ><div className={coinActive}><Icon.Bell /><p>การแจ้งเตือน</p></div></Link >
             {/* <Link style={{ textDecoration: 'none' }} to="/setting-coin" ><div><Icon.Trash2 /><p>ลบบัญชีผู้ใช้งาน</p></div></Link> */}
         </div>
     )

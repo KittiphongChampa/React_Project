@@ -39,6 +39,10 @@ export default function Profile() {
 
     const [myFollower, setMyFollowerIds] = useState([]);
     const [iFollowing, setIFollowingsIds] = useState([]);
+    console.log(iFollowing);
+
+    const [myFollowerData, setMyFollowerData] = useState([]);
+    const [IFollowerData, setIFollowerData] = useState([]);
     
     // console.log('myFollower : ',myFollower, 'iFollowing : ', iFollowing);
 
@@ -54,9 +58,7 @@ export default function Profile() {
     }, []);
     // }, [myFollower,iFollowing]); //realtime follow
 
-    // useEffect(() => {
-
-    // },[])
+    // useEffect(() => {},[])
     
     const getUser = async () => {
         await axios
@@ -100,9 +102,34 @@ export default function Profile() {
 
     const [profileMenuSelected, setprofileMenuSelected] = useState('cms')
 
+    const openFollower = () => {
+        const formData = new FormData();
+        formData.append("myFollower", myFollower);
+        axios .post("http://localhost:3333/openFollower", formData,{
+            headers: {
+                Authorization: "Bearer " + token,
+            },
+        }).then((response) => {
+            const data = response.data;
+            setMyFollowerData(data.results)
+        })
+    }
+    const openFollowing = () => {
+        const formData = new FormData();
+        formData.append("iFollowing", iFollowing);
+        axios .post("http://localhost:3333/openFollowing", formData,{
+            headers: {
+                Authorization: "Bearer " + token,
+            },
+        }).then((response) => {
+            const data = response.data;
+            setIFollowerData(data.results)
+        })
+    }
+
 
     return (
-        <>
+        <div className="body-con">
             <Helmet>
                 <title>{title}</title>
             </Helmet>
@@ -114,7 +141,7 @@ export default function Profile() {
 
                 <div className="cover-grid">
                     <div className="cover" onClick={openModal}>
-                        <div className="cover-color"></div>
+                        <div className="cover-color" style={{ backgroundColor: userdata.urs_cover_color }}></div>
                         <div className="cover-hover"><p className="fs-5">เปลี่ยนสีปก</p></div>
                     </div>
                     <div className="container profile-page">
@@ -145,8 +172,24 @@ export default function Profile() {
                                         <div className="user-about-review mb-4"><p className="fs-3">4.0</p> <p>จาก 5 รีวิว</p></div>
                                         <div className="user-about-text">
                                             <div>
-                                                <p>ผู้ติดตาม {myFollower.length}</p>
-                                                <p>กำลังติดตาม {iFollowing.length}</p>
+                                                <p>ผู้ติดตาม {myFollower.length} <button onClick={openFollower}>ดู</button></p>
+                                                <div>
+                                                    {myFollowerData.map(data => (
+                                                        <a key={data.id} href={`/profile/${data.id}`} style={{display : "flex"}}>
+                                                            <img src={data.urs_profile_img} style={{width: "30px"}}/>
+                                                            <p>{data.urs_name}</p>
+                                                        </a>
+                                                    ))}
+                                                </div>
+                                                <p>กำลังติดตาม {iFollowing.length} <button onClick={openFollowing}>ดู</button></p>
+                                                <div>
+                                                    {IFollowerData.map(data => (
+                                                        <a key={data.id} href={`/profile/${data.id}`} style={{display : "flex"}}>
+                                                            <img src={data.urs_profile_img} style={{width: "30px"}}/>
+                                                            <p>{data.urs_name}</p>
+                                                        </a>
+                                                    ))}
+                                                </div>
                                                 <p>งานสำเร็จแล้ว 10 งาน</p>
                                                 <p>ใช้งานล่าสุดเมื่อ 12 ชั่วโมงที่แล้ว</p>
                                                 <p>ตอบกลับภายใน 1 ชั่วโมง</p>
@@ -179,7 +222,7 @@ export default function Profile() {
                 </div>
 
             </div>
-        </>
+        </div>
     );
 }
 
@@ -187,8 +230,8 @@ function AllCms(props) {
     return <>
         <p className="h3 mt-3 mb-2">คอมมิชชัน</p>
         <div class="content-items">
-            <Link to="/cmsdetail"><CmsItem src="AB1.png" price="100" headding="Chibi Style" desc="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"/></Link>
-            <Link to="/cmsdetail"><CmsItem src="Blaze_Taylor.png" price="500" headding="SD Style" desc="รับวาดรูปxxxx" /></Link>
+            <Link to="/cmsdetail"><CmsItem src="monlan.png" headding="คอมมิชชัน SD" price="100" desc="คมช.เส้นเปล่า-ลงสีรับทุกสเกล สามารถเพิ่มตัวละครหรือเพิ่มพร็อพได้ โดยราคาขึ้นอยู่กับรายละเอียดที่เพิ่มเข้ามา" /></Link>
+            {/* <Link to="/cmsdetail"><CmsItem src="Blaze_Taylor.png" price="500" headding="SD Style" desc="รับวาดรูปxxxx" /></Link> */}
             {/* <Link to="/cmsdetail"><CmsItem src="bird.png" price="100" headding="หัวข้อ3" desc="รับวาดรูปxxxx" /></Link> */}
             {/* <Link to="/cmsdetail"><CmsItem src="b3.png" price="100" headding="หัวข้อ4" desc="รับวาดรูปxxxx" /></Link> */}
         </div>

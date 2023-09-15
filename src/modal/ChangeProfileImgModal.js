@@ -93,7 +93,7 @@ const ChangeProfileImgModal = (props) => {
                     <div className="text-align-right close-btn" onClick={closeModal}><Icon.X /></div>
                     <div className="form-area">
                         <form onSubmit={profileupdate_img}>
-                            <h2 className="text-align-center">เปลี่ยนภาพโปรไฟล์</h2>
+                            <h2 style={{ display: "flex", justifyContent: "center",marginBottom:"1rem" }}>เปลี่ยนภาพโปรไฟล์</h2>
                             <ProfileImg type="only-show" src={previewUrl}/>
                             {/* <ProfileImg src={previewUrl} onPress={addProfileImg}/> */}
                             <div class="input-group mb-1 mt-5">

@@ -3,8 +3,8 @@
 a,
 a:hover,
 a:visited {
-    color: rgb(17, 17, 17);
-    text-decoration: none;
+    all: unset;
+    cursor: pointer;
 }
 
 
@@ -46,10 +46,11 @@ a:visited {
     background-color: rgb(255, 255, 255);
     height: fit-content;
     border: 0.5px solid #D0D0D0;
-    position: fixed;
+    position: sticky;
     top: 0;
     width: 100%;
-    z-index: 99;
+    z-index: 9;
+
 }
 
 .nav-container {
@@ -90,6 +91,7 @@ a:visited {
     width: fit-content;
     position: absolute;
     top: 100%;
+    /*ลงมาอยู่ล่าง ถ้าtop 0 จะอยู่บนสุด*/
     right: 0;
     list-style: none;
     border-radius: 20px;

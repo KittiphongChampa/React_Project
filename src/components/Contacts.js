@@ -1,191 +1,23 @@
-// import React, { useState, useEffect } from "react";
-// import styled from "styled-components";
-// import axios from "axios";
-// // import Logo from "../assets/logo.svg";
-
-// export default function Contacts({ contacts, changeChat, userdata }) {
-//   const [currentUserName, setCurrentUserName] = useState(undefined);
-//   const [currentUserImage, setCurrentUserImage] = useState(undefined);
-//   const [currentSelected, setCurrentSelected] = useState(undefined);
-//   console.log(contacts);
-  
-//   //   useEffect(async () => {
-//   //     const data = await JSON.parse(
-//   //       localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
-//   //     );
-//   //     setCurrentUserName(data.username);
-//   //     setCurrentUserImage(data.avatarImage);
-//   //   }, []);
-
-//   const token = localStorage.getItem("token");
-
-//   useEffect(() => {
-//     const getUser = async () => {
-//       try {
-//         const response = await axios.get("http://localhost:3333/index", {
-//           headers: {
-//             Authorization: "Bearer " + token,
-//           },
-//         });
-//         const data = response.data;
-//         if (data.status === "ok") {
-//           setCurrentUserName(data.users[0].urs_name);
-//           setCurrentUserImage(data.users[0].urs_profile_img);
-//         }
-//       } catch (error) {
-//         // Handle error
-//       }
-//     };
-//     getUser();
-//   }, []);
-
-//   const changeCurrentChat = (index, contact) => {
-//     setCurrentSelected(index);
-//     changeChat(contact);
-//   };
-
-//   return (
-//     <>
-//       {currentUserImage && currentUserImage && (
-//         <Container>
-//           <div className="brand">
-//             {/* <img src={Logo} alt="logo" /> */}
-//             <h3>Chat</h3>
-//           </div>
-
-//           <div className="contacts">
-//             {contacts.map((contact, index) => {
-//               return (
-//                 <div
-//                   key={contact.id}
-//                   className={`contact ${
-//                     index === currentSelected ? "selected" : ""
-//                   }`}
-//                   onClick={() => changeCurrentChat(index, contact)}
-//                 >
-//                   <div className="avatar">
-//                     <img src={contact.urs_profile_img} alt="" />
-//                   </div>
-//                   <div className="username">
-//                     <h3>{contact.urs_name}</h3>
-//                   </div>
-//                 </div>
-//               );
-//             })}
-//           </div>
-
-//           <div className="current-user">
-//             <div className="avatar">
-//               <img src={`${currentUserImage}`} alt="avatar" />
-//             </div>
-//             <div className="username">
-//               <h2>{currentUserName}</h2>
-//             </div>
-//           </div>
-//         </Container>
-//       )}
-//     </>
-//   );
-// }
-
-// const Container = styled.div`
-//   display: grid;
-//   grid-template-rows: 10% 75% 15%;
-//   overflow: hidden;
-//   background-color: #080420;
-//   .brand {
-//     display: flex;
-//     align-items: center;
-//     gap: 1rem;
-//     justify-content: center;
-//     img {
-//       height: 2rem;
-//     }
-//     h3 {
-//       color: white;
-//       text-transform: uppercase;
-//     }
-//   }
-//   .contacts {
-//     display: flex;
-//     flex-direction: column;
-//     align-items: center;
-//     overflow: auto;
-//     gap: 0.8rem;
-//     &::-webkit-scrollbar {
-//       width: 0.2rem;
-//       &-thumb {
-//         background-color: #ffffff39;
-//         width: 0.1rem;
-//         border-radius: 1rem;
-//       }
-//     }
-//     .contact {
-//       background-color: #ffffff34;
-//       min-height: 5rem;
-//       cursor: pointer;
-//       width: 90%;
-//       border-radius: 0.2rem;
-//       padding: 0.4rem;
-//       display: flex;
-//       gap: 1rem;
-//       align-items: center;
-//       transition: 0.5s ease-in-out;
-//       .avatar {
-//         img {
-//           height: 3rem;
-//         }
-//       }
-//       .username {
-//         h3 {
-//           color: white;
-//         }
-//       }
-//     }
-//     .selected {
-//       background-color: #9a86f3;
-//     }
-//   }
-
-//   .current-user {
-//     background-color: #0d0d30;
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     gap: 2rem;
-//     .avatar {
-//       img {
-//         height: 4rem;
-//         max-inline-size: 100%;
-//       }
-//     }
-//     .username {
-//       h2 {
-//         color: white;
-//       }
-//     }
-//     @media screen and (min-width: 720px) and (max-width: 1080px) {
-//       gap: 0.5rem;
-//       .username {
-//         h2 {
-//           font-size: 1rem;
-//         }
-//       }
-//     }
-//   }
-// `;
-
-
-
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 // import Logo from "../assets/logo.svg";
 
-export default function Contacts({ contacts, changeChat, userdata, Toggled }) {
+export default function Contacts({ contacts, changeChat, userdata, Toggled, partnerID }) {
   const [currentUserName, setCurrentUserName] = useState(undefined);
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
   const [currentSelected, setCurrentSelected] = useState(undefined);
+
+  const uniqueContactIds = new Set();
+  const filteredContacts = [];
+  contacts.forEach((contact) => {
+    if (!uniqueContactIds.has(contact.id)) {
+      uniqueContactIds.add(contact.id);
+      filteredContacts.push(contact);
+      console.log(contact.message_text);
+    }
+  });
+
 
   //   useEffect(async () => {
   //     const data = await JSON.parse(
@@ -198,6 +30,11 @@ export default function Contacts({ contacts, changeChat, userdata, Toggled }) {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
+    //ตึงข้อมูลตัวเอง
+    if (partnerID !== null) {
+      setCurrentSelected(partnerID)
+      // console.log("bbbbbbbbbbbbbbbbbbb",currentSelected)
+    }
     const getUser = async () => {
       try {
         const response = await axios.get("http://localhost:3333/index", {
@@ -215,70 +52,81 @@ export default function Contacts({ contacts, changeChat, userdata, Toggled }) {
       }
     };
     getUser();
+    
   }, []);
 
   const changeCurrentChat = (index, contact) => {
     setCurrentSelected(index);
     changeChat(contact);
+    // console.log("id ใน ฟังชัน",index)
   };
 
   const [activeChat, setActiveChat] = useState();
 
   const chatSelected = (id) => {
     setActiveChat(id);
-    console.log("chat user ืำงาน");
+    console.log("chat user ทำงาน");
   };
 
+  useEffect(() => {
 
-
-
+  },[])
 
   return (
     <>
-      
       {currentUserImage && currentUserImage && (
         <>
-            {contacts.map((contact, index) => {
-              // <UserChat name={contact.urs_name} src={contact.urs_profile_img} key={contact.id} id="1" onClick={() => chatSelected("1") }  />;
-              return (
-                <>
-                  <div
-                    className={`chat-item ${
-                      index === currentSelected ? "selected" : ""
-                    }`}
-                    // className="chat-item "
+          {filteredContacts.map((contact, index) => {
+            // <UserChat name={contact.urs_name} src={contact.urs_profile_img} key={contact.id} id="1" onClick={() => chatSelected("1") }  />;
+            return (
+              <>
+                <div
+                  key={contact.id}
+                  className={`chat-item ${
+                    contact.id == currentSelected?  "selected" : ""
+                  }`}
+                  onClick={() => changeCurrentChat(contact.id, contact)}
+                >
+                  <img src={contact.urs_profile_img}></img>
+                  <div>
+                    {!Toggled && (
+                      <>
+                        <p className="order">{contact.urs_name}</p>
+                        <p>
+                          {contact.message_text.split("images")[0] === "http://localhost:3333/" ? (
+                            <p className="message">ได้ส่งรูปภาพ</p>
+                          ) : (
+                            <p className="message">{contact.message_text}</p>
+                          )}
+                        </p>
+                        {/* <p className="message">{contact.message_text}</p> */}
+                        <p className="time">
+                          <span className="stat">{new Date(contact.last_message_time).toLocaleString("th-TH")}</span>
+                        </p>
+                      </>
+                    )}
 
-                    // className={"chat-item " + (activeChat == props.id ? "selected" : "")}
-                    key={contact.id}
-                    onClick={() => changeCurrentChat(index, contact)}
-                  >
-                    <img src={contact.urs_profile_img}></img>
-                    <div>
-                      {/* <p className="order">{contact.urs_name}</p>
-                      <p className="message">ข้อควsssssssssssssssssss</p>
-                      <p className="time">
-                        <span className="stat">00:12 น.</span>
-                      </p> */}
-                      {!Toggled && <><p className="order">{contact.urs_name}</p>
-                    <p className="message">ข้อควsssssssssssssssssss</p>
-                    <p className="time"><span className="stat">00:12 น.</span></p></>}
-
-
-                {Toggled && <><p className="order filterd">xxxx</p>
-                    <p className="message filterd">bust-up full color..</p>
-                    <p className="time filterd"> <span className="q">คิวที่1</span><span className="stat">รอชำระเงิน</span></p></>}
-                    </div>
+                    {Toggled && (
+                      <>
+                        <p className="order filterd">xxxx</p>
+                        <p className="message filterd">bust-up full color..</p>
+                        <p className="time filterd">
+                          {" "}
+                          <span className="q">คิวที่1</span>
+                          <span className="stat">รอชำระเงิน</span>
+                        </p>
+                      </>
+                    )}
                   </div>
-                  <div className="qq">
-                    {/* <div className={activeChat == props.id ? "arrow" : ""} /> */}
-                    <div className={index === currentSelected ? "arrow" : ""} />
-                  </div>
-                </>
-              );
-            })}
+                </div>
+                <div className="qq">
+                  <div className={contact.id == currentSelected? "arrow" : ""} />
+                </div>
+              </>
+            );
+          })}
         </>
       )}
     </>
   );
 }
-

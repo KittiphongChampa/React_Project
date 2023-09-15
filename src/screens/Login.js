@@ -11,6 +11,7 @@ import BgBody from "../components/BgBody";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import "sweetalert2/src/sweetalert2.scss";
 import * as alertData from "../alertdata/alertData";
+import { NavbarUser, NavbarAdmin, NavbarHomepage, NavbarGuest} from "../components/Navbar";
 
 const title = 'เข้าสู่ระบบ';
 const bgImg = "url('mainmoon.jpg')"
@@ -65,7 +66,7 @@ export default function SignIn() {
           localStorage.setItem("token", data.token); //ส่ง token ไว้ที่ตัวแปร token แล้วส่งไปหน้า /
           navigate("/");
         } else if (data.status === "hasDelete") {
-          alert("User has Delete");
+          alert(data.message);
         } else {
           Swal.fire({ ...alertData.LoginError }).then(() => {
             // window.location.reload(false);
@@ -78,15 +79,16 @@ export default function SignIn() {
   };
 
   return (
-    <>
+    <div className="body-con">
       <Helmet>
         <title>{title}</title>
       </Helmet>
+      <NavbarGuest />
       <div className="body" style={body}>
-        {/* <Navbar /> */}
+        
         <div className="container">
           <div className="login-soloCard">
-            <div className="">
+            <div className="login-col-img">
               <img className="login-img" src="ภาพตัด.png" alt="" />
             </div>
             <div className="login-col-text">
@@ -111,19 +113,20 @@ export default function SignIn() {
                   <div className="text-align-right">
                     <a href="/forgot-password">ลืมรหัสผ่าน</a>
                   </div>
-                  <div className="text-align-center">
-                    <button className="lightblue-btn" type="submit">เข้าสู่ระบบ</button>
+                  <div className="login-btn-group">
+                    <button className="login-btn" type="submit">เข้าสู่ระบบ</button>
+                    <a href="/verify">สมัครสมาชิก</a>
                   </div>
                 </form>
-                <div className="text-align-center">
+                {/* <div className="text-align-center">
                   <a href="/verify">สมัครสมาชิก</a>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
     // <ThemeProvider theme={theme}>
     //   <Container component="main" maxWidth="xs">
     //     <CssBaseline />

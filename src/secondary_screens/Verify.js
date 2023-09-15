@@ -16,6 +16,7 @@ import loading from "../loading.json";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import "sweetalert2/src/sweetalert2.scss";
 import * as alertData from "../alertdata/alertData";
+import { NavbarUser, NavbarAdmin, NavbarHomepage, NavbarGuest} from "../components/Navbar";
 
 const toastOptions = {
   position: "bottom-right",
@@ -138,25 +139,19 @@ export default function Verify() {
 
   const theme = createTheme();
   const title = "สมัครสมาชิก";
+  const bgImg = "url('mainmoon.jpg')"
+  const body = { backgroundImage: bgImg }
+
   return (
-    <>
+    <div className="body-con">
       <Helmet>
         <title>{title}</title>
       </Helmet>
-      <div
-        className="body"
-        style={{
-          backgroundImage: "url('mainmoon.jpg')",
-          backgroundPosition: "center",
-          backgroundSize: "cover",
-          backgroundAttachment: "fixed",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        {/* <Navbar /> */}
+      <NavbarGuest />
+      <div className='body' style={body}>
         <div className="container">
           <div className="login-soloCard">
-            <div className="">
+            <div className="login-col-img">
               <img className="login-img" src="ภาพตัด.png" alt="" />
             </div>
             <div className="login-col-text">
@@ -219,6 +214,6 @@ export default function Verify() {
       </div>
 
       <ToastContainer />
-    </>
+    </div>
   );
 }

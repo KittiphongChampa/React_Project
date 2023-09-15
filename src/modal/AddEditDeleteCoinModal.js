@@ -109,7 +109,7 @@ const AddEditDeleteCoinModal = (props) => {
         }, 300);
   };
   return (
-    <div className="modal-area" id="modalArea">
+    <div className="modal-area" id="modalArea" >
       <div className="container">
         <div className="form-modal" id="formModal">
           <div className="text-align-right close-btn" onClick={closeModal}>

@@ -62,9 +62,11 @@ export default function SettingProfile() {
   const [userdata, setUserdata] = useState([]);
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
-  const [bankname, setBankname] = useState("");
-  const [bankuser, setBankuser] = useState("");
-  const [banknum, setBanknum] = useState("");
+  const [bankAccName, setBankAccName] = useState("");
+  const [ppNumber, setPpNumber] = useState("");
+  const [cover, setCover] = useState("");
+  const [editProfileBtn, setEditProfileBtn] = useState(true);
+  const [editPromptpayBtn, setEditPromptpayBtn] = useState(true);
 
   const [file, setFile] = useState("");
   const [previewUrl, setPreviewUrl] = useState("");
@@ -97,9 +99,10 @@ export default function SettingProfile() {
           setUserdata(data.users[0]);
           setName(data.users[0].urs_name);
           setBio(data.users[0].urs_bio);
-          setBankuser(data.users[0].urs_bank_name);
-          setBankname(data.users[0].urs_bank_accname);
-          setBanknum(data.users[0].urs_bank_number);
+          setCover(data.users[0].urs_cover_color);
+          setBankAccName(data.users[0].urs_account_name);
+          setPpNumber(data.users[0].urs_promptpay_number);
+
           // userdata= data.users[0];
         } else if (data.status === "error") {
           toast.error(data.message, toastOptions);
@@ -133,25 +136,39 @@ export default function SettingProfile() {
       });
   };
 
-  const watchBio = watch("bio", String(userdata.urs_bio));
-  const watchUsername = watch("username", String(userdata.urs_name));
+  const bankupdate = async (event) => {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append("bankAccName", bankAccName);
+    formData.append("ppNumber", ppNumber);
+    await axios
+      .patch("http://localhost:3333/bank/update", formData, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((response) => {
+        const data = response.data;
+        if (data.status === "ok") {
+          // alert("Update Success");
+          // window.location = "/setting-profile";
+          Swal.fire({ ...alertData.success }).then(() => {
+            window.location.reload(false);
+          });
+        } else {
+          //   toast.error(data.message, toastOptions);
+        }
+      });
+  };
 
   const [hide, setHide] = useState("none");
 
   const editProfile = () => {
-    const bio = document.getElementById("bio");
-    bio.removeAttribute("disabled");
-    bio.style.borderColor = "black";
+    setEditProfileBtn(prevState => !prevState);
+  };
 
-    const username = document.getElementById("username");
-    username.removeAttribute("disabled");
-    username.style.borderColor = "black";
-
-    let editProfileBtn = document.getElementById("editProfileBtn");
-    let sendDataBtn = document.getElementById("sendDataBtn");
-    editProfileBtn.style.display = "none";
-    sendDataBtn.style.display = "block";
-    setHide("block");
+  const editPromptpay = () => {
+    setEditPromptpayBtn(prevState => !prevState);
   };
 
   const addProfileImg = () => {
@@ -162,6 +179,17 @@ export default function SettingProfile() {
     };
     input.click();
   };
+
+  // const [isShow, setIsShow] = useState(false);
+
+  // const handleHidden = () => {
+  //     setIsShow(prevState => !prevState);
+  // };
+
+  // const handleHide = () => {
+  //   setIsShow(prevState => !prevState);
+  //     // setHide("none");
+  // };
 
   const [showPsswordModal, setShowPsswordModal] = useState(null);
   const [showProfileModal, setShowProfileModal] = useState(null);
@@ -229,8 +257,26 @@ export default function SettingProfile() {
     });
   };
 
+  const editBank = () => {
+    const ppNumber = document.getElementById("ppNumber");
+    ppNumber.removeAttribute("disabled");
+    ppNumber.style.borderColor = "black";
+
+    const bankAccName = document.getElementById("bankAccName");
+    bankAccName.removeAttribute("disabled");
+    bankAccName.style.borderColor = "black";
+
+    let editBankBtn = document.getElementById("editBankBtn");
+    let sendDataBankBtn = document.getElementById("sendDataBankBtn");
+    editBankBtn.style.display = "none";
+    sendDataBankBtn.style.display = "block";
+    setHide("block");
+  };
+
+
+
   return (
-    <>
+    <div className="body-con">
       <Helmet>
         <title>{title}</title>
       </Helmet>
@@ -250,11 +296,11 @@ export default function SettingProfile() {
             </div>
             <div className="in-setting-page">
               <form onSubmit={profileupdate}>
-                <div className="setting-img-box text-align-center">
+                <div className="setting-img-box">
                   <div
                     className="setting-cover"
                     onClick={openCoverModal}
-                    style={{ backgroundColor: "pink" }}
+                    style={{ backgroundColor: cover }}
                   >
                     <div className="cover-hover">
                       <p className="fs-5">เปลี่ยนสีปก</p>
@@ -265,7 +311,7 @@ export default function SettingProfile() {
                     onPress={openProfileModal}
                   />
                   <div className="submit-color-btn-area">
-                    <button className="submit-color-btn" type="submit">
+                    <button className="submit-color-btn" type="submit" >
                       บันทึกข้อมูล
                     </button>
                   </div>
@@ -277,16 +323,17 @@ export default function SettingProfile() {
                     className="txtarea"
                     id="username"
                     maxlength="50"
-                    disabled
+                    disabled={editProfileBtn}
                     {...register("username", { maxLength: 50 })}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
+                    style={{ border: !editProfileBtn && '1px solid black'}}
                   />
                   <p
                     className="text-align-right"
-                    style={{ display: `${hide}` }}
+                    style={{ display: editProfileBtn? 'none' : 'block' }}
                   >
-                    {watchUsername.length}/50
+                    {name.length}/50
                   </p>
 
                   <label class="onInput">คำอธิบายตัวเอง</label>
@@ -294,32 +341,31 @@ export default function SettingProfile() {
                     className="txtarea"
                     id="bio"
                     maxlength="350"
-                    disabled
+                    disabled={editProfileBtn}
+                    style={{ border: !editProfileBtn && '1px solid black'}}
                     {...register("bio", { maxLength: 350 })}
                     value={bio}
                     onChange={(e) => setBio(e.target.value)}
                   />
                   <p
                     className="text-align-right"
-                    style={{ display: `${hide}` }}
+                    style={{ display: editProfileBtn? 'none' : 'block' }}
                   >
-                    {watchBio.length}/350
+                    {bio.length}/350
                   </p>
                 </div>
-                <div className="text-align-center" id="sendDataBtn">
-                  <button className="gradiant-btn" type="submit">
+                <div className="" id="sendDataBtn" style={{ display:"flex",justifyContent: "center" }}>
+                  {!editProfileBtn&& <><button className="gradiant-btn" type="submit">
                     บันทึกข้อมูล
                   </button>
-                  <button className="cancle-btn" type="button">
+                  <button className="cancle-btn" type="button" onClick={editProfile}>
                     ยกเลิก
-                  </button>
+                    </button></>}
+                  {editProfileBtn && <button className="edit-profile-btn" onClick={editProfile}>
+                  แก้ไขโปรไฟล์
+                </button>}
                 </div>
               </form>
-              <div className="text-align-center" id="editProfileBtn">
-                <button className="edit-profile-btn" onClick={editProfile}>
-                  แก้ไขโปรไฟล์
-                </button>
-              </div>
             </div>
           </div>
 
@@ -332,9 +378,9 @@ export default function SettingProfile() {
                 <p className="onInput">อีเมล</p>
                 <p>
                   {userdata.urs_email}{" "}
-                  <button className="change-email gradient-border-btn">
+                  {/* <button className="change-email gradient-border-btn">
                     <p>เปลี่ยนอีเมล</p>
-                  </button>
+                  </button> */}
                 </p>
                 <p className="onInput">รหัสผ่าน</p>
                 <button
@@ -347,6 +393,69 @@ export default function SettingProfile() {
             </div>
           </div>
 
+          <div className="settingCard">
+            <div>
+                <h2 className="setting-headding">บัญชีพร้อมเพย์</h2>
+            </div>
+            <div className="in-setting-page">
+                <form onSubmit={bankupdate}>
+                  <div>
+                      <label class="onInput">ชื่อบัญชีพร้อมเพย์</label>
+                      <TextareaAutosize
+                          className="txtarea"
+                          id="bankAccName"
+                          maxlength="50"
+                          disabled={editPromptpayBtn}
+                          style={{ border: !editPromptpayBtn && '1px solid black'}}
+                          {...register("bankAccName", { maxLength: 50 })}
+                          value={bankAccName}
+                          onChange={(e) => setBankAccName(e.target.value)}
+                      />
+                      <p
+                        className="text-align-right"
+                        style={{ display: editPromptpayBtn? 'none' : 'block' }}
+                      >
+                        {bankAccName.length}/200
+                      </p>
+                    
+
+                      <label class="onInput">เลขพร้อมเพย์</label>
+                      <TextareaAutosize
+                          className="txtarea"
+                          id="ppNumber"
+                          maxlength="350"
+                          disabled={editPromptpayBtn}
+                          style={{ border: !editPromptpayBtn && '1px solid black'}}
+                          {...register("ppNumber", { maxLength: 50 })}
+                          value={ppNumber}
+                          onChange={(e) => setPpNumber(e.target.value)}
+                      />
+                      <p
+                        className="text-align-right"
+                        style={{ display: editPromptpayBtn? 'none' : 'block' }}
+                      >
+                        {ppNumber.length}/50
+                      </p>
+
+                  </div>
+                  <div className="" id="sendDataBtn" style={{ display:"flex",justifyContent: "center" }}>
+                    {!editPromptpayBtn&& <>
+                      <button className="gradiant-btn" type="submit" >
+                        บันทึกข้อมูล
+                      </button>
+                      <button className="cancle-btn" type="button" onClick={editPromptpay}>
+                        ยกเลิก
+                      </button> </>
+                    }
+                    {editPromptpayBtn && <button className="edit-profile-btn" onClick={editPromptpay}>
+                      แก้ไขข้อมูลบัญชีธนาคาร
+                    </button>}
+                  </div>
+                </form>
+     
+            </div>
+          </div>
+
           <div className="settingCard" style={{ border: "none", padding: "0" }}>
             <Button
               variant="outline-danger"
@@ -356,23 +465,8 @@ export default function SettingProfile() {
               ลบบัญชีผู้ใช้
             </Button>
           </div>
-
-          {/* <p className="onInput">อีเมล</p>
-                <p>
-                {userdata.urs_email}{" "}
-                  <button className="change-email gradient-border-btn">
-                    <p>เปลี่ยนอีเมล</p>
-                  </button>
-                </p>
-                <p className="onInput">รหัสผ่าน</p>
-                <button
-                  className="change-pass gradient-border-btn"
-                  onClick={openPassModal}
-                >
-                  <p>เปลี่ยนรหัสผ่าน</p>
-                </button> */}
         </div>
       </div>
-    </>
+    </div>
   );
 }

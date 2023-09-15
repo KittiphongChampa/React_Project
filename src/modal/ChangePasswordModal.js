@@ -31,15 +31,6 @@ const ChangePasswordModal = (props, ref) => {
   };
 
   const submitChangePassForm = (data) => {
-    // Swal.fire({
-    //     title: 'Your title',
-    //     text: 'Your message',
-    //     icon: 'success',
-    //     iconColor: 'pink',
-    //     customClass: {
-    //         popup: 'custom-alert',
-    //     },
-    // });
     const formData = new FormData();
     formData.append("oldPassword", data.nowPassword);
     formData.append("newPassword", data.newPassword);

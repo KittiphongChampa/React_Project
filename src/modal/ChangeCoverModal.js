@@ -17,6 +17,7 @@ import axios from "axios";
 const openInputColor = () => {
 
 }
+const token = localStorage.getItem("token");
 
 const ChangeCoverModal = (props) => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
@@ -30,22 +31,24 @@ const ChangeCoverModal = (props) => {
     }, [])
 
     const submitChangeCoverForm = (data) => {
-
-        const colorPicker = document.getElementById("color-input");
-        const colorValue = colorPicker.value;
-
-        console.log(colorValue);
-        axios.post("http://localhost:3333/update/cover", {
-
-        })
-
-
+        // const colorPicker = document.getElementById("color-input");
+        // const colorValue = colorPicker.value;
+        const formData = new FormData();
+        formData.append("cover_color", data.cover);
         Swal.fire({ ...alertData.changeProfileImgConfirm }).then((result) => {
             if (result.isConfirmed) {
-                console.log()
-                Swal.fire({ ...alertData.changeProfileImgIsConfirmed }).then(() => {
-                    console.log()
-                    window.location.reload(false);
+                axios.patch("http://localhost:3333/cover_color/update", formData,{
+                    headers: {
+                        Authorization: "Bearer " + token,
+                    }
+                }).then((response) => {
+                    if(response.data.status === "ok"){
+                        Swal.fire({ ...alertData.changeCoverColorIsConfirmed }).then(() => {
+                            window.location.reload(false);
+                        })
+                    }else{
+                        Swal.fire({ ...alertData.changeCoverIsError })
+                    }
                 })
             }
         })
@@ -68,11 +71,12 @@ const ChangeCoverModal = (props) => {
         <div className="modal-area" id="modalArea" onClick={props.onClick}>
             <div className="container">
                 <div className="form-modal">
-                    <div className="text-align-right close-btn" onClick={closeModal}><Icon.X /></div>
+                    <div className="close-tab" onClick={closeModal}><Icon.X /></div>
+                    {/* <div className="text-align-right close-btn" onClick={closeModal}><Icon.X /></div> */}
                     <div className="form-area">
                         <form onSubmit={handleSubmit(submitChangeCoverForm)}>
-                            <h2 className="text-align-center">เปลี่ยนสีปก</h2>
-                            <div className="setting-img-box text-align-center">
+                            <h2 style={{display:"flex",justifyContent: "center",marginBottom:"1rem"}}>เปลี่ยนสีปก</h2>
+                            <div className="setting-img-box">
                                 <div className="setting-cover">
                                     <input {...register("cover")} type="color" id="color-input" style={{ cursor: "pointer" }} />
                                 </div>

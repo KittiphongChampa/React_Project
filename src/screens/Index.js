@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form"
 import "../css/indexx.css";
 import "../css/allbutton.css";
 import "../css/profileimg.css";
+import "../styles/main.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Helmet } from "react-helmet";
 import DefaultInput from "../components/DefaultInput";
@@ -63,7 +64,15 @@ export default function Index() {
         }
       })
       .catch((error) => {
-        console.error("Error:", error);
+        if (error.response && error.response.status === 401 && error.response.data === "Token has expired") {
+          // Handle token expired error
+          alert("Token has expired. Please log in again.");
+          localStorage.removeItem("token");
+          navigate("/login");
+        } else {
+          // Handle other errors here
+          console.error("Error:", error);
+        }
       });
   };
 
@@ -106,52 +115,94 @@ export default function Index() {
     //     Logout
     //   </Button>
     // </div>
-    <>
-      <Helmet>
-        <title>{title}</title>
-      </Helmet>
-      <NavbarUser />
-      <div class="body-nopadding" style={body}>
-        <div className="container">
-          <div class="search-container">
-            <div class="search-box">
-              <button>
-                <Icon.Search className="nav-icon" />
-              </button>
-              <input type="text" placeholder="ค้นหาคอมมิชชัน, นักวาด, หัวข้อ" />
-            </div>
-            <div class="popular-topic">
-              <p>หัวข้อยอดนิยม :</p>
-              <a href="">semi-real</a>
-              <a href="">chibi</a>
-              <a href="">landscape</a>
-            </div>
-          </div>
+    <div className="body-con">
+            <Helmet>
+                <title>{title}</title>
+            </Helmet>
+            <NavbarUser />
+            <div class="body-nopadding" style={body}>
+                <div className="container">
+                    <div class="search-container">
+                        <div class="search-box-index">
+                            <button><Icon.Search className='nav-icon' /></button>
+                            <input type="text" placeholder="ค้นหาคิมมิชชัน แกลอรี่ นักวาด หัวข้อ..." />
+                        </div>
+                        <div class="popular-topic">
+                            <p>หัวข้อยอดนิยม :</p>
+                            <a href="">semi-real</a>
+                            <a href="">chibi</a>
+                            <a href="">landscape</a>
+                        </div>
+                    </div>
 
-          <div className=" content-container user-profile-contentCard">
-            <div class="content-type">
-              <button className="sub-menu selected">ทั้งหมด</button>
-              <button className="sub-menu">คอมมิชชัน</button>
-              <button className="sub-menu">แกลลอรี่</button>
-              <button className="sub-menu">นักวาด</button>
-              <button className="sub-menu">หัวข้อ</button>
+                    <div className=" content-container user-profile-contentCard" >
+                        <div class="content-type">
+                            <button className="sub-menu selected">สำหรับคุณ</button>
+                            <button className="sub-menu">คอมมิชชัน</button>
+                            <button className="sub-menu">แกลลอรี่</button>
+                            <button className="sub-menu">นักวาด</button>
+                            <button className="sub-menu">หัวข้อ</button>
+                        </div>
+                        <div class="content-box">
+                            <div class="content-top">
+                                <p className="h3">นักวาดที่คุณกำลังติดตาม</p>
+                                <p>ดูทั้งหมด&gt;</p>
+                            </div>
+                            <div class="content-items">
+                                
+                            </div>
+                        </div>
+                        <div class="content-box">
+                            <div class="content-top">
+                                <p className="h3">ผลงานนักวาดที่กำลังติดตาม</p>
+                                <p>ดูทั้งหมด&gt;</p>
+                            </div>
+                            <div class="content-items">
+
+                            </div>
+                        </div>
+                        <div class="content-box">
+                            <div class="content-top">
+                                <p className="h3">คอมมิชชันล่าสุด</p>
+                                <p>ดูทั้งหมด&gt;</p>
+                            </div>
+                            <div class="content-items">
+                                <Link to="/cmsdetail"><CmsItem src="monlan.png" headding="คอมมิชชัน SD" price="100" desc="คมช.เส้นเปล่า-ลงสีรับทุกสเกล สามารถเพิ่มตัวละครหรือเพิ่มพร็อพได้ โดยราคาขึ้นอยู่กับรายละเอียดที่เพิ่มเข้ามา"/></Link>
+                                
+                            </div>
+                        </div>
+
+                        <div class="content-box">
+                            <div class="content-top">
+                                <p className="h3">คอมมิชชันจากนักวาดที่ติดตาม</p>
+                                <p>ดูทั้งหมด&gt;</p>
+                            </div>
+                            <div class="content-items">
+                                <Link to="/cmsdetail"><CmsItem src="monlan.png" headding="คอมมิชชัน SD" price="100" desc="คมช.เส้นเปล่า-ลงสีรับทุกสเกล สามารถเพิ่มตัวละครหรือเพิ่มพร็อพได้ โดยราคาขึ้นอยู่กับรายละเอียดที่เพิ่มเข้ามา" /></Link>
+                                
+                            </div>
+                        </div>
+                        <div class="content-box">
+                            <div class="content-top">
+                                <p className="h3">คอมมิชชันยอดนิยม</p>
+                                <p>ดูทั้งหมด&gt;</p>
+                            </div>
+                            <div class="content-items">
+                                <Link to="/cmsdetail"><CmsItem src="monlan.png" headding="คอมมิชชัน SD" price="100" desc="คมช.เส้นเปล่า-ลงสีรับทุกสเกล สามารถเพิ่มตัวละครหรือเพิ่มพร็อพได้ โดยราคาขึ้นอยู่กับรายละเอียดที่เพิ่มเข้ามา" /></Link>
+                                <Link to="/cmsdetail"><CmsItem src="monlan.png" headding="คอมมิชชัน SD" price="100" desc="คมช.เส้นเปล่า-ลงสีรับทุกสเกล สามารถเพิ่มตัวละครหรือเพิ่มพร็อพได้ โดยราคาขึ้นอยู่กับรายละเอียดที่เพิ่มเข้ามา" /></Link>
+                                <Link to="/cmsdetail"><CmsItem src="monlan.png" headding="คอมมิชชัน SD" price="100" desc="คมช.เส้นเปล่า-ลงสีรับทุกสเกล สามารถเพิ่มตัวละครหรือเพิ่มพร็อพได้ โดยราคาขึ้นอยู่กับรายละเอียดที่เพิ่มเข้ามา" /></Link>
+                                <Link to="/cmsdetail"><CmsItem src="monlan.png" headding="คอมมิชชัน SD" price="100" desc="คมช.เส้นเปล่า-ลงสีรับทุกสเกล สามารถเพิ่มตัวละครหรือเพิ่มพร็อพได้ โดยราคาขึ้นอยู่กับรายละเอียดที่เพิ่มเข้ามา" /></Link>
+                                <Link to="/cmsdetail"><CmsItem src="monlan.png" headding="คอมมิชชัน SD" price="100" desc="คมช.เส้นเปล่า-ลงสีรับทุกสเกล สามารถเพิ่มตัวละครหรือเพิ่มพร็อพได้ โดยราคาขึ้นอยู่กับรายละเอียดที่เพิ่มเข้ามา" /></Link>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
             </div>
-            <div class="content-box">
-              <div class="content-top">
-                <h2>คอมมิชชันล่าสุด</h2>
-              </div>
-              <div class="content-items">
-                <CmsItem />
-                <CmsItem />
-                <CmsItem />
-                <CmsItem />
-                <CmsItem />
-                <CmsItem />
-              </div>
-            </div>
-          </div>
+
+
         </div>
-      </div>
-    </>
   );
 }

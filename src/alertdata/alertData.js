@@ -5,6 +5,13 @@ export const verifyEmainSuccess = {
   confirmButtonText: 'ตกลง',
 }
 
+export const verifyEmainFailed = {
+  title: 'อีเมลล์ถูกใช้งานแล้ว',
+  icon: 'error',
+  iconColor: 'red',
+  confirmButtonText: 'ตกลง',
+}
+
 export const registerSuccess = {
   title: 'สมัครสมาชิกสำเร็จ',
   icon: 'success',
@@ -92,20 +99,35 @@ export const BuycoinSuccess = {
   confirmButtonText: "ตกลง",
 }
 
-export const changeProfileImgConfirm = {
-    title: 'ต้องการเปลี่ยนสีพื้นหลังหรือไม่?',
-    icon: 'question',
-    showCancelButton: true,
-    confirmButtonText: 'ตกลง',
-    cancleButtonText: "ยกเลิก",
-}
-
 export const changeProfileImgIsConfirmed = {
     title: 'เปลี่ยนภาพโปรไฟล์แล้ว',
     icon: 'success',
     iconColor: '#7E9AFA',
     confirmButtonText: 'ตกลง',
 }
+
+export const changeProfileImgConfirm = {
+  title: 'ต้องการเปลี่ยนสีพื้นหลังหรือไม่?',
+  icon: 'question',
+  showCancelButton: true,
+  confirmButtonText: 'ตกลง',
+  cancleButtonText: "ยกเลิก",
+}
+
+export const changeCoverColorIsConfirmed = {
+  title: 'เปลี่ยนสีสีพื้นหลังสำเร็จแล้ว',
+  icon: 'success',
+  iconColor: '#7E9AFA',
+  confirmButtonText: 'ตกลง',
+}
+
+export const changeCoverIsError = {
+  title: "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง",
+  icon: "error",
+  iconColor: "red",
+  confirmButtonText: "ตกลง",
+}
+
 
 export const sendOtpSuccess = {
   title: 'รหัสถูกต้อง',
@@ -137,3 +159,58 @@ export const success = {
   confirmButtonText: 'ตกลง',
 }
 
+export const pending = {
+  title: 'ระบบกำลังทำการตรวจสอบรูปภาพ',
+  icon: 'question',
+  iconColor: '#7E9AFA',
+  confirmButtonText: 'ตกลง',
+}
+
+export const deleteUserSuccess = {
+  title: 'ลบบัญชีผู้ใช้งานสำเร็จ',
+  icon: 'success',
+  iconColor: '#7E9AFA',
+  confirmButtonText: 'ตกลง',
+}
+
+export const deleteUserFailed = {
+  title: 'ลบบัญชีผู้ใช้ไม่สำเร็จ',
+  icon: "error",
+  iconColor: "red",
+  confirmButtonText: "ตกลง",
+}
+
+export const addadminSuccess = {
+  title: 'เพิ่มแอดมินสำเร็จ',
+  icon: 'success',
+  iconColor: '#7E9AFA',
+  confirmButtonText: 'ตกลง',
+}
+
+export const deladminSuccess = {
+  title: 'ลบแอดมินสำเร็จ',
+  icon: 'success',
+  iconColor: '#7E9AFA',
+  confirmButtonText: 'ตกลง',
+}
+
+export const uploadpass = {
+  title: 'อัปโหลดสำเร็จ',
+  icon: 'success',
+  iconColor: '#7E9AFA',
+  confirmButtonText: 'ตกลง',
+}
+
+export const uploadfail = {
+  title: 'อัปโหลดไม่สำเร็จ',
+  icon: "error",
+  iconColor: "red",
+  confirmButtonText: 'ตกลง',
+}
+
+export const similar = {
+  title: 'รูปภาพมีความคล้าย กรุณารอแอดมินตรวจสอบ',
+  icon: "error",
+  iconColor: "red",
+  confirmButtonText: 'ตกลง',
+}

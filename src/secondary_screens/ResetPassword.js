@@ -86,6 +86,10 @@ export default function ResetPassword() {
       });
   };
 
+  const returnLogin = {
+
+  }
+
 
   return (
     <>
@@ -141,12 +145,12 @@ export default function ResetPassword() {
                                 <button className={`gradiant-btn`} type="submit">
                                   เปลี่ยนรหัสผ่าน
                                 </button>
-                                <button
+                                {/* <button
                                   className="cancle-btn"
                                   type="button"
                                 >
                                   ยกเลิก
-                                </button>
+                                </button> */}
                               </div>
                       
                           </form>
