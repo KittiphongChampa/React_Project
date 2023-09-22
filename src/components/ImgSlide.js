@@ -16,19 +16,15 @@ import { width } from '@mui/system';
 
 
 
-function ImgSlide() {
+function ImgSlide({imgDetail}) {
 
     return (
         <>
-
             {/* <Watermark content="Ant Design">
                 <div></div>
             </Watermark>
             <img src="ares.png"></img> */}
             {/* <div><WatermarkedImg src="monlan.png" content="ลายนั้ม" /></div> */}
-
-
-
             <Swiper
                 spaceBetween={30}
                 centeredSlides={true}
@@ -42,28 +38,20 @@ function ImgSlide() {
                 navigation={true}
                 modules={[Autoplay, Pagination, Navigation]}
                 className="mySwiper"
-            >
-
-                <SwiperSlide>
-                    {/* <Watermark content="Ant Design"> */}
-                    {/* <img src="monlan.png"></img> */}
-                    {/* </Watermark> */}
-                    {/* <div className="watermark-container">
-                        <WatermarkedImg src="monlan.png" content="ลายนั้ม"></WatermarkedImg>
-                    </div> */}
-
-                    <WatermarkedImg src="monlan.png" id="0681498" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <WatermarkedImg src="Ares.png" id="35414451" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <WatermarkedImg src="f-b.png" id="251131365416" />
-                </SwiperSlide>
+                >
+                {Array.isArray(imgDetail) ? (
+                    imgDetail.map((image) => (
+                        <SwiperSlide key={image.ex_img_id}>
+                        <img src={image.ex_img_path} alt={image.ex_img_name} />
+                        </SwiperSlide>
+                    ))
+                    ) : (
+                        <SwiperSlide key={imgDetail.ex_img_id}>
+                        <img src={imgDetail.ex_img_path} alt={imgDetail.ex_img_name} />
+                        </SwiperSlide>
+                    )
+                }
                 
-
-
-
             </Swiper>
         </>
     );

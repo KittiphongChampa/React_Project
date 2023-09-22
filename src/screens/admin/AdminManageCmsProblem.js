@@ -84,12 +84,12 @@ export default function AdminManageCmsProblem() {
       })
       .then((response) => {
         const data = response.data;
-        // if (data.status === "ok") {
-        //     setCmsdata(data.results);
-        //     setProblemImage(data.results[0]);
-        // } else {
-        //     console.log("error");
-        // }
+        if (data.status === "ok") {
+            setCmsdata(data.results);
+            setProblemImage(data.results[0]);
+        } else {
+            console.log("error");
+        }
       })
     }
 
@@ -102,12 +102,12 @@ export default function AdminManageCmsProblem() {
       })
       .then((response) => {
         const data = response.data;
-        // if (data.status === "ok") {
-        //     setCmsdata(data.results);
-        //     setProblemImage(data.results[0]);
-        // } else {
-        //     console.log("error");
-        // }
+        if (data.status === "ok") {
+            setCmsdata(data.results);
+            setProblemImage(data.results[0]);
+        } else {
+            console.log("error");
+        }
       })
     }
 

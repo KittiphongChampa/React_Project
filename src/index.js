@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -69,7 +68,7 @@ root.render(
       <Route path="/setting-profile" element={<SettingProfile />} />
       <Route path="/newpassword" element={<NewPassword />} />
       <Route path="/chatbox" element={<ChatBox />} />
-      <Route path="/cmsdetail" element={<CmsDetail />} />
+      <Route path="/cmsdetail/:id" element={<CmsDetail />} />
 
       {/*admin*/}
       <Route path="/admin" element={<AdminPage/>} />

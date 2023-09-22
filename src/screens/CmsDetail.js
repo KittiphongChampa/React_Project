@@ -1,7 +1,7 @@
 
+import axios from "axios";
 import React, { useState, useEffect, useRef } from "react";
 import * as Icon from 'react-feather';
-import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form"
 // import "../css/indeAttImgInput.css";
 // import "../css/recent_index.css";
@@ -20,6 +20,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import { v4 as uuidv4 } from 'uuid';
 import { Alert, Space } from 'antd';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { useNavigate, Link, useParams } from "react-router-dom";
 
 
 
@@ -133,6 +134,81 @@ export default function CmsDetail() {
         setActiveMenu({ [menu]: true });
         // setActiveMenu(...prevState, package: !prevState.package )
     }
+    const navigate = useNavigate();
+    const cmsID = useParams();
+    const [userdata, setUserdata] = useState([]);
+    const [artistDetail, setArtistDetail] = useState([]);
+    const [cmsDetail, setCmsDetail] = useState([]);
+    const [imgDetail, setImgDetail] = useState([]);
+    const [pkgDetail, setPkgDetail] = useState([]);
+    console.log("artistDetail : ", artistDetail);
+    console.log("cmsDetail : ", cmsDetail);
+    console.log("imgDetail : ", imgDetail);
+    console.log("pkgDetail : ", pkgDetail);
+
+    const time = cmsDetail.created_at;
+    const date = new Date(time);
+    const thaiDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear() + 543}`;
+    
+    useEffect(() => {
+        if (localStorage.getItem("token")) {
+          if (window.location.pathname === "/login") {
+            navigate("/");
+          }
+        } else {
+          navigate("/login");
+        }
+        getUser();
+        getDetailCommission();
+    }, []);
+    const token = localStorage.getItem("token");
+    const getUser = async () => {
+        await axios
+          .get("http://localhost:3333/index", {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          })
+          .then((response) => {
+            const data = response.data;
+            if (data.status === "ok") {
+              setUserdata(data.users[0]);
+            } else if (data.status === "no_access") {
+              alert(data.message);
+              navigate("/admin");
+            } else {
+              localStorage.removeItem("token");
+              navigate("/login");
+            }
+          })
+          .catch((error) => {
+            if (error.response && error.response.status === 401 && error.response.data === "Token has expired") {
+              // Handle token expired error
+              alert("Token has expired. Please log in again.");
+              localStorage.removeItem("token");
+              navigate("/login");
+            } else {
+              // Handle other errors here
+              console.error("Error:", error);
+            }
+          });
+    };
+
+    const getDetailCommission = async () => {
+        await axios.get(`http://localhost:3333/detailCommission/${cmsID.id}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }).then((response) => {
+          const data = response.data;
+          setArtistDetail(data.artist)
+          setCmsDetail(data.commission);
+          setImgDetail(data.images);
+          setPkgDetail(data.packages);
+        })
+    }
 
 
     return (
@@ -165,12 +241,12 @@ export default function CmsDetail() {
                             <div className="cms-artist-box">
                                 <div id="cms-artist-profile">
                                     <img src="AB1.png" alt="" />
-                                    <p>Boobi <span>4.0</span><span><ggIcon.Star className='fill-icon' /> </span> (3) | ว่าง 3 คิว</p>
+                                    <p>{artistDetail.artistName} <span>4.0</span><span><ggIcon.Star className='fill-icon' /> </span> (3) | ว่าง 3 คิว</p>
                                 </div>
                                 <p id="cms-price" className="h4">เริ่มต้น 100 บาท</p> {/* ให้มันชิดขวา */}
                             </div>
-                            <p style={{textAlign:"right",fontSize:"0.7rem"}}>10/08/2566</p>
-                            <ImgSlide />
+                            <p style={{textAlign:"right",fontSize:"0.7rem"}}>{thaiDate}</p>
+                            <ImgSlide imgDetail={imgDetail} />
                             
                             <p className="text-align-center mt-3 mb-3">คมช.เส้นเปล่า-ลงสีรับทุกสเกล สามารถเพิ่มตัวละครหรือเพิ่มพร็อพได้ โดยราคาขึ้นอยู่กับรายละเอียดที่เพิ่มเข้ามา</p>
                             <div className="skill">
@@ -207,7 +283,7 @@ export default function CmsDetail() {
 
                             {/* <Queue /> */}
 
-                            {activeMenu.package && <Package onClick={openFormModal} />}
+                            {activeMenu.package && <Package pkgDetail={pkgDetail} onClick={openFormModal} />}
                             {activeMenu.review && <Review />}
                             {activeMenu.queue && <Queue />}
 
@@ -220,46 +296,41 @@ export default function CmsDetail() {
 }
 
 function Package(props) {
+    const { pkgDetail } = props;
 
     return <>
         <h2>เลือกแพ็กเกจ</h2>
         <p className="text-align-right">ราคาสำหรับ personal use หากใช้ในเชิงอื่นอาจกำหนดราคาขึ้นมากกว่านี้</p>
-        <div className="select-package-item" onClick={props.onClick}>
-            <div>
-                <h3>Headshot</h3>
-                <p>100+ THB</p>
-                <p>ราคาสำหรับเส้นเปล่า ลงสีพื้น+50 บาท ลงสีเต็ม(ลงเงา) +100 บาท </p>
-            </div>
-            <div>
-                <p>ระยะเวลาทำงาน 2 วัน</p>
+        {Array.isArray(pkgDetail) ? (
+            pkgDetail.map((pkg) => (
+                <div className="select-package-item" onClick={props.onClick} key={pkg.pkg_id}>
+                <div>
+                    <h3>{pkg.pkg_name}</h3>
+                    <p>{pkg.pkg_min_price}+ THB</p>
+                    <p>ราคาสำหรับเส้นเปล่า ลงสีพื้น+{pkg.pkg_min_price} บาท ลงสีเต็ม(ลงเงา) +{pkg.pkg_min_price + 50} บาท</p>
+                </div>
+                <div>
+                    <p>ระยะเวลาทำงาน {pkg.pkg_duration} วัน</p>
+                    <p>ประเภทงานที่อนุญาต ทุกประเภท</p>
+                    <p>จำนวนครั้งแก้ไขงาน {pkg.pkg_edits} ครั้ง</p>
+                </div>
+                </div>
+            ))
+            ) : (
+            <div className="select-package-item" onClick={props.onClick}>
+                <div>
+                <h3>{pkgDetail.pkg_name}</h3>
+                <p>{pkgDetail.pkg_min_price}+ THB</p>
+                <p>ราคาสำหรับเส้นเปล่า ลงสีพื้น+{pkgDetail.pkg_min_price} บาท ลงสีเต็ม(ลงเงา) +{pkgDetail.pkg_min_price + 50} บาท</p>
+                </div>
+                <div>
+                <p>ระยะเวลาทำงาน {pkgDetail.pkg_duration} วัน</p>
                 <p>ประเภทงานที่อนุญาต ทุกประเภท</p>
-                <p>จำนวนครั้งแก้ไขงาน 3 ครั้ง</p>
+                <p>จำนวนครั้งแก้ไขงาน {pkgDetail.pkg_edits} ครั้ง</p>
+                </div>
             </div>
-        </div>
-        <div className="select-package-item" onClick={props.onClick}>
-            <div>
-                <h3>Half body</h3>
-                <p>200+ THB</p>
-                <p>ราคาสำหรับเส้นเปล่า ลงสีพื้น+100 บาท ลงสีเต็ม(ลงเงา) +150 บาท</p>
-            </div>
-            <div>
-                <p>ระยะเวลาทำงาน 3 วัน</p>
-                <p>ประเภทงานที่อนุญาต ทุกประเภท</p>
-                <p>จำนวนครั้งแก้ไขงาน 3 ครั้ง</p>
-            </div>
-        </div>
-        <div className="select-package-item" onClick={props.onClick}>
-            <div>
-                <h3>Full body</h3>
-                <p>500+ THB</p>
-                <p>ราคาสำหรับเส้นเปล่า ลงสีพื้น+150 บาท ลงสีเต็ม(ลงเงา) +200 บาท</p>
-            </div>
-            <div>
-                <p>ระยะเวลาทำงาน 4 วัน</p>
-                <p>ประเภทงานที่อนุญาต ทุกประเภท</p>
-                <p>จำนวนครั้งแก้ไขงาน 3 ครั้ง</p>
-            </div>
-        </div>
+            )
+        }
     </>
 
 }

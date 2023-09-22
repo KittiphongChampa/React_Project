@@ -18,6 +18,7 @@ import ProfileImg from "../components/ProfileImg";
 import ChangeProfileImgModal from "../modal/ChangeProfileImgModal";
 import { ChangeCoverModal, openInputColor } from "../modal/ChangeCoverModal"
 import CmsItem from "../components/CmsItem";
+import { wait } from "@testing-library/user-event/dist/utils";
 
 
 const title = 'หน้าแรก';
@@ -28,7 +29,6 @@ export default function Index() {
   const navigate = useNavigate();
   const [userdata, setUserdata] = useState([]);
   const [urs_token, setUrs_token] = useState();
-  console.log(userdata);
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -39,10 +39,11 @@ export default function Index() {
       navigate("/login");
     }
     getUser();
+    getLatestCommission();
+    getArtistCommission();
   }, []);
-
+  const token = localStorage.getItem("token");
   const getUser = async () => {
-    const token = localStorage.getItem("token");
     await axios
       .get("http://localhost:3333/index", {
         headers: {
@@ -75,46 +76,33 @@ export default function Index() {
         }
       });
   };
+  const [cmsLatests, setCmsLatest] = useState([]);
+  const [cmsArtists, setCmsArtist] = useState([]);
+  const getLatestCommission = async () => {
+    await axios.get("http://localhost:3333/latestCommission", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    }).then((response) => {
+      const Cmslatest = response.data;
+      setCmsLatest(Cmslatest.commissions)
+    })
+  }
+
+  const getArtistCommission = async () => {
+    await axios.get("http://localhost:3333/artistCommission", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    }).then((response) => {
+      const Cmsfollowing = response.data;
+      setCmsArtist(Cmsfollowing.commissions);
+    })
+  }
 
   return (
-    // <div className="Index">
-    //   <h1>
-    //     Welcome,
-    //     {userdata.id + " " + userdata.urs_email + " " + userdata.urs_name}
-    //   </h1>
-    //   <img src={userdata.urs_profile_img} style={{width: "50px", height: "50px", borderRadius:"50px"}}/>
-    //   <h3>เหรียญที่มี : {urs_token}</h3>
-    //   <Button variant="contained" onClick={() => navigate("/buycoin")}>
-    //     ซื้อเหรียญ
-    //   </Button>
-    //   <Button variant="contained" onClick={() => navigate("/userprofile")}>
-    //     จัดการโปรไฟล์
-    //   </Button>
-    //   <Button variant="contained" onClick={() => navigate("/setting-coin")}>
-    //     ดูประวัติการเติมเงิน
-    //   </Button>
-    //   <br/><br/><br/><br/>
-    //   <Button variant="contained" onClick={() => navigate("/editprofile")}>
-    //     จัดการโปรไฟล์-เทส
-    //   </Button>
-    //   <Button variant="contained" onClick={() => navigate("/transaction")}>
-    //     ประวัติการเติมเงิน-เทส
-    //   </Button>
-    //   {userdata.urs_type === 3 && (
-    //     <>
-    //     <Button variant="contained" onClick={() => navigate("/packagetoken")}>
-    //       Package Token
-    //     </Button>
-    //     <Button variant="contained" onClick={() => navigate("/alluser")}>
-    //       AllUser
-    //     </Button>
-    //     </>
-    //   )}
-    //   <br/><br/>
-    //   <Button variant="contained" onClick={handleLogout}>
-    //     Logout
-    //   </Button>
-    // </div>
     <div className="body-con">
             <Helmet>
                 <title>{title}</title>
@@ -167,9 +155,15 @@ export default function Index() {
                                 <p>ดูทั้งหมด&gt;</p>
                             </div>
                             <div class="content-items">
-                                <Link to="/cmsdetail"><CmsItem src="monlan.png" headding="คอมมิชชัน SD" price="100" desc="คมช.เส้นเปล่า-ลงสีรับทุกสเกล สามารถเพิ่มตัวละครหรือเพิ่มพร็อพได้ โดยราคาขึ้นอยู่กับรายละเอียดที่เพิ่มเข้ามา"/></Link>
-                                
+                              {cmsLatests.map(cmsLatest => (
+                                <div key={cmsLatest.cms_id} style={{display:"flex"}}>
+                                  <Link to={`/cmsdetail/${cmsLatest.cms_id}`} >
+                                    <CmsItem src={cmsLatest.ex_img_path} headding={cmsLatest.cms_name} price="100" desc={cmsLatest.cms_desc}/>
+                                  </Link>
+                                </div>
+                              ))}
                             </div>
+
                         </div>
 
                         <div class="content-box">
@@ -177,10 +171,18 @@ export default function Index() {
                                 <p className="h3">คอมมิชชันจากนักวาดที่ติดตาม</p>
                                 <p>ดูทั้งหมด&gt;</p>
                             </div>
-                            <div class="content-items">
-                                <Link to="/cmsdetail"><CmsItem src="monlan.png" headding="คอมมิชชัน SD" price="100" desc="คมช.เส้นเปล่า-ลงสีรับทุกสเกล สามารถเพิ่มตัวละครหรือเพิ่มพร็อพได้ โดยราคาขึ้นอยู่กับรายละเอียดที่เพิ่มเข้ามา" /></Link>
-                                
-                            </div>
+                        
+                          <div class="content-items">
+                            {cmsArtists.map(cmsArtstdata => (
+                              <div key={cmsArtstdata.cms_id} style={{display:"flex"}}>
+                                <Link to={`/cmsdetail/${cmsArtstdata.cms_id}`} >
+                                  <CmsItem src={cmsArtstdata.ex_img_path} headding={cmsArtstdata.cms_name} price="100" desc={cmsArtstdata.cms_desc}/>
+                                </Link>
+                              </div>
+                            ))}
+                          </div>
+                       
+
                         </div>
                         <div class="content-box">
                             <div class="content-top">
