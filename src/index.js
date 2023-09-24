@@ -29,10 +29,17 @@ import UserProfile from './screens/UserProfile';
 import HomePage from './screens/HomePage';
 import FirstPage from './screens/FirstPage';
 import CmsDetail from './screens/CmsDetail';
+// import ChatBox from './screens/Chatbox';
 import ChatBox from './screens/ChatBox';
+import ChatBoxUI from './screens/Old_ChatBox';
+import Dashboard from './screens/SettingDashboard';
+// import ArtistManagement from './screens/ArtistManagement';
+
 
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import ArtistManagement from './screens/ArtistManagement';
+import ArtworkDetail from './screens/ArtworkDetail';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -62,6 +69,7 @@ root.render(
       <Route path="/newpassword" element={<NewPassword />} />
       <Route path="/adminmanagement" element={<AdminManagement />} />
       <Route path="/userprofile" element={<UserProfile />} />
+      <Route path="/homepage/:submenu" element={<HomePage />} />
       <Route path="/homepage" element={<HomePage />} />
       <Route path="/firstpage" element={<FirstPage />} />
 
@@ -69,6 +77,10 @@ root.render(
       {/*------มาใหม่---- */}
       <Route path="/cmsdetail" element={<CmsDetail />} />
       <Route path="/chatbox" element={<ChatBox />} />
+      <Route path="/chatboxui" element={<ChatBoxUI />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/artistmanagement/:menu" element={<ArtistManagement />} />
+      <Route path="/artworkdetail" element={<ArtworkDetail />} />
 
     </Routes>
   </BrowserRouter>

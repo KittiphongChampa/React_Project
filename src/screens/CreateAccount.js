@@ -1,6 +1,9 @@
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import React, { useState, useEffect } from "react";
+import * as Icon from 'react-feather';
+import * as ggIcon from '@mui/icons-material';
+
 
 // ของข้อย
 
@@ -10,18 +13,13 @@ import "../css/allbutton.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Helmet } from "react-helmet";
 import DefaultInput from "../components/DefaultInput";
-import {NavbarUser,NavbarAdmin,NavbarHomepage} from "../components/Navbar";
+import { NavbarUser, NavbarAdmin, NavbarGuest } from "../components/Navbar";
 import ProfileImg from "../components/ProfileImg";
 // import ImportScript from "../components/ImportScript";
 
 
-
 const theme = createTheme();
 const title = 'สร้างบัญชี';
-
-
-
-
 
 
 
@@ -39,43 +37,92 @@ export default function CreateAccount() {
         }
         input.click();
     }
+    // const [role, setRole] = useState({rolename:null,roleSelect:false})
+    const [roleName,setRoleName] =useState(null)
+
+    const [roleSelected,setRoleSelected] = useState(false)
+    const icon = {
+        fontVariationSettings: "'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 48",
+    };
+
+    function handleRole(role) {
+        setRoleName(role)
+        // alert(role)
+    }
+
+    function roleCheck() {
+        setRoleSelected(!roleSelected)
+    }
+
+
 
 
     return (
-        <ThemeProvider theme={theme}>
+        <div className="body-con">
             <Helmet>
                 <title>{title}</title>
             </Helmet>
+            <NavbarGuest />
 
 
-            <div className='body' style={{ backgroundImage: "url('mainmoon.jpg')", backgroundPosition: 'center', backgroundSize: 'cover', backgroundAttachment: 'fixed', backgroundRepeat: 'no-repeat' }}>
 
-                <NavbarUser />
+            <div className='body-lesspadding' style={{ backgroundImage: "url('mainmoon.jpg')", backgroundPosition: 'center', backgroundSize: 'cover', backgroundAttachment: 'fixed', backgroundRepeat: 'no-repeat' }}>
+
+
                 <div className="container">
-                    <div className="createaccount-soloCard">
-                        <div className="createaccount-col-text">
-
+                    {roleSelected? <div className="createaccount-soloCard" >
+                        <div className="card-header-tap">
+                            <div><button><Icon.ArrowLeft className="go-back-icon" onClick={roleCheck} /></button></div>
                             <h1 className="text-center">{title} </h1>
-                            <ProfileImg src="b3.png" onPress={addProfileImg} />
+                            <div></div>
+                        </div>
+                        <div className="createaccount-col-text">
+                            <ProfileImg  onPress={addProfileImg} />
                             <p className="text-center">รูปโปรไฟล์</p>
                             <form>
-                                <DefaultInput headding='อีเมล' type='email' />
+                                <DefaultInput headding='อีเมล' type='email' disabled="disabled" value="hiyo123@gmail.com"/>
                                 <DefaultInput headding='ชื่อผู้ใช้' type='text' />
                                 <DefaultInput headding='รหัสผ่าน' type='text' />
                                 <DefaultInput headding='ยืนยันรหัสผ่าน' type='text' />
+                                { roleName=='artist' && <><DefaultInput headding='ชื่อบัญชีธนาคาร' type='text' />
+                                    <DefaultInput headding='เลขพร้อมเพย์' type='text' /></>}
                                 <div className="text-align-center">
-
                                     <button className="gradiant-btn" type="submit">ยืนยันการสร้างบัญชี</button>
-                                    <button className="lightblue-btn" type="cancle">ยกเลิก</button>
+                                    <button className="cancle-btn" type="cancle">ยกเลิก</button>
                                 </div>
                             </form>
 
                         </div>
-                    </div>
+                    </div> : <>
+                        <div className="createaccount-soloCard" >
+
+                            <div className="card-header-tap">
+                                <div><button><Icon.ArrowLeft className="go-back-icon"  /></button></div>
+                                <h1 className="text-center">คุณเป็นใคร </h1>
+                                <div></div>
+                            </div>
+                            <div className="roles-container">
+                                    <div className={`role-item ${roleName == 'customer' && 'select'}`}>
+                                        <button onClick={() => handleRole('customer')}><ggIcon.Person className="iconn" /></button>
+                                    <p>ผู้ว่าจ้าง</p>
+                                </div>
+                                    <div className={`role-item ${roleName == 'artist' && 'select'}`}>
+                                        <button onClick={()=>handleRole('artist')}><ggIcon.Palette className="iconn" /></button>
+                                    <p>นักวาด</p>
+                                </div>
+
+                                </div>
+                                <button className="lightblue-btn" onClick={roleCheck} disabled={roleName === null}>ถัดไป</button>
+
+
+                        </div>
+
+
+                    </>}
                 </div>
             </div>
 
 
-        </ThemeProvider>
+        </div>
     );
 }

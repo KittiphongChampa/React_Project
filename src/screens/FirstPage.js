@@ -10,7 +10,7 @@ import "../css/homepage.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Helmet } from "react-helmet";
 import DefaultInput from "../components/DefaultInput";
-import { NavbarUser, NavbarAdmin, NavbarHomepage } from "../components/Navbar";
+import { NavbarUser, NavbarAdmin, NavbarHomepage, NavbarGuest} from "../components/Navbar";
 import BgBody from "../components/BgBody";
 
 

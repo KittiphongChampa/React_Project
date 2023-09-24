@@ -8,7 +8,7 @@ import "../css/allbutton.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Helmet } from "react-helmet";
 import DefaultInput from "../components/DefaultInput";
-import {NavbarUser,NavbarAdmin,NavbarHomepage} from "../components/Navbar";
+import { NavbarUser, NavbarAdmin, NavbarHomepage, NavbarGuest} from "../components/Navbar";
 import BgBody from "../components/BgBody";
 
 
@@ -21,15 +21,15 @@ const body = { backgroundImage: bgImg }
 export default function SignIn() {
 
     return (
-        <ThemeProvider theme={theme}>
+        <div className="body-con">
+            <NavbarUser />
             <Helmet>
                 <title>{title}</title>
             </Helmet>
             <div class="body" style={body}>
-                <NavbarUser />
                 <div class="container">
                     <div class="login-soloCard">
-                        <div class="">
+                        <div class="login-col-img">
                             <img class="login-img" src="ภาพตัด.png" alt="" />
                         </div>
                         <div class="login-col-text">
@@ -43,13 +43,18 @@ export default function SignIn() {
                                     <div class="text-align-right">
                                         <a href="">ลืมรหัสผ่าน</a>
                                     </div>
-                                    <div class="text-align-center">
-                                        <button class="lightblue-btn" type="submit">เข้าสู่ระบบ</button>
+                                    <div className="login-btn-group">
+                                        <button className="login-btn" type="submit">เข้าสู่ระบบ</button>
+                                        {/* <button>สมัครสมาชิก</button> */}
+                                        <a href="">สมัครสมาชิก</a>
                                     </div>
+                                    {/* <div class="text-align-center">
+                                        <button class="lightblue-btn" type="submit">เข้าสู่ระบบ</button>
+                                    </div> */}
                                 </form>
-                                <div class="text-align-center">
+                                {/* <div class="text-align-center">
                                     <a href="">สมัครสมาชิก</a>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>
@@ -57,6 +62,6 @@ export default function SignIn() {
             </div>
 
 
-        </ThemeProvider>
+        </div>
     );
 }

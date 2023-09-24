@@ -7,7 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Helmet } from "react-helmet";
 import SettingAside from "../components/SettingAside";
 import ProfileImg from "../components/ProfileImg";
-import { NavbarUser, NavbarAdmin, NavbarHomepage } from "../components/Navbar";
+import { NavbarUser, NavbarAdmin, NavbarHomepage, NavbarGuest} from "../components/Navbar";
 import ChangePasswordModal from "../modal/ChangePasswordModal";
 import { ChangeCoverModal, openInputColor } from "../modal/ChangeCoverModal";
 import Swal from "sweetalert2/dist/sweetalert2.js";
@@ -115,24 +115,24 @@ export default function SettingProfile() {
         const formData = new FormData();
         formData.append("name", name);
         formData.append("bio", bio);
-        await axios
-            .patch("http://localhost:3333/profile/update", formData, {
-                headers: {
-                    Authorization: "Bearer " + token,
-                },
-            })
-            .then((response) => {
-                const data = response.data;
-                if (data.status === "ok") {
-                    // alert("Update Success");
-                    // window.location = "/setting-profile";
-                    Swal.fire({ ...alertData.success }).then(() => {
-                        window.location.reload(false);
-                    })
-                } else {
-                    //   toast.error(data.message, toastOptions);
-                }
-            });
+        // await axios
+        //     .patch("http://localhost:3333/profile/update", formData, {
+        //         headers: {
+        //             Authorization: "Bearer " + token,
+        //         },
+        //     })
+        //     .then((response) => {
+        //         const data = response.data;
+        //         if (data.status === "ok") {
+        //             // alert("Update Success");
+        //             // window.location = "/setting-profile";
+        //             Swal.fire({ ...alertData.success }).then(() => {
+        //                 window.location.reload(false);
+        //             })
+        //         } else {
+        //             //   toast.error(data.message, toastOptions);
+        //         }
+        //     });
     };
 
     const watchBio = watch("bio", String(userdata.urs_bio));
@@ -152,8 +152,8 @@ export default function SettingProfile() {
         let editProfileBtn = document.getElementById("editProfileBtn");
         let sendDataBtn = document.getElementById("sendDataBtn");
         editProfileBtn.style.display = "none";
-        sendDataBtn.style.display = "block";
-        setHide("block");
+        sendDataBtn.style.display = "flex";
+        setHide("flex");
     };
 
     const editBank = () => {
@@ -257,7 +257,7 @@ export default function SettingProfile() {
 
 
     return (
-        <>
+        <div div className="body-con">
             <Helmet>
                 <title>{title}</title>
             </Helmet>
@@ -272,12 +272,13 @@ export default function SettingProfile() {
                 <SettingAside onActive="profile" />
                 <div className="setting-content-box">
                     <div className="settingCard">
+                        
                         <div>
                             <h2 className="setting-headding">โปรไฟล์</h2>
                         </div>
                         <div className="in-setting-page">
                             <form onSubmit={profileupdate}>
-                                <div className="setting-img-box text-align-center">
+                                <div className="setting-img-box">
                                     <div
                                         className="setting-cover"
                                         onClick={openCoverModal}
@@ -333,7 +334,7 @@ export default function SettingProfile() {
                                         {bio.length}/350
                                     </p>
                                 </div>
-                                <div className="text-align-center" id="sendDataBtn">
+                                <div className="" id="sendDataBtn" style={{ justifyContent: "center" }}>
                                     <button className="gradiant-btn" type="submit">
                                         บันทึกข้อมูล
                                     </button>
@@ -342,7 +343,7 @@ export default function SettingProfile() {
                                     </button>
                                 </div>
                             </form>
-                            <div className="text-align-center" id="editProfileBtn">
+                            <div className="" id="editProfileBtn" style={{display:"flex",justifyContent:"center"}}> 
                                 <button className="edit-profile-btn" onClick={editProfile}>
                                     แก้ไขโปรไฟล์
                                 </button>
@@ -419,7 +420,7 @@ export default function SettingProfile() {
                                         {ppNumber.length}/50
                                     </p> */}
                                 </div>
-                                <div className="text-align-center" id="sendDataBankBtn" style={isShow ? { display: "block" } : { display: "none", borderColor: 'black' }}>
+                                <div className="text-align-center" id="sendDataBankBtn" style={isShow ? {  display: "flex", justifyContent: "center" } : { display: "none", borderColor: 'black' }}>
                                     <button className="gradiant-btn" type="submit">
                                         บันทึกข้อมูล
                                     </button>
@@ -428,7 +429,7 @@ export default function SettingProfile() {
                                     </button>
                                 </div>
                             </form>
-                            <div className="text-align-center" id="editBankBtn" style={!isShow ? { display: "block" } : { display: "none", }}>
+                            <div className="" id="editBankBtn" style={!isShow ? {display:"flex",justifyContent: "center"} : { display: "none", }}>
                                 <button className="edit-profile-btn" onClick={handleHidden}>
                                     แก้ไขข้อมูลบัญชีธนาคาร
                                 </button>
@@ -444,6 +445,6 @@ export default function SettingProfile() {
 
                 </div>
             </div>
-        </>
+        </div>
     );
 }

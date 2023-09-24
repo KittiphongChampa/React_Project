@@ -6,7 +6,7 @@ export default function DefaultInput(props) {
     return (
     <>
         <label class="onInput">{props.headding}</label>
-            <input class="defInput" type={props.type} />
+            <input class="defInput" type={props.type} disabled={props.disabled != null} value={props.value != null ? props.value : ""} />
             {/* <p class="validate-input">dddd</p> */}
     </>
     )

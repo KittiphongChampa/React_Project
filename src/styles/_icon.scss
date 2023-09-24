@@ -5,6 +5,12 @@
     vertical-align: text-top !important;
 }
 
+.middle-icon{
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
 .plus-icon {
     width: 48px;
     height: 48px;
@@ -22,4 +28,20 @@
     display: flex;
     width: 100%;
     align-items: center;
+}
+
+.go-back-icon {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+
+}
+
+.close-icon {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+
 }

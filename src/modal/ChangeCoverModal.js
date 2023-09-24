@@ -56,12 +56,19 @@ const ChangeCoverModal = (props) => {
     return (
         <div className="modal-area" id="modalArea" onClick={props.onClick}>
             <div className="container">
+                
                 <div className="form-modal">
-                    <div className="text-align-right close-btn" onClick={closeModal}><Icon.X /></div>
+                    {/* <div className="card-header-tap">
+                        <div></div>
+                        <h2>เปลี่ยนสีปก</h2>
+                        <div className="close-wrap"><button><Icon.X className="close-icon"/></button></div>
+                    </div> */}
+                    <div className="close-tab" onClick={closeModal}><Icon.X /></div>
                     <div className="form-area">
+                        <h2 style={{display:"flex",justifyContent: "center",marginBottom:"1rem"}}>เปลี่ยนสีปก</h2>
                         <form onSubmit={handleSubmit(submitChangeCoverForm)}>
-                            <h2 className="text-align-center">เปลี่ยนสีปก</h2>
-                            <div className="setting-img-box text-align-center">
+                            
+                            <div className="setting-img-box">
                                 <div className="setting-cover">
                                     <input {...register("cover")} type="color" id="color-input" style={{ cursor: "pointer" }} />
                                 </div>

@@ -1,49 +1,59 @@
-
-// html,
-// body {
-//   position: relative;
-//   height: 100%;
-// }
-
-// body {
-//   background: #eee;
-//   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-//   font-size: 14px;
-//   color: #000;
-//   margin: 0;
-//   padding: 0;
-// }
-
-.swiper {
+.cms-example-swiper {
   width: 100%;
   height: 70vh;
   user-select: none;
-//   display: flex;
-//   justify-content:center;
-//   align-items:center;
-  
+
+  .swiper-slide {
+
+    text-align: center;
+    font-size: 18px;
+    // background: #ffb5b5;
+
+    /* Center slide text vertically */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    div,
+    img {
+
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      overflow: hidden;
+      //   display: flex;
+      //   justify-content:center;
+      //   align-items:center;
+    }
+  }
+
+
 }
 
-.swiper-slide {
+.cms-item-swiper {
+  // display: grid;
 
-  text-align: center;
-  font-size: 18px;
-  background: #fff;
-
-  /* Center slide text vertically */
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  .swiper-slide {
+    width: 14rem;
+    /* ตั้งค่าความสูงตามที่คุณต้องการ */
+  }
 }
 
-.swiper-slide img {
-  
-  width: 100%;
-  height: 100%;
-  
-  object-fit: contain;
-  overflow: hidden;
-//   display: flex;
-//   justify-content:center;
-//   align-items:center;
+.artistbox-swiper {
+  padding-bottom: 1rem;
+
+  .swiper-slide {
+    width: fit-content;
+  }
+
 }
+
+
+// .watermark-overlay{
+//   position: absolute;
+
+// }
+
+// .watermarked-img{
+//   position: relative;
+// }

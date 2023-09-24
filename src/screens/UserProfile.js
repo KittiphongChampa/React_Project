@@ -14,7 +14,7 @@ import DefaultInput from "../components/DefaultInput";
 import inputSetting from "../function/function";
 import ProfileImg from "../components/ProfileImg";
 // import Profile from '../yunscreens/Profile';
-import { NavbarUser, NavbarAdmin, NavbarHomepage } from "../components/Navbar";
+import { NavbarUser, NavbarAdmin, NavbarHomepage, NavbarGuest} from "../components/Navbar";
 
 
 import ChangeProfileImgModal from "../modal/ChangeProfileImgModal";
@@ -23,10 +23,14 @@ import { ChangeCoverModal, openInputColor } from "../modal/ChangeCoverModal"
 import Button from "react-bootstrap/Button";
 import CmsItem from "../components/CmsItem";
 import { Link } from 'react-router-dom';
+import Gallery from 'react-photo-gallery';
+import ArtistBox from '../components/ArtistBox'
+
 
 const title = 'Profile';
 const bgImg = ""
 const body = { backgroundColor: "#F4F1F9" }
+
 
 
 export default function UserProfile() {
@@ -73,10 +77,11 @@ export default function UserProfile() {
     // };
 
     function menuProfile(event, menu) {
+        setprofileMenuSelected(menu)
         let oldSelected = document.querySelector('.sub-menu.selected')
         oldSelected.classList.remove('selected')
         event.target.classList.add('selected')
-        setprofileMenuSelected(menu)
+        
     }
 
     const openModal = (modal) => {
@@ -94,7 +99,7 @@ export default function UserProfile() {
 
 
     return (
-        <>
+        <div className="body-con">
             <Helmet>
                 <title>{title}</title>
             </Helmet>
@@ -130,7 +135,7 @@ export default function UserProfile() {
                             </div>
                             <div className="user-col-about">
                                 <div className="user-about-menu">
-                                    <button className="sub-menu selected">overview</button>
+                                    <button className="sub-menu">overview</button>
                                     <button className="sub-menu">about me</button>
                                 </div>
                                 <div className="user-about-content">
@@ -158,9 +163,13 @@ export default function UserProfile() {
                             <button className="sub-menu selected" onClick={(event) => menuProfile(event, 'cms')}>คอมมิชชัน</button>
                             <button className="sub-menu" onClick={(event) => menuProfile(event, 'gallery')}>แกลลอรี่</button>
                             <button className="sub-menu" onClick={(event) => menuProfile(event, 'review')}>รีวิว</button>
+                            <button className="sub-menu" onClick={(event) => menuProfile(event, 'follower')}>ผู้ติดตาม</button>
+                            <button className="sub-menu" onClick={(event) => menuProfile(event, 'following')}>กำลังติดตาม</button>
                             {profileMenuSelected === "cms" ? <AllCms /> : null}
                             {profileMenuSelected === "gallery" ? <AllArtworks /> : null}
                             {profileMenuSelected === "review" ? <AllReviews /> : null}
+                            {profileMenuSelected === "follower" ? <Followers /> : null}
+                            {profileMenuSelected === "following" ? <Followings /> : null}
 
                             {/* <div className="headding-seeall"><p className="h2">รีวิว</p> <p>ดูรีวิวทั้งหมด</p></div>
                             <div className="headding-seeall"><p className="h2">แกลอรี่</p> <p>ดูทั้งหมด</p></div> */}
@@ -178,16 +187,45 @@ export default function UserProfile() {
 
 
 
-        </>
+        </div>
     );
+}
+
+function Followers(props) {
+
+    return <>
+        <p className="h3 mt-3 mb-2">ผู้ติดตาม</p>
+        <div className="artistbox-items">
+            <ArtistBox />
+            <ArtistBox />
+            <ArtistBox />
+            <ArtistBox />
+        </div>
+
+    </>
+}
+
+function Followings(props) {
+
+    return <>
+        <p className="h3 mt-3 mb-2">กำลังติดตาม</p>
+        <div className="artistbox-items">
+            <ArtistBox />
+            <ArtistBox />
+            <ArtistBox />
+            <ArtistBox />
+        </div>
+
+    </>
 }
 
 
 function AllCms(props) {
+
     return <>
         <p className="h3 mt-3 mb-2">คอมมิชชัน</p>
         <div class="content-items">
-            <Link to="/cmsdetail"><CmsItem src="AB1.png" price="100" headding="Chibi Style" desc="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"/></Link>
+            <Link to="/cmsdetail"><CmsItem src="AB1.png" price="100" headding="Chibi Style" desc="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" /></Link>
             <Link to="/cmsdetail"><CmsItem src="Blaze_Taylor.png" price="500" headding="SD Style" desc="รับวาดรูปxxxx" /></Link>
             {/* <Link to="/cmsdetail"><CmsItem src="bird.png" price="100" headding="หัวข้อ3" desc="รับวาดรูปxxxx" /></Link> */}
             {/* <Link to="/cmsdetail"><CmsItem src="b3.png" price="100" headding="หัวข้อ4" desc="รับวาดรูปxxxx" /></Link> */}
@@ -197,14 +235,17 @@ function AllCms(props) {
 }
 
 function AllArtworks(props) {
+
     return <>
         <p className="h3 mt-3 mb-2">แกลอรี่</p>
-        <div className="profile-gallery">
-            <img src="b3.png" />
-            <img src="AB1.png" />
-            <img src="mainmoon.jpg" />
-            <img src="b3.png" />
-            <img src="b3.png" />
+        <div className="profile-gallery-container">
+            <div className="profile-gallery">
+                <img src="b3.png" />
+                <img src="AB1.png" />
+                <img src="mainmoon.jpg" />
+                <img src="b3.png" />
+                <img src="b3.png" />
+            </div>
         </div>
     </>
 }

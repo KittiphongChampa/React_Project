@@ -42,10 +42,10 @@ const ChangeProfileImgModal = (props) => {
         <div className="modal-area" id="modalArea2">
             <div className="container">
                 <div className="form-modal">
-                    <div className="text-align-right close-btn" onClick={closeModal}><Icon.X /></div>
+                    <div className="close-tab" onClick={closeModal}><Icon.X /></div>
                     <div className="form-area">
                         <form onSubmit={handleSubmit(submitChangeProfileForm)}>
-                            <h2 className="text-align-center">เปลี่ยนภาพโปรไฟล์</h2>
+                            <h2 style={{ display: "flex", justifyContent: "center", marginBottom: "1rem" }}>เปลี่ยนภาพโปรไฟล์</h2>
                             <div class="input-group mb-1 mt-5">
                                 <input {...register("profileImg", { required: true })}
                                     type="file" class="form-control" id="inputGroupFile02" />

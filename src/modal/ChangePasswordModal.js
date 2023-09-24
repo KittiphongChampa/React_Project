@@ -63,7 +63,7 @@ const ChangePasswordModal = (props, ref) => {
                     <div className="text-align-right close-btn" onClick={closeModal}><Icon.X /></div>
                     <div className="form-area">
                         <form onSubmit={handleSubmit(submitChangePassForm)}>
-                            <h2 className="text-align-center">เปลี่ยนรหัสผ่านใหม่</h2>
+                            <h2 style={{ display: "flex", justifyContent: "center" }}>เปลี่ยนรหัสผ่านใหม่</h2>
                             <NewInput inputSetting={inputSetting('now-password', 'รหัสผ่านปัจจุบัน', "text", null, true)}
                                 {...func} />
                             <NewInput inputSetting={inputSetting('new-password', 'รหัสผ่านใหม่', "text", null, true, 8)}

@@ -1,4 +1,4 @@
-<label class="onInput">coin ที่ได้</label>
+{/* <label class="onInput">coin ที่ได้</label>
                 <input
                     type="number"
                     {...register("coins", { required: true })}
@@ -24,4 +24,4 @@
         onClick={closeModal}
     >
         ยกเลิก
-    </button>
+    </button> */}

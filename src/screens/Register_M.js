@@ -9,39 +9,40 @@ import "../css/allbutton.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Helmet } from "react-helmet";
 import DefaultInput from "../components/DefaultInput";
-import { NavbarUser, NavbarAdmin, NavbarHomepage } from "../components/Navbar";
+import { NavbarUser, NavbarAdmin, NavbarHomepage, NavbarGuest} from "../components/Navbar";
 
 
 const theme = createTheme();
 const title = 'สมัครสมาชิก';
+const bgImg = "url('mainmoon.jpg')"
+const body = { backgroundImage: bgImg }
 
 
 
 
 export default function SignIn() {
+
+    
     return (
-        <ThemeProvider theme={theme}>
+        <div className="body-con">
             <Helmet>
                 <title>{title}</title>
             </Helmet>
+            <NavbarUser />
 
 
-            <div class='body' style={{ backgroundImage: "url('mainmoon.jpg')", backgroundPosition: 'center', backgroundSize: 'cover', backgroundAttachment: 'fixed', backgroundRepeat: 'no-repeat' }}>
+            <div className='body' style={body}>
 
                 {/* <NavbarUser /> */}
                 <div class="container">
                     <div class="login-soloCard">
-                        <div class="">
+                        <div class="login-col-img" >
                             <img class="login-img" src="ภาพตัด.png" alt="" />
                         </div>
                         <div class="login-col-text">
                             <div class="input-login-box">
                                 <h1>{title} </h1>
                                 <form>
-                                    {/* <div className="verify-email">
-                                        <DefaultInput headding='อีเมล' type='email' />
-                                        <button type='submit'>ส่งรหัสยืนยันน</button>
-                                    </div> */}
 
                                     <label class="onInput">ทดลอง</label>
                                     <div className="verify-email">
@@ -66,6 +67,6 @@ export default function SignIn() {
             </div>
 
 
-        </ThemeProvider>
+        </div>
     );
 }
