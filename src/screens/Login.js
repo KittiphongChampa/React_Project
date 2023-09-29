@@ -11,11 +11,17 @@ import BgBody from "../components/BgBody";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import "sweetalert2/src/sweetalert2.scss";
 import * as alertData from "../alertdata/alertData";
-import { NavbarUser, NavbarAdmin, NavbarHomepage, NavbarGuest} from "../components/Navbar";
+import {
+  NavbarUser,
+  NavbarAdmin,
+  NavbarHomepage,
+  NavbarGuest,
+} from "../components/Navbar";
+import { Button, Checkbox, Form, Input } from "antd";
 
-const title = 'เข้าสู่ระบบ';
-const bgImg = "url('mainmoon.jpg')"
-const body = { backgroundImage: bgImg }
+const title = "เข้าสู่ระบบ";
+const bgImg = "url('mainmoon.jpg')";
+const body = { backgroundImage: bgImg };
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -42,7 +48,7 @@ export default function SignIn() {
     const { email, password } = values;
     const jsondata = {
       email,
-      password
+      password,
     };
     // if (email === "") {
     //   alert("Email is required");
@@ -70,12 +76,19 @@ export default function SignIn() {
         } else {
           Swal.fire({ ...alertData.LoginError }).then(() => {
             // window.location.reload(false);
-          })
+          });
         }
       })
       .catch((error) => {
         console.error("Error:", error);
       });
+  };
+
+  const onFinish = (values) => {
+    console.log("Success:", values.email, values.password);
+  };
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
   };
 
   return (
@@ -85,7 +98,6 @@ export default function SignIn() {
       </Helmet>
       <NavbarGuest />
       <div className="body" style={body}>
-        
         <div className="container">
           <div className="login-soloCard">
             <div className="login-col-img">
@@ -94,8 +106,70 @@ export default function SignIn() {
             <div className="login-col-text">
               <div className="input-login-box">
                 <h1>เข้าสู่ระบบ </h1>
+                <Form
+                  layout="vertical"
+                  name="login"
+                  // labelCol={{
+                  //   span: 8,
+                  // }}
+                  // wrapperCol={{
+                  //   span: 16,
+                  // }}
+                  // style={{
+                  //   maxWidth: 600,
+                  // }}
+                  // initialValues={{
+                  //   remember: true,
+                  // }}
+                  onFinish={onFinish}
+                  onFinishFailed={onFinishFailed}
+                  autoComplete="off"
+                >
+                  <Form.Item
+                    label="อีเมล"
+                    name="email"
+                    rules={[
+                      {
+                        required: true,
+                        message: "กรุณากรอกอีเมล",
+                      },
+                      { type: "email" },
+                    ]}
+                  >
+                    <Input />
+                  </Form.Item>
+                  <Form.Item
+                    label="รหัสผ่าน"
+                    name="password"
+                    rules={[
+                      {
+                        required: true,
+                        message: "กรุณากรอกรหัสผ่าน",
+                      },
+                      { type: "password" },
+                    ]}
+                  >
+                    <Input.Password />
+                  </Form.Item>
+
+                  <Form.Item
+                    wrapperCol={{
+                      offset: 8,
+                      span: 16,
+                    }}
+                  ></Form.Item>
+                  <div className="text-align-right">
+                    <a href="/forgot-password">ลืมรหัสผ่าน</a>
+                  </div>
+                  <div className="login-btn-group">
+                    <button className="login-btn" type="submit">
+                      เข้าสู่ระบบ
+                    </button>
+                    <a href="/verify">สมัครสมาชิก</a>
+                  </div>
+                </Form>
                 <form onSubmit={handleSubmit}>
-                  <DefaultInput 
+                  {/* <DefaultInput 
                     headding="อีเมล" 
                     type="email" 
                     id="email"
@@ -116,7 +190,7 @@ export default function SignIn() {
                   <div className="login-btn-group">
                     <button className="login-btn" type="submit">เข้าสู่ระบบ</button>
                     <a href="/verify">สมัครสมาชิก</a>
-                  </div>
+                  </div> */}
                 </form>
                 {/* <div className="text-align-center">
                   <a href="/verify">สมัครสมาชิก</a>

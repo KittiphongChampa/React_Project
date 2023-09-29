@@ -180,7 +180,6 @@ export default function ChatContainer({ currentChat, socket }) {
         setSrc(imgsrc)
 
   }
-  console.log(src)
   
 
   return (

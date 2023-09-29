@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Button from "@mui/material/Button";
 import { NavbarUser, NavbarAdmin, NavbarHomepage } from "../../components/Navbar";
+import Dashboard from '../../components/Dashboard';
 
 export default function AdminPage() {
   const navigate = useNavigate();
@@ -46,42 +47,13 @@ export default function AdminPage() {
       });
   };
   
-  const handleLogout = (event) => {
-    event.preventDefault();
-    localStorage.removeItem("token");
-    navigate("/welcome");
-  };
   return (
     <>
       <NavbarAdmin />
       <div className="container test">
       <h1>Dashboard</h1>
       <h3>Welcome,{admindata.admin_name}</h3>
-      {/* <Button variant="contained" onClick={() => navigate("/buycoin")}>
-        เติมเงิน
-      </Button>
-      <Button variant="contained" onClick={() => navigate("/admin/transaction")}>
-        ดูประวัติการเติมเงิน
-      </Button>
-      <Button variant="contained" onClick={() => navigate("/editcoin")}>
-        จัดการแพ็คเกจการเติมเงิน
-      </Button>
-      <Button variant="contained" onClick={() => navigate("/admin/alluser")}>
-        จัดการบัญชีผู้ใช้งาน
-      </Button>
-      <Button variant="contained" onClick={() => navigate("/admin/alladmin")}>
-        จัดการแอดมิน
-      </Button>
-      <Button variant="contained" onClick={() => navigate("/admin/commission")}>
-        จัดคอมมิชชัน
-      </Button> */}
-
-      {/* <Button variant="contained" onClick={() => navigate("/alluser")}>
-        AllUser
-      </Button> */}
-      {/* <Button variant="contained" onClick={handleLogout}>
-        Logout
-      </Button> */}
+      <Dashboard />
       </div>
     </>
   );

@@ -295,6 +295,7 @@ export default function ManageCommission() {
                         }
                     }).then((response) => {
                         setLoading(false);
+                        console.log(response.data);
                         const arr_similar_single = response.data.similar_filenames;
                         console.log(arr_similar_single);
                         if (response.data.status == "ok"){

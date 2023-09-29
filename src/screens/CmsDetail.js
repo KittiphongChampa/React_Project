@@ -141,10 +141,10 @@ export default function CmsDetail() {
     const [cmsDetail, setCmsDetail] = useState([]);
     const [imgDetail, setImgDetail] = useState([]);
     const [pkgDetail, setPkgDetail] = useState([]);
-    console.log("artistDetail : ", artistDetail);
-    console.log("cmsDetail : ", cmsDetail);
-    console.log("imgDetail : ", imgDetail);
-    console.log("pkgDetail : ", pkgDetail);
+    // console.log("artistDetail : ", artistDetail);
+    // console.log("cmsDetail : ", cmsDetail);
+    // console.log("imgDetail : ", imgDetail);
+    // console.log("pkgDetail : ", pkgDetail);
 
     const time = cmsDetail.created_at;
     const date = new Date(time);
@@ -210,7 +210,6 @@ export default function CmsDetail() {
         })
     }
 
-
     return (
         <div className="body-con">
             {formModalOpened ? <FormModal /> : null}
@@ -239,10 +238,14 @@ export default function CmsDetail() {
                                 <p class="cms-status-detail">เปิด</p>
                             </div>
                             <div className="cms-artist-box">
-                                <div id="cms-artist-profile">
-                                    <img src="AB1.png" alt="" />
-                                    <p>{artistDetail.artistName} <span>4.0</span><span><ggIcon.Star className='fill-icon' /> </span> (3) | ว่าง 3 คิว</p>
-                                </div>
+                                <Link to={`/profile/${artistDetail.artistId}`}>
+                                    <div id="cms-artist-profile">
+                                    
+                                        <img src={artistDetail.artistProfile} alt="" />
+                                        <p>{artistDetail.artistName} <span>4.0</span><span><ggIcon.Star className='fill-icon' /> </span> (3) | ว่าง 3 คิว</p>
+                                    
+                                    </div>
+                                </Link>
                                 <p id="cms-price" className="h4">เริ่มต้น 100 บาท</p> {/* ให้มันชิดขวา */}
                             </div>
                             <p style={{textAlign:"right",fontSize:"0.7rem"}}>{thaiDate}</p>
@@ -304,29 +307,29 @@ function Package(props) {
         {Array.isArray(pkgDetail) ? (
             pkgDetail.map((pkg) => (
                 <div className="select-package-item" onClick={props.onClick} key={pkg.pkg_id}>
-                <div>
-                    <h3>{pkg.pkg_name}</h3>
-                    <p>{pkg.pkg_min_price}+ THB</p>
-                    <p>ราคาสำหรับเส้นเปล่า ลงสีพื้น+{pkg.pkg_min_price} บาท ลงสีเต็ม(ลงเงา) +{pkg.pkg_min_price + 50} บาท</p>
-                </div>
-                <div>
-                    <p>ระยะเวลาทำงาน {pkg.pkg_duration} วัน</p>
-                    <p>ประเภทงานที่อนุญาต ทุกประเภท</p>
-                    <p>จำนวนครั้งแก้ไขงาน {pkg.pkg_edits} ครั้ง</p>
-                </div>
+                    <div>
+                        <h3>{pkg.pkg_name}</h3>
+                        <p>{pkg.pkg_min_price}+ THB</p>
+                        <p>ราคาสำหรับเส้นเปล่า ลงสีพื้น+{pkg.pkg_min_price} บาท ลงสีเต็ม(ลงเงา) +{pkg.pkg_min_price + 50} บาท</p>
+                    </div>
+                    <div>
+                        <p>ระยะเวลาทำงาน {pkg.pkg_duration} วัน</p>
+                        <p>ประเภทงานที่อนุญาต ทุกประเภท</p>
+                        <p>จำนวนครั้งแก้ไขงาน {pkg.pkg_edits} ครั้ง</p>
+                    </div>
                 </div>
             ))
             ) : (
             <div className="select-package-item" onClick={props.onClick}>
                 <div>
-                <h3>{pkgDetail.pkg_name}</h3>
-                <p>{pkgDetail.pkg_min_price}+ THB</p>
-                <p>ราคาสำหรับเส้นเปล่า ลงสีพื้น+{pkgDetail.pkg_min_price} บาท ลงสีเต็ม(ลงเงา) +{pkgDetail.pkg_min_price + 50} บาท</p>
-                </div>
-                <div>
-                <p>ระยะเวลาทำงาน {pkgDetail.pkg_duration} วัน</p>
-                <p>ประเภทงานที่อนุญาต ทุกประเภท</p>
-                <p>จำนวนครั้งแก้ไขงาน {pkgDetail.pkg_edits} ครั้ง</p>
+                    <h3>{pkgDetail.pkg_name}</h3>
+                    <p>{pkgDetail.pkg_min_price}+ THB</p>
+                    <p>ราคาสำหรับเส้นเปล่า ลงสีพื้น+{pkgDetail.pkg_min_price} บาท ลงสีเต็ม(ลงเงา) +{pkgDetail.pkg_min_price + 50} บาท</p>
+                    </div>
+                    <div>
+                    <p>ระยะเวลาทำงาน {pkgDetail.pkg_duration} วัน</p>
+                    <p>ประเภทงานที่อนุญาต ทุกประเภท</p>
+                    <p>จำนวนครั้งแก้ไขงาน {pkgDetail.pkg_edits} ครั้ง</p>
                 </div>
             </div>
             )

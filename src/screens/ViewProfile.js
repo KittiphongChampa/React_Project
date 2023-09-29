@@ -16,11 +16,7 @@ import Profile from "../yunscreens/ProfileTest";
 import { NavbarUser, NavbarAdmin, NavbarHomepage } from "../components/Navbar";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-import ChangeProfileImgModal from "../modal/ChangeProfileImgModal";
-import { ChangeCoverModal, openInputColor } from "../modal/ChangeCoverModal";
-// import { Button } from 'react-bootstrap/Button';
-import Button from "react-bootstrap/Button";
+import CmsItem from "../components/CmsItem";
 
 const title = "ViewProfile";
 const bgImg = "";
@@ -37,17 +33,17 @@ const toastOptions = {
 export default function ViewProfile() {
   const jwt_token = localStorage.getItem("token");
   const { id } = useParams();
-  const navigate = useNavigate();
   const [userdata, setUserdata] = useState([]);
   const [follow, setFollow] = useState([]);
   const [myFollower, setFollowIds] = useState([]);
-
   const [myFollowerData, setMyFollowerData] = useState([]);
   
-
   const [showCoverModal, setShowCoverModal] = useState(null);
   const [showProfileModal, setShowProfileModal] = useState(null);
   // const [loading, setLoading] = useState(false);
+
+  const [myCommission, setMyCms] = useState([]);
+  const [profileMenuSelected, setprofileMenuSelected] = useState('cms')
 
   useEffect(() => {
     // if (localStorage.getItem("token")) {
@@ -61,6 +57,7 @@ export default function ViewProfile() {
 
     // setLoading(true);
     getUserProfile();
+    getUserCms();
   }, [myFollower]);
 
   // const getUser = async () => {
@@ -103,6 +100,25 @@ export default function ViewProfile() {
         }
       });
   };
+
+  const getUserCms = async () => {
+    await axios.get(`http://localhost:3333/userCommission/${id}`,{
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + jwt_token,
+        },
+    }).then((response) => {
+        const myCms = response.data;
+        setMyCms(myCms.commissions);
+    })
+  };
+
+  function menuProfile(event, menu) {
+      let oldSelected = document.querySelector('.sub-menu.selected')
+      oldSelected.classList.remove('selected')
+      event.target.classList.add('selected')
+      setprofileMenuSelected(menu)
+  }
 
   const eventfollow = async () => {
     try {
@@ -263,14 +279,71 @@ export default function ViewProfile() {
                 </div>
               </div>
               <div className="user-profile-contentCard">
-                <button className="sub-menu selected">ทั้งหมด</button>
-                <button className="sub-menu">คอมมิชชัน</button>
-                <button className="sub-menu">แกลลอรี่</button>
-                <button className="sub-menu">รีวิว</button>
+                <button className="sub-menu selected" onClick={(event) => menuProfile(event, 'cms')}>คอมมิชชัน</button>
+                <button className="sub-menu" onClick={(event) => menuProfile(event, 'gallery')}>แกลลอรี่</button>
+                <button className="sub-menu" onClick={(event) => menuProfile(event, 'review')}>รีวิว</button>
+                {profileMenuSelected === "cms" ? <AllCms myCommission={myCommission} userID={userdata.id} /> : null}
+                {profileMenuSelected === "gallery" ? <AllArtworks /> : null}
+                {profileMenuSelected === "review" ? <AllReviews /> : null}
               </div>
             </div>
           </div>
         </div>
       </>
     );
+}
+
+
+function AllCms(props) {
+  const { myCommission, userID } = props;
+  const handleLinkClick = (cms_id) => {
+      const clickstreamData = {
+      userID: userID,
+      page_url: window.location.href+"cmsdetail/"+cms_id, // หรือใช้ URL ปัจจุบัน
+      target_cms_id: cms_id, // ID ของคอมมิชชันที่ผู้ใช้คลิก
+      };
+
+      axios.post('http://localhost:3333/click', clickstreamData)
+      .then(response => {
+          console.log(response.data.message);
+          // หลังจากบันทึก Clickstream เสร็จสิ้น คุณสามารถเรียกใช้การนำทางไปยังรายละเอียดคอมมิชชัน
+          // โดยใช้ react-router-dom หรือวิธีการนำทางอื่น ๆ ตามที่คุณใช้
+      })
+      .catch(error => {
+          console.error(error);
+          // ในกรณีที่เกิดข้อผิดพลาดในการบันทึก Clickstream คุณสามารถจัดการตามที่เหมาะสม
+      });
+  };
+  return <>
+      <p className="h3 mt-3 mb-2">คอมมิชชัน</p>
+      <div class="content-items">
+          {myCommission.map(mycms => (
+              <div key={mycms.cms_id} style={{display:"flex"}}>
+              <Link to={`/cmsdetail/${mycms.cms_id}`} onClick={() => handleLinkClick(mycms.cms_id)}>
+                  <CmsItem src={mycms.ex_img_path} headding={mycms.cms_name} price="100" desc={mycms.cms_desc}/>
+              </Link>
+              </div>
+          ))}
+      </div>
+
+  </>
+}
+
+function AllArtworks(props) {
+  return <>
+      <p className="h3 mt-3 mb-2">แกลอรี่</p>
+      <div className="profile-gallery">
+          <img src="b3.png" />
+          <img src="AB1.png" />
+          <img src="mainmoon.jpg" />
+          <img src="b3.png" />
+          <img src="b3.png" />
+      </div>
+  </>
+}
+
+function AllReviews(props) {
+  return <>
+      <p className="h3 mt-3 mb-2">รีวิว</p>
+  </>
 }

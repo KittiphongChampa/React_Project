@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import Button from "@mui/material/Button";
 import { NavbarUser, NavbarAdmin, NavbarHomepage } from "../../components/Navbar";
+
+const host = "http://localhost:3333";
 
 export default function AdminManageCms() {
     const navigate = useNavigate();
     const [admindata, setAdmindata] = useState([]);
     const [admintoken, setAdmintoken] = useState();
     const [cmsData, setCmsdata] = useState([]);
+    const isoDate = cmsData.created_at;
+    console.log(isoDate);
     useEffect(() => {
         if (localStorage.getItem("token")) {
             if (window.location.pathname === "/login") {
@@ -50,7 +54,7 @@ export default function AdminManageCms() {
 
     const getData = async () => {
         await axios
-          .get("http://localhost:3333/allcommission", {
+          .get(`${host}/allcommission`, {
             headers: {
               Authorization: "Bearer " + token,
             },
@@ -88,16 +92,18 @@ export default function AdminManageCms() {
                         <th>ID_CMS</th>
                         <th>Commission Name</th>
                         <th>ID_Users</th>
+                        <th>DateTime</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     {cmsData.map((item, index) => (
                         <tr key={index}>
-                            <td>{item.cms_id}</td>
+                            <td>{index}</td>
                             <td>{item.cms_name}</td>
                             <td>{item.usr_id}</td>
-                            <td><a href={`/admin/commission/problem/${item.cms_id}`}>จัดการ</a></td>
+                            <td>{item.created_at}</td>
+                            <td><Link to={`/admin/commission/problem/${item.cms_id}`}>จัดการ</Link></td>
                         </tr>
                     ))}
                 </tbody>

@@ -41,6 +41,7 @@ export default function Index() {
     getUser();
     getLatestCommission();
     getArtistCommission();
+    getPopular();
   }, []);
   const token = localStorage.getItem("token");
   const getUser = async () => {
@@ -78,6 +79,8 @@ export default function Index() {
   };
   const [cmsLatests, setCmsLatest] = useState([]);
   const [cmsArtists, setCmsArtist] = useState([]);
+  const [cmsPopular, setCmsPopular] = useState([]);
+  console.log(cmsPopular);
   const getLatestCommission = async () => {
     await axios.get("http://localhost:3333/latestCommission", {
       headers: {
@@ -89,7 +92,6 @@ export default function Index() {
       setCmsLatest(Cmslatest.commissions)
     })
   }
-
   const getArtistCommission = async () => {
     await axios.get("http://localhost:3333/artistCommission", {
       headers: {
@@ -101,6 +103,35 @@ export default function Index() {
       setCmsArtist(Cmsfollowing.commissions);
     })
   }
+  const getPopular = async () => {
+    await axios.get("http://localhost:3333/popularCommission", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    }).then((response) => {
+      const Cmspopular = response.data;
+      setCmsPopular(Cmspopular.commissions);
+    })
+  }
+  const handleLinkClick = (cms_id) => {
+    const clickstreamData = {
+      userID: userdata.id,
+      page_url: window.location.href+"cmsdetail/"+cms_id, // หรือใช้ URL ปัจจุบัน
+      target_cms_id: cms_id, // ID ของคอมมิชชันที่ผู้ใช้คลิก
+    };
+
+    axios.post('http://localhost:3333/click', clickstreamData)
+      .then(response => {
+        console.log(response.data.message);
+        // หลังจากบันทึก Clickstream เสร็จสิ้น คุณสามารถเรียกใช้การนำทางไปยังรายละเอียดคอมมิชชัน
+        // โดยใช้ react-router-dom หรือวิธีการนำทางอื่น ๆ ตามที่คุณใช้
+      })
+      .catch(error => {
+        console.error(error);
+        // ในกรณีที่เกิดข้อผิดพลาดในการบันทึก Clickstream คุณสามารถจัดการตามที่เหมาะสม
+      });
+  };
 
   return (
     <div className="body-con">
@@ -149,6 +180,7 @@ export default function Index() {
 
                             </div>
                         </div>
+
                         <div class="content-box">
                             <div class="content-top">
                                 <p className="h3">คอมมิชชันล่าสุด</p>
@@ -157,13 +189,12 @@ export default function Index() {
                             <div class="content-items">
                               {cmsLatests.map(cmsLatest => (
                                 <div key={cmsLatest.cms_id} style={{display:"flex"}}>
-                                  <Link to={`/cmsdetail/${cmsLatest.cms_id}`} >
+                                  <Link to={`/cmsdetail/${cmsLatest.cms_id}`} onClick={() => handleLinkClick(cmsLatest.cms_id)} >
                                     <CmsItem src={cmsLatest.ex_img_path} headding={cmsLatest.cms_name} price="100" desc={cmsLatest.cms_desc}/>
                                   </Link>
                                 </div>
                               ))}
                             </div>
-
                         </div>
 
                         <div class="content-box">
@@ -175,7 +206,7 @@ export default function Index() {
                           <div class="content-items">
                             {cmsArtists.map(cmsArtstdata => (
                               <div key={cmsArtstdata.cms_id} style={{display:"flex"}}>
-                                <Link to={`/cmsdetail/${cmsArtstdata.cms_id}`} >
+                                <Link to={`/cmsdetail/${cmsArtstdata.cms_id}`} onClick={() => handleLinkClick(cmsArtstdata.cms_id)}>
                                   <CmsItem src={cmsArtstdata.ex_img_path} headding={cmsArtstdata.cms_name} price="100" desc={cmsArtstdata.cms_desc}/>
                                 </Link>
                               </div>
@@ -190,11 +221,14 @@ export default function Index() {
                                 <p>ดูทั้งหมด&gt;</p>
                             </div>
                             <div class="content-items">
-                                <Link to="/cmsdetail"><CmsItem src="monlan.png" headding="คอมมิชชัน SD" price="100" desc="คมช.เส้นเปล่า-ลงสีรับทุกสเกล สามารถเพิ่มตัวละครหรือเพิ่มพร็อพได้ โดยราคาขึ้นอยู่กับรายละเอียดที่เพิ่มเข้ามา" /></Link>
-                                <Link to="/cmsdetail"><CmsItem src="monlan.png" headding="คอมมิชชัน SD" price="100" desc="คมช.เส้นเปล่า-ลงสีรับทุกสเกล สามารถเพิ่มตัวละครหรือเพิ่มพร็อพได้ โดยราคาขึ้นอยู่กับรายละเอียดที่เพิ่มเข้ามา" /></Link>
-                                <Link to="/cmsdetail"><CmsItem src="monlan.png" headding="คอมมิชชัน SD" price="100" desc="คมช.เส้นเปล่า-ลงสีรับทุกสเกล สามารถเพิ่มตัวละครหรือเพิ่มพร็อพได้ โดยราคาขึ้นอยู่กับรายละเอียดที่เพิ่มเข้ามา" /></Link>
-                                <Link to="/cmsdetail"><CmsItem src="monlan.png" headding="คอมมิชชัน SD" price="100" desc="คมช.เส้นเปล่า-ลงสีรับทุกสเกล สามารถเพิ่มตัวละครหรือเพิ่มพร็อพได้ โดยราคาขึ้นอยู่กับรายละเอียดที่เพิ่มเข้ามา" /></Link>
-                                <Link to="/cmsdetail"><CmsItem src="monlan.png" headding="คอมมิชชัน SD" price="100" desc="คมช.เส้นเปล่า-ลงสีรับทุกสเกล สามารถเพิ่มตัวละครหรือเพิ่มพร็อพได้ โดยราคาขึ้นอยู่กับรายละเอียดที่เพิ่มเข้ามา" /></Link>
+                                {/* <Link to="/cmsdetail"><CmsItem src="monlan.png" headding="คอมมิชชัน SD" price="100" desc="คมช.เส้นเปล่า-ลงสีรับทุกสเกล สามารถเพิ่มตัวละครหรือเพิ่มพร็อพได้ โดยราคาขึ้นอยู่กับรายละเอียดที่เพิ่มเข้ามา" /></Link> */}
+                                {cmsPopular.map(cmsPop => (
+                                  <div key={cmsPop.cms_id} style={{display:"flex"}}>
+                                    <Link to={`/cmsdetail/${cmsPop.cms_id}`} onClick={() => handleLinkClick(cmsPop.cms_id)}>
+                                      <CmsItem src={cmsPop.ex_img_path} headding={cmsPop.cms_name} price="100" desc={cmsPop.cms_desc}/>
+                                    </Link>
+                                  </div>
+                                ))}
                             </div>
                         </div>
 

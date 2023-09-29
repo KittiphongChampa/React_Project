@@ -3,7 +3,7 @@ import styled from "styled-components";
 import axios from "axios";
 // import Logo from "../assets/logo.svg";
 
-export default function Contacts({ contacts, changeChat, userdata, Toggled, partnerID }) {
+export default function Contacts({ contacts, changeChat, userdata, Toggled, partnerID}) {
   const [currentUserName, setCurrentUserName] = useState(undefined);
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
   const [currentSelected, setCurrentSelected] = useState(undefined);
@@ -14,10 +14,9 @@ export default function Contacts({ contacts, changeChat, userdata, Toggled, part
     if (!uniqueContactIds.has(contact.id)) {
       uniqueContactIds.add(contact.id);
       filteredContacts.push(contact);
-      console.log(contact.message_text);
+      // console.log(contact.message_text);
     }
   });
-
 
   //   useEffect(async () => {
   //     const data = await JSON.parse(
@@ -35,25 +34,24 @@ export default function Contacts({ contacts, changeChat, userdata, Toggled, part
       setCurrentSelected(partnerID)
       // console.log("bbbbbbbbbbbbbbbbbbb",currentSelected)
     }
-    const getUser = async () => {
-      try {
-        const response = await axios.get("http://localhost:3333/index", {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        });
-        const data = response.data;
-        if (data.status === "ok") {
-          setCurrentUserName(data.users[0].urs_name);
-          setCurrentUserImage(data.users[0].urs_profile_img);
-        }
-      } catch (error) {
-        // Handle error
-      }
-    };
     getUser();
-    
   }, []);
+  const getUser = async () => {
+    try {
+      const response = await axios.get("http://localhost:3333/index", {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
+      const data = response.data;
+      if (data.status === "ok") {
+        setCurrentUserName(data.users[0].urs_name);
+        setCurrentUserImage(data.users[0].urs_profile_img);
+      }
+    } catch (error) {
+      // Handle error
+    }
+  };
 
   const changeCurrentChat = (index, contact) => {
     setCurrentSelected(index);
@@ -67,10 +65,7 @@ export default function Contacts({ contacts, changeChat, userdata, Toggled, part
     setActiveChat(id);
     console.log("chat user ทำงาน");
   };
-
-  useEffect(() => {
-
-  },[])
+  
 
   return (
     <>

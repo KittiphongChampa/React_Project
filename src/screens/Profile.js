@@ -39,10 +39,11 @@ export default function Profile() {
 
     const [myFollower, setMyFollowerIds] = useState([]);
     const [iFollowing, setIFollowingsIds] = useState([]);
-    console.log(iFollowing);
 
     const [myFollowerData, setMyFollowerData] = useState([]);
     const [IFollowerData, setIFollowerData] = useState([]);
+
+    const [myCommission, setMyCms] = useState([]);
     
     // console.log('myFollower : ',myFollower, 'iFollowing : ', iFollowing);
 
@@ -55,6 +56,7 @@ export default function Profile() {
           navigate("/login")
         }
         getUser();
+        getMyCms();
     }, []);
     // }, [myFollower,iFollowing]); //realtime follow
 
@@ -80,6 +82,18 @@ export default function Profile() {
             //   toast.error("ไม่พบผู้ใช้งาน", toastOptions);
             }
           });
+    };
+
+    const getMyCms = async () => {
+        await axios.get("http://localhost:3333/myCommission",{
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token,
+            },
+        }).then((response) => {
+            const myCms = response.data;
+            setMyCms(myCms.commissions);
+        })
     };
 
     function menuProfile(event, menu) {
@@ -209,7 +223,7 @@ export default function Profile() {
                             <button className="sub-menu selected" onClick={(event) => menuProfile(event, 'cms')}>คอมมิชชัน</button>
                             <button className="sub-menu" onClick={(event) => menuProfile(event, 'gallery')}>แกลลอรี่</button>
                             <button className="sub-menu" onClick={(event) => menuProfile(event, 'review')}>รีวิว</button>
-                            {profileMenuSelected === "cms" ? <AllCms /> : null}
+                            {profileMenuSelected === "cms" ? <AllCms myCommission={myCommission} userID={userdata.id} /> : null}
                             {profileMenuSelected === "gallery" ? <AllArtworks /> : null}
                             {profileMenuSelected === "review" ? <AllReviews /> : null}
 
@@ -227,13 +241,35 @@ export default function Profile() {
 }
 
 function AllCms(props) {
+    const { myCommission, userID } = props;
+    const handleLinkClick = (cms_id) => {
+        const clickstreamData = {
+        userID: userID,
+        page_url: window.location.href+"cmsdetail/"+cms_id, // หรือใช้ URL ปัจจุบัน
+        target_cms_id: cms_id, // ID ของคอมมิชชันที่ผู้ใช้คลิก
+        };
+
+        axios.post('http://localhost:3333/click', clickstreamData)
+        .then(response => {
+            console.log(response.data.message);
+            // หลังจากบันทึก Clickstream เสร็จสิ้น คุณสามารถเรียกใช้การนำทางไปยังรายละเอียดคอมมิชชัน
+            // โดยใช้ react-router-dom หรือวิธีการนำทางอื่น ๆ ตามที่คุณใช้
+        })
+        .catch(error => {
+            console.error(error);
+            // ในกรณีที่เกิดข้อผิดพลาดในการบันทึก Clickstream คุณสามารถจัดการตามที่เหมาะสม
+        });
+    };
     return <>
         <p className="h3 mt-3 mb-2">คอมมิชชัน</p>
         <div class="content-items">
-            <Link to="/cmsdetail"><CmsItem src="monlan.png" headding="คอมมิชชัน SD" price="100" desc="คมช.เส้นเปล่า-ลงสีรับทุกสเกล สามารถเพิ่มตัวละครหรือเพิ่มพร็อพได้ โดยราคาขึ้นอยู่กับรายละเอียดที่เพิ่มเข้ามา" /></Link>
-            {/* <Link to="/cmsdetail"><CmsItem src="Blaze_Taylor.png" price="500" headding="SD Style" desc="รับวาดรูปxxxx" /></Link> */}
-            {/* <Link to="/cmsdetail"><CmsItem src="bird.png" price="100" headding="หัวข้อ3" desc="รับวาดรูปxxxx" /></Link> */}
-            {/* <Link to="/cmsdetail"><CmsItem src="b3.png" price="100" headding="หัวข้อ4" desc="รับวาดรูปxxxx" /></Link> */}
+            {myCommission.map(mycms => (
+                <div key={mycms.cms_id} style={{display:"flex"}}>
+                <Link to={`/cmsdetail/${mycms.cms_id}`} onClick={() => handleLinkClick(mycms.cms_id)}>
+                    <CmsItem src={mycms.ex_img_path} headding={mycms.cms_name} price="100" desc={mycms.cms_desc}/>
+                </Link>
+                </div>
+            ))}
         </div>
 
     </>

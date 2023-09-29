@@ -170,36 +170,36 @@ export default function ChatBox() {
   // const [currentUser, setCurrentUser] = useState(undefined);
   const token = localStorage.getItem("token");
   const [userdata, setUserdata] = useState([]);
+  const getPartnerChat = async () => {
+    await axios
+      .get(`http://localhost:3333/chat/partner/${chat_partner_id}`, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((response) => {
+        // console.log(response.data[0]);
+        setPartnerChat(response.data[0]);
+      });
+  };
+  const getUser = async () => {
+    try {
+      const response = await axios.get("http://localhost:3333/index", {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
+      const data = response.data;
+      if (data.status === "ok") {
+        setUserdata(data.users[0]);
+      }
+    } catch (error) {
+      // Handle error
+    }
+  };
 
   useEffect(() => {
-    const getPartnerChat = async () => {
-      await axios
-        .get(`http://localhost:3333/chat/partner/${chat_partner_id}`, {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        })
-        .then((response) => {
-          // console.log(response.data[0]);
-          setPartnerChat(response.data[0]);
-        });
-    };
     getPartnerChat();
-    const getUser = async () => {
-      try {
-        const response = await axios.get("http://localhost:3333/index", {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        });
-        const data = response.data;
-        if (data.status === "ok") {
-          setUserdata(data.users[0]);
-        }
-      } catch (error) {
-        // Handle error
-      }
-    };
     getUser();
   }, []);
 
@@ -220,10 +220,12 @@ export default function ChatBox() {
     }
   }, [userdata]);
 
+
   const handleChatChange = (chat) => {
     setPartnerChat(null);
     setCurrentChat(chat);
   };
+
 
   /*--------------------------------------------------------------------------------- */
 
@@ -286,7 +288,6 @@ export default function ChatBox() {
                 changeChat={handleChatChange}
                 userdata={userdata}
                 Toggled={isToggled}
-                // chat_partner_id={chat_partner_id}
               />
             </div>
           </div>
