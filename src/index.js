@@ -21,7 +21,7 @@ import AdminManageCms from './screens/admin/AdminManageCms';
 import AdminManageCmsProblem from './screens/admin/AdminManageCmsProblem';
 import AdminManageFAQ from './screens/admin/AdminManageFAQ';
 import SettingProfile from './screens/SettingProfile';
-import SettingCoin from './screens/SettingCoin';
+import SettingCoin from './yunscreens/SettingCoin';
 import NewPassword from './yunscreens/NewPassword';
 import ViewProfile from './screens/ViewProfile';
 import AdminPage from './screens/admin/AdminPage';

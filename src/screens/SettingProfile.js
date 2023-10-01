@@ -24,6 +24,7 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import * as alertData from "../alertdata/alertData";
 
+const host = "http://localhost:3333";
 const title = "ตั้งค่าโปรไฟล์";
 const toastOptions = {
   position: "bottom-right",
@@ -88,7 +89,7 @@ export default function SettingProfile() {
 
   const getUser = async () => {
     await axios
-      .get("http://localhost:3333/profile", {
+      .get(`${host}/profile`, {
         headers: {
           Authorization: "Bearer " + token,
         },

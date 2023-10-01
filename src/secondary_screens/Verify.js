@@ -18,6 +18,8 @@ import "sweetalert2/src/sweetalert2.scss";
 import * as alertData from "../alertdata/alertData";
 import { NavbarUser, NavbarAdmin, NavbarHomepage, NavbarGuest} from "../components/Navbar";
 
+
+const host = "http://localhost:3333";
 const toastOptions = {
   position: "bottom-right",
   autoClose: 1000,
@@ -25,6 +27,7 @@ const toastOptions = {
   draggable: true,
   theme: "dark",
 };
+
 const theme = createTheme();
 
 export default function Verify() {
@@ -66,10 +69,9 @@ export default function Verify() {
     return true;
   };
 
+  const [userID,setuserID] = useState('');
+
   const handleSubmitotp = async (event) => {
-    // const submitOtpBtn = document.getElementById("submit-otp-btn")
-    // submitOtpBtn.classList.remove("disabled-btn")
-    // submitOtpBtn.removeAttribute("disabled")
     event.preventDefault();
     setIsLoading(true);
     if (handleValidation()) {
@@ -77,7 +79,7 @@ export default function Verify() {
       const jsondata = {
         email,
       };
-      await fetch("http://localhost:3333/verify", {
+      await fetch(`${host}/verify`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -87,8 +89,8 @@ export default function Verify() {
         .then((response) => response.json())
         .then((data) => {
           if (data.status === "ok") {
-            // toast.success("Send OTP success", toastOptions);
             Swal.fire({ ...alertData.verifyEmainSuccess })
+            setuserID(data.insertedUserID);
             const submitOtpBtn = document.getElementById("submit-otp-btn");
             submitOtpBtn.classList.remove("disabled-btn");
             submitOtpBtn.removeAttribute("disabled");
@@ -112,8 +114,9 @@ export default function Verify() {
       const jsondata = {
         otp,
         email,
+        userID
       };
-      fetch("http://localhost:3333/verify/email", {
+      fetch(`${host}/verify/email`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -124,7 +127,7 @@ export default function Verify() {
         .then((data) => {
           if (data.status === "ok") {
             // toast.success(data.message, toastOptions);
-            const queryParams = new URLSearchParams({ email });
+            const queryParams = new URLSearchParams({ email, userID });
             window.location = `/register?${queryParams.toString()}`;
           } else {
             // toast.error(data.message, toastOptions);
@@ -175,14 +178,6 @@ export default function Verify() {
                     />
                     <button type="submit">ส่งรหัสยืนยัน</button>
                   </div>
-                  {/* <DefaultInput
-                      headding="อีเมล"
-                      type="email"
-                      id="email"
-                      name="email"
-                      onChange={(e) => handleChange(e)}
-                    />
-                    <button type="submit">ส่งรหัสยืนยัน</button> */}
                 </form>
 
                 {/* )} */}

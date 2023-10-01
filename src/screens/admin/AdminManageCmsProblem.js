@@ -7,6 +7,8 @@ import { width } from '@mui/system';
 import { styled } from 'styled-components';
 import { Height } from "@mui/icons-material";
 
+const host = "http://localhost:3333";
+
 export default function AdminManageCmsProblem() {
     const navigate = useNavigate();
     const cmsID = useParams();
@@ -17,7 +19,7 @@ export default function AdminManageCmsProblem() {
     // console.log(problemImage);
     console.log("cmsData : ",cmsData);
 
-    const baseUrl = "http://localhost:3333/images_cms/";
+    const baseUrl = `${host}/images_cms/`;
 
     useEffect(() => {
         if (localStorage.getItem("token")) {
@@ -34,7 +36,7 @@ export default function AdminManageCmsProblem() {
     const token = localStorage.getItem("token");
     const getAdmin = async () => {
         await axios
-          .get("http://localhost:3333/admin", {
+          .get(`${host}/admin`, {
             headers: {
               Authorization: "Bearer " + token,
             },
@@ -59,7 +61,7 @@ export default function AdminManageCmsProblem() {
     };
     const getData = async () => {
         await axios
-        .get(`http://localhost:3333/commission/problem/${cmsID.id}`, {
+        .get(`${host}/commission/problem/${cmsID.id}`, {
           headers: {
             Authorization: "Bearer " + token,
           },
@@ -77,7 +79,7 @@ export default function AdminManageCmsProblem() {
 
     const approve = async(cmsID) => {
       await axios
-      .patch(`http://localhost:3333/commission/problem/approve/${cmsID}`, {
+      .patch(`${host}/commission/problem/approve/${cmsID}`, {
         headers: {
           Authorization: "Bearer " + token,
         },
@@ -95,7 +97,7 @@ export default function AdminManageCmsProblem() {
 
     const not_approve = async(cmsID) => {
       await axios
-      .patch(`http://localhost:3333/commission/problem/notapprove/${cmsID}`, {
+      .patch(`${host}/commission/problem/notapprove/${cmsID}`, {
         headers: {
           Authorization: "Bearer " + token,
         },

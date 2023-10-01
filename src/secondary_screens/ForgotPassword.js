@@ -9,6 +9,7 @@ import Swal from "sweetalert2/dist/sweetalert2.js";
 import "sweetalert2/src/sweetalert2.scss";
 import * as alertData from "../alertdata/alertData";
 
+const host = "http://localhost:3333";
 const toastOptions = {
   position: "bottom-right",
   autoClose: 1000,
@@ -44,10 +45,9 @@ export default function ForgotPassword() {
   const handleSubmitotp = async (e) => {
     e.preventDefault();
     const { email } = values;
-    console.log(email);
     try {
       await axios
-        .post("http://localhost:3333/forgot-password", { email })
+        .post(`${host}/forgot-password`, { email })
         .then((response) => {
           const data = response.data;
           if (data.status === "ok") {
@@ -77,7 +77,7 @@ export default function ForgotPassword() {
         otp,
         email,
       };
-      fetch("http://localhost:3333/check_otp", {
+      fetch(`${host}/check_otp`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -87,14 +87,10 @@ export default function ForgotPassword() {
         .then((response) => response.json())
         .then((data) => {
           if (data.status === "ok") {
-            // toast.success(data.message, toastOptions);
             Swal.fire({ ...alertData.sendOtpSuccess }).then(() => {
-              // window.location.reload(false);
               const queryParams = new URLSearchParams({ email });
               window.location = `/reset-password?${queryParams.toString()}`;
             })
-            // const queryParams = new URLSearchParams({ email });
-            // window.location = `/reset-password?${queryParams.toString()}`;
           } else {
             toast.error(data.message, toastOptions);
           }

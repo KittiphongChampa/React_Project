@@ -28,7 +28,6 @@ const body = { backgroundImage: "url('seamoon.jpg')" }
 export default function Index() {
   const navigate = useNavigate();
   const [userdata, setUserdata] = useState([]);
-  const [urs_token, setUrs_token] = useState();
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -56,7 +55,6 @@ export default function Index() {
         const data = response.data;
         if (data.status === "ok") {
           setUserdata(data.users[0]);
-          setUrs_token(data.urs_token);
         } else if (data.status === "no_access") {
           alert(data.message);
           navigate("/admin");

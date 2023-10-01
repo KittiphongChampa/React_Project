@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 import Lottie from "lottie-react";
 import loading from "../loading.json";
@@ -38,13 +38,10 @@ export default function SignUp() {
   const navigate = useNavigate();
   const location = useLocation();
   const email = new URLSearchParams(location.search).get("email");
-  // console.log(email);
+  const userID = new URLSearchParams(location.search).get("userID");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {}, []);
-
-  // const [bankAccName, setBankAccName] = useState(null);
-  // const [ppNumber, setPpNumber] = useState(null);
   const [pdpaAccept, setPdpaAccept] = useState(false);
   const [values, setValues] = useState({
     username: "",
@@ -106,6 +103,7 @@ export default function SignUp() {
     if (handleValidation()) {
       setIsLoading(true);
       const formData = new FormData();
+      formData.append("userID", userID);
       formData.append("email", email);
       formData.append("file", file);
       formData.append("username", values.username);
@@ -113,7 +111,7 @@ export default function SignUp() {
       formData.append("bankAccName", values.bankAccName);
       formData.append("ppNumber", values.ppNumber);
       formData.append("pdpaAccept", pdpaAccept);
-      formData.append("roleName", roleName)
+      formData.append("roleName", roleName);
       const token = localStorage.getItem("token");
       await axios
         .post(`${host}/register`, formData, {

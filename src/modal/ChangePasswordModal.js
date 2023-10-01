@@ -13,6 +13,7 @@ import Swal from "sweetalert2/dist/sweetalert2.js";
 import "sweetalert2/src/sweetalert2.scss";
 import * as alertData from "../alertdata/alertData";
 
+const host = "http://localhost:3333"
 const ChangePasswordModal = (props, ref) => {
   const token = localStorage.getItem("token");
   const {
@@ -37,7 +38,7 @@ const ChangePasswordModal = (props, ref) => {
     Swal.fire({ ...alertData.changePassConfirm }).then((result) => {
         if (result.isConfirmed) {
             axios
-            .put("http://localhost:3333/profile/password/change", formData,{
+            .put(`${host}/profile/password/change`, formData,{
               headers: {
                 Authorization: "Bearer " + token,
               },
@@ -124,12 +125,6 @@ const ChangePasswordModal = (props, ref) => {
                   </p>
                 )}
 
-              {/* <NewInput inputSetting={inputSetting('now-password', 'รหัสผ่านปัจจุบัน', "text", null, true)}
-                                {...func} />
-                            <NewInput inputSetting={inputSetting('new-password', 'รหัสผ่านใหม่', "text", null, true, )}
-                                {...func} />
-                            <NewInput inputSetting={inputSetting('verify-password', 'ยืนยันรหัสผ่านใหม่', "text", null, true)}
-                                {...func} /> */}
               <div className="text-align-center">
                 <button className={`gradiant-btn`} type="submit">
                   บันทึกข้อมูล

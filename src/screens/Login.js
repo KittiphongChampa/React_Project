@@ -18,7 +18,9 @@ import {
   NavbarGuest,
 } from "../components/Navbar";
 import { Button, Checkbox, Form, Input } from "antd";
+import axios from "axios";
 
+const host = "http://localhost:3333";
 const title = "เข้าสู่ระบบ";
 const bgImg = "url('mainmoon.jpg')";
 const body = { backgroundImage: bgImg };
@@ -33,59 +35,28 @@ export default function SignIn() {
     }
   }, []);
 
-  const [values, setValues] = useState({
-    email: "",
-    password: "",
-  });
-  console.log(values);
-
-  const handleChange = (event) => {
-    setValues({ ...values, [event.target.name]: event.target.value });
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const { email, password } = values;
-    const jsondata = {
-      email,
-      password,
-    };
-    // if (email === "") {
-    //   alert("Email is required");
-    // }
-    // if (password === "") {
-    //   alert("password is required");
-    // }
-    fetch("http://localhost:3333/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(jsondata),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.status === "ok_admin") {
-          localStorage.setItem("token", data.token);
-          navigate("/admin");
-        } else if (data.status === "ok") {
-          localStorage.setItem("token", data.token); //ส่ง token ไว้ที่ตัวแปร token แล้วส่งไปหน้า /
-          navigate("/");
-        } else if (data.status === "hasDelete") {
-          alert(data.message);
-        } else {
-          Swal.fire({ ...alertData.LoginError }).then(() => {
-            // window.location.reload(false);
-          });
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  };
-
   const onFinish = (values) => {
+
     console.log("Success:", values.email, values.password);
+    axios .post(`${host}/login`,{
+      email: values.email,
+      password: values.password
+    }).then((response)=>{
+      const data = response.data;
+      if (data.status === "ok_admin") {
+        localStorage.setItem("token", data.token);
+        navigate("/admin");
+      } else if (data.status === "ok") {
+        localStorage.setItem("token", data.token); //ส่ง token ไว้ที่ตัวแปร token แล้วส่งไปหน้า /
+        navigate("/");
+      } else if (data.status === "hasDelete") {
+        alert(data.message);
+      } else {
+        Swal.fire({ ...alertData.LoginError }).then(() => {
+          // window.location.reload(false);
+        });
+      }
+    })
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
@@ -109,18 +80,6 @@ export default function SignIn() {
                 <Form
                   layout="vertical"
                   name="login"
-                  // labelCol={{
-                  //   span: 8,
-                  // }}
-                  // wrapperCol={{
-                  //   span: 16,
-                  // }}
-                  // style={{
-                  //   maxWidth: 600,
-                  // }}
-                  // initialValues={{
-                  //   remember: true,
-                  // }}
                   onFinish={onFinish}
                   onFinishFailed={onFinishFailed}
                   autoComplete="off"
@@ -128,6 +87,7 @@ export default function SignIn() {
                   <Form.Item
                     label="อีเมล"
                     name="email"
+                    id="email"
                     rules={[
                       {
                         required: true,
@@ -141,6 +101,8 @@ export default function SignIn() {
                   <Form.Item
                     label="รหัสผ่าน"
                     name="password"
+                    id="password"
+                    className="to"
                     rules={[
                       {
                         required: true,
@@ -168,33 +130,6 @@ export default function SignIn() {
                     <a href="/verify">สมัครสมาชิก</a>
                   </div>
                 </Form>
-                <form onSubmit={handleSubmit}>
-                  {/* <DefaultInput 
-                    headding="อีเมล" 
-                    type="email" 
-                    id="email"
-                    name="email"
-                    onChange={(e) => handleChange(e)}
-                  />
-                  <DefaultInput 
-                    headding="รหัสผ่าน"
-                    type="password" 
-                    name="password"
-                    id="password"
-                    onChange={(e) => handleChange(e)}
-                  />
-
-                  <div className="text-align-right">
-                    <a href="/forgot-password">ลืมรหัสผ่าน</a>
-                  </div>
-                  <div className="login-btn-group">
-                    <button className="login-btn" type="submit">เข้าสู่ระบบ</button>
-                    <a href="/verify">สมัครสมาชิก</a>
-                  </div> */}
-                </form>
-                {/* <div className="text-align-center">
-                  <a href="/verify">สมัครสมาชิก</a>
-                </div> */}
               </div>
             </div>
           </div>

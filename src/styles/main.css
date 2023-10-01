@@ -1756,7 +1756,7 @@ table.queue-table th.q {
   color: #525764 !important;
 }
 .ant-form input,
-.ant-form textarea {
+.ant-form textarea,.ant-input-affix-wrapper {
   padding: 0.5rem 1rem;
   border-radius: 1rem;
 }
