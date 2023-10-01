@@ -32,6 +32,7 @@ import ChatContainer from "../components/ChatContainer";
 import Contacts from "../components/Contacts";
 import Welcome from "../components/Welcome";
 
+const host = "http://localhost:3333"
 const title = "แชท";
 // const bgImg = { backgroundImage: "url('mainmoon.jpg')", backgroundSize: " cover", backgroundOpacity: "0.5" }
 const body = { backgroundImage: "url('seamoon.jpg')" };
@@ -184,7 +185,7 @@ export default function ChatBox() {
   };
   const getUser = async () => {
     try {
-      const response = await axios.get("http://localhost:3333/index", {
+      const response = await axios.get(`${host}/index`, {
         headers: {
           Authorization: "Bearer " + token,
         },
@@ -194,7 +195,15 @@ export default function ChatBox() {
         setUserdata(data.users[0]);
       }
     } catch (error) {
-      // Handle error
+      if (error.response && error.response.status === 401 && error.response.data === "Token has expired") {
+        // Handle token expired error
+        alert("Token has expired. Please log in again.");
+        localStorage.removeItem("token");
+        navigate("/login");
+      } else {
+        // Handle other errors here
+        console.error("Error:", error);
+      }
     }
   };
 

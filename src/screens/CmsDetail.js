@@ -23,7 +23,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { useNavigate, Link, useParams } from "react-router-dom";
 
 
-
+const host = "http://localhost:3333";
 const title = 'รายละเอียด cms';
 const body = { backgroundImage: "url('monlan.png')" }
 
@@ -164,7 +164,7 @@ export default function CmsDetail() {
     const token = localStorage.getItem("token");
     const getUser = async () => {
         await axios
-          .get("http://localhost:3333/index", {
+          .get(`${host}/index`, {
             headers: {
               "Content-Type": "application/json",
               Authorization: "Bearer " + token,
@@ -196,7 +196,7 @@ export default function CmsDetail() {
     };
 
     const getDetailCommission = async () => {
-        await axios.get(`http://localhost:3333/detailCommission/${cmsID.id}`, {
+        await axios.get(`${host}/detailCommission/${cmsID.id}`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + token,

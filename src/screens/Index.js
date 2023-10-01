@@ -20,7 +20,7 @@ import { ChangeCoverModal, openInputColor } from "../modal/ChangeCoverModal"
 import CmsItem from "../components/CmsItem";
 import { wait } from "@testing-library/user-event/dist/utils";
 
-
+const host = "http://localhost:3333";
 const title = 'หน้าแรก';
 const bgImg = "";
 const body = { backgroundImage: "url('seamoon.jpg')" }
@@ -45,7 +45,7 @@ export default function Index() {
   const token = localStorage.getItem("token");
   const getUser = async () => {
     await axios
-      .get("http://localhost:3333/index", {
+      .get(`${host}/index`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,

@@ -18,6 +18,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CmsItem from "../components/CmsItem";
 
+const host = "http://localhost:3333";
 const title = "ViewProfile";
 const bgImg = "";
 const body = { backgroundColor: "#F4F1F9" };
@@ -31,6 +32,7 @@ const toastOptions = {
 };
 
 export default function ViewProfile() {
+  const navigate = useNavigate();
   const jwt_token = localStorage.getItem("token");
   const { id } = useParams();
   const [userdata, setUserdata] = useState([]);
@@ -82,7 +84,7 @@ export default function ViewProfile() {
 
   const getUserProfile = async () => {
     await axios
-      .get(`http://localhost:3333/profile/${id}`, {
+      .get(`${host}/profile/${id}`, {
         headers: {
           Authorization: "Bearer " + jwt_token,
         },
@@ -98,11 +100,19 @@ export default function ViewProfile() {
         } else {
           toast.error("ไม่พบผู้ใช้งาน", toastOptions);
         }
+      }).catch((error) => {
+        if (error.response && error.response.status === 401 && error.response.data === "Token has expired") {
+            alert("Token has expired. Please log in again.");
+            localStorage.removeItem("token");
+            navigate("/login");
+          } else {
+            console.error("Error:", error);
+          }
       });
   };
 
   const getUserCms = async () => {
-    await axios.get(`http://localhost:3333/userCommission/${id}`,{
+    await axios.get(`${host}/userCommission/${id}`,{
         headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + jwt_token,
@@ -123,7 +133,7 @@ export default function ViewProfile() {
   const eventfollow = async () => {
     try {
       await axios.post(
-        "http://localhost:3333/follow", {id} ,{
+        `${host}/follow`, {id} ,{
           headers: {
             Authorization: "Bearer " + jwt_token,
           },
@@ -144,7 +154,7 @@ export default function ViewProfile() {
   const eventUnfollow = async () => {
     try {
       await axios.delete(
-        `http://localhost:3333/unfollow/${id}`,{
+        `${host}/unfollow/${id}`,{
           headers: {
             Authorization: "Bearer " + jwt_token,
           },
@@ -178,7 +188,7 @@ export default function ViewProfile() {
   const openFollower = () => {
     const formData = new FormData();
     formData.append("myFollower", myFollower);
-    axios .post("http://localhost:3333/openFollower", formData,{
+    axios .post(`${host}/openFollower`, formData,{
         headers: {
             Authorization: "Bearer " + jwt_token,
         },

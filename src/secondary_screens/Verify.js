@@ -126,7 +126,6 @@ export default function Verify() {
         .then((response) => response.json())
         .then((data) => {
           if (data.status === "ok") {
-            // toast.success(data.message, toastOptions);
             const queryParams = new URLSearchParams({ email, userID });
             window.location = `/register?${queryParams.toString()}`;
           } else {

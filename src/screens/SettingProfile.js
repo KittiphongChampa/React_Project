@@ -110,6 +110,14 @@ export default function SettingProfile() {
         } else {
           toast.error("ไม่พบผู้ใช้งาน", toastOptions);
         }
+      }).catch((error) => {
+        if (error.response && error.response.status === 401 && error.response.data === "Token has expired") {
+            alert("Token has expired. Please log in again.");
+            localStorage.removeItem("token");
+            navigate("/login");
+          } else {
+            console.error("Error:", error);
+          }
       });
   };
   const profileupdate = async (event) => {
