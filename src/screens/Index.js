@@ -220,13 +220,13 @@ export default function Index() {
                             </div>
                             <div class="content-items">
                                 {/* <Link to="/cmsdetail"><CmsItem src="monlan.png" headding="คอมมิชชัน SD" price="100" desc="คมช.เส้นเปล่า-ลงสีรับทุกสเกล สามารถเพิ่มตัวละครหรือเพิ่มพร็อพได้ โดยราคาขึ้นอยู่กับรายละเอียดที่เพิ่มเข้ามา" /></Link> */}
-                                {cmsPopular.map(cmsPop => (
+                                {/* {cmsPopular.map(cmsPop => (
                                   <div key={cmsPop.cms_id} style={{display:"flex"}}>
                                     <Link to={`/cmsdetail/${cmsPop.cms_id}`} onClick={() => handleLinkClick(cmsPop.cms_id)}>
                                       <CmsItem src={cmsPop.ex_img_path} headding={cmsPop.cms_name} price="100" desc={cmsPop.cms_desc}/>
                                     </Link>
                                   </div>
-                                ))}
+                                ))} */}
                             </div>
                         </div>
 
