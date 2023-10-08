@@ -21,6 +21,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { Alert, Space } from 'antd';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { useNavigate, Link, useParams } from "react-router-dom";
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import "sweetalert2/src/sweetalert2.scss";
 
 
 const host = "http://localhost:3333";
@@ -29,111 +31,6 @@ const body = { backgroundImage: "url('monlan.png')" }
 
 
 export default function CmsDetail() {
-
-    const [formModalOpened, setFormModalOpened] = useState(false)
-
-    function openFormModal() {
-        setFormModalOpened(prevState => !prevState)
-    }
-
-    const FormModal = (props) => {
-        const [attImgComponents, setAttImgComponents] = useState([])
-        function addNewAttImg(props) {
-            setAttImgComponents([...attImgComponents, { text: "", pic: "" }])
-            console.log(attImgComponents)
-        }
-
-        function removeAttImg(componentKey) {
-            const update = attImgComponents.filter((_, i) => i !== componentKey);
-            setAttImgComponents(update)
-        }
-
-        const handleChangeText = (index, newText) => {
-            const updatedComponents = attImgComponents.map((component, i) => {
-                if (index === i) {
-                    return { ...component, text: newText };
-                }
-                return component;
-            });
-            setAttImgComponents(updatedComponents);
-        };
-
-        return <>
-            <div className="modal cms-detail">
-                <div className="form-order-card">
-                    <div className="close-tab"><button onClick={openFormModal}><Icon.X /></button></div>
-                    <div className="form-order">
-                        <h1 className="h4">ส่งคำขอจ้าง</h1>
-                        {/* <p className="selected-packgage">Full color by boobii : Bust-up full color เริ่มต้น 500 P</p> */}
-                        <div className="form-item">
-                            <label>ประเภทการใช้งาน</label>
-                            <div className="tou-radio-btn-group">
-                                <div><input type="radio" id="Personal" name="type-of-use" value="Personal" checked />
-                                    <label className="ms-1" for="Personal">Personal use<span></span></label></div>
-                                <div><input type="radio" id="License" name="type-of-use" value="License" checked />
-                                    <label className="ms-1" for="License">License<span></span></label></div>
-                                <div><input type="radio" id="Exclusive" name="type-of-use" value="Exclusive" checked />
-                                    <label className="ms-1" for="Exclusive">Exclusive right<span></span></label></div>
-                            </div>
-                        </div>
-                        <div className="form-item">
-                            <label>จุดประสงค์การใช้ภาพ</label>
-                            <TextareaAutosize
-                                className="txtarea-input"
-                                id="username"
-                                maxLength="300"
-                                placeholder="โปรดระบุ เพื่อให้นักวาดคำนวณราคาที่เหมาะสม เช่น นำไปทำพวงกุญแจขาย"
-                            />
-                        </div>
-                        <div className="form-item">
-                            <label>รายละเอียด</label>
-                            <TextareaAutosize
-                                className="txtarea-input"
-                                id="username"
-                                maxLength="300"
-                                placeholder="อธิบายรายละเอียดงานจ้างหรือภาพที่ต้องการ"
-                            />
-                        </div>
-
-                        <div className="form-item">
-                            <label>แนบภาพประกอบ</label>
-
-                            {attImgComponents.map((component, index) => (
-
-                                <div key={index} className="att-img-item mt-2 mb-2">
-                                    <div className="number"></div>
-                                    <div className="small-show-att-img" style={{ backgroundImage: "url(เหมียวเวห์.jpg)" }}></div>
-                                    <div className="desc-box">
-                                        <label style={{ fontWeight: "400" }}>คำอธิบายเพิ่มเติม</label>
-                                        <input placeholder="เช่น ส่วนที่อยากให้ปรับนอกเหนือจากรูปที่แนบมา " className="txtarea-input" type="text" value={component.text}
-                                            onChange={(e) => handleChangeText(index, e.target.value)} />
-                                    </div>
-                                    <button className="remove-img-item" onClick={() => removeAttImg(index)}><Icon.X /></button>
-                                </div>
-                            ))}
-                        </div>
-
-                        <button className="addNewAttImgBtn" onClick={addNewAttImg}><Icon.Plus />เพิ่มภาพประกอบ</button>
-                        <button className="orderSubmitBtn">ส่งคำขอขอจ้าง</button>
-                    </div>
-                </div>
-            </div>
-        </>
-    }
-
-    const [activeMenu, setActiveMenu] = useState({ package: true, review: false, queue: false })
-
-    function handleMenu(event, menu) {
-        const oldMenu = document.querySelector(".sub-menu.selected");
-        oldMenu.classList.remove("selected")
-        event.target.classList.add("selected")
-        // setActiveMenu((prevState) => ({
-        //     ...prevState, package: !prevState.package, review: !prevState.review, queue: !prevState.queue
-        // }));
-        setActiveMenu({ package: false, review: false, queue: false });
-        setActiveMenu({ [menu]: true });
-        // setActiveMenu(...prevState, package: !prevState.package )
-    }
     const navigate = useNavigate();
     const cmsID = useParams();
     const [userdata, setUserdata] = useState([]);
@@ -195,6 +92,149 @@ export default function CmsDetail() {
           });
     };
 
+
+    const [formModalOpened, setFormModalOpened] = useState(false)
+
+    const [packageId, setPackageId] = useState(null);
+    function openFormModal(pkgId) {
+        setFormModalOpened(prevState => !prevState)
+        setPackageId(pkgId); // ส่ง pkgId ไปยัง FormModal
+    }
+
+    const FormModal = (props) => {
+        const { pkgId } = props;
+
+        const [attImgComponents, setAttImgComponents] = useState([])
+        function addNewAttImg(props) {
+            setAttImgComponents([...attImgComponents, { text: "", pic: "" }])
+            console.log(attImgComponents)
+        }
+
+        function removeAttImg(componentKey) {
+            const update = attImgComponents.filter((_, i) => i !== componentKey);
+            setAttImgComponents(update)
+        }
+
+        const handleChangeText = (index, newText) => {
+            const updatedComponents = attImgComponents.map((component, i) => {
+                if (index === i) {
+                    return { ...component, text: newText };
+                }
+                return component;
+            });
+            setAttImgComponents(updatedComponents);
+        };
+
+        const SendRequest = (e) => {
+            e.preventDefault();
+            console.log(cmsID.id);
+            console.log(userdata.id);
+            console.log(pkgId);
+            const formData = new FormData();
+            formData.append("cmsID", cmsID.id);
+            formData.append("userID", userdata.id);
+            formData.append("pkgId", pkgId);
+            axios .post(`${host}/order/add`, formData,{
+                headers: {
+                    "Content-type": "multipart/form-data",
+                },
+            }).then((response) => {
+                const data = response.data;
+                console.log(data);
+                if (response.status = 200) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'ส่งคำขอจ้างสำเร็จ'
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'เกิดข้อผิดพลาด กรุณาลองใหม่'
+                    })
+                }
+            })
+        }
+
+        return <>
+            <div className="modal cms-detail">
+                <div className="form-order-card">
+                    <div className="close-tab"><button onClick={openFormModal}><Icon.X /></button></div>
+                    <div className="form-order">
+                        <h1 className="h4">ส่งคำขอจ้าง</h1>
+                        {/* <p className="selected-packgage">Full color by boobii : Bust-up full color เริ่มต้น 500 P</p> */}
+                        <div className="form-item">
+                            <label>ประเภทการใช้งาน</label>
+                            <div className="tou-radio-btn-group">
+                                <div><input type="radio" id="Personal" name="type-of-use" value="Personal" checked />
+                                    <label className="ms-1" for="Personal">Personal use<span></span></label></div>
+                                <div><input type="radio" id="License" name="type-of-use" value="License" checked />
+                                    <label className="ms-1" for="License">License<span></span></label></div>
+                                <div><input type="radio" id="Exclusive" name="type-of-use" value="Exclusive" checked />
+                                    <label className="ms-1" for="Exclusive">Exclusive right<span></span></label></div>
+                            </div>
+                        </div>
+                        <form onSubmit={SendRequest}>
+                            <div className="form-item">
+                            <label>จุดประสงค์การใช้ภาพ</label>
+                            <TextareaAutosize
+                                className="txtarea-input"
+                                id="username"
+                                maxLength="300"
+                                placeholder="โปรดระบุ เพื่อให้นักวาดคำนวณราคาที่เหมาะสม เช่น นำไปทำพวงกุญแจขาย"
+                            />
+                            </div>
+                            <div className="form-item">
+                                <label>รายละเอียด</label>
+                                <TextareaAutosize
+                                    className="txtarea-input"
+                                    id="username"
+                                    maxLength="300"
+                                    placeholder="อธิบายรายละเอียดงานจ้างหรือภาพที่ต้องการ"
+                                />
+                            </div>
+
+                            <div className="form-item">
+                                <label>แนบภาพประกอบ</label>
+
+                                {attImgComponents.map((component, index) => (
+
+                                    <div key={index} className="att-img-item mt-2 mb-2">
+                                        <div className="number"></div>
+                                        <div className="small-show-att-img" style={{ backgroundImage: "url(เหมียวเวห์.jpg)" }}></div>
+                                        <div className="desc-box">
+                                            <label style={{ fontWeight: "400" }}>คำอธิบายเพิ่มเติม</label>
+                                            <input placeholder="เช่น ส่วนที่อยากให้ปรับนอกเหนือจากรูปที่แนบมา " className="txtarea-input" type="text" value={component.text}
+                                                onChange={(e) => handleChangeText(index, e.target.value)} />
+                                        </div>
+                                        <button className="remove-img-item" onClick={() => removeAttImg(index)}><Icon.X /></button>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <button className="addNewAttImgBtn" onClick={addNewAttImg}><Icon.Plus />เพิ่มภาพประกอบ</button>
+                            <button className="orderSubmitBtn" type="submit">ส่งคำขอขอจ้าง</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </>
+    }
+
+    const [activeMenu, setActiveMenu] = useState({ package: true, review: false, queue: false })
+
+    function handleMenu(event, menu) {
+        const oldMenu = document.querySelector(".sub-menu.selected");
+        oldMenu.classList.remove("selected")
+        event.target.classList.add("selected")
+        // setActiveMenu((prevState) => ({
+        //     ...prevState, package: !prevState.package, review: !prevState.review, queue: !prevState.queue
+        // }));
+        setActiveMenu({ package: false, review: false, queue: false });
+        setActiveMenu({ [menu]: true });
+        // setActiveMenu(...prevState, package: !prevState.package )
+    }
+
+
     const getDetailCommission = async () => {
         await axios.get(`${host}/detailCommission/${cmsID.id}`, {
           headers: {
@@ -212,7 +252,7 @@ export default function CmsDetail() {
 
     return (
         <div className="body-con">
-            {formModalOpened ? <FormModal /> : null}
+            {formModalOpened ? <FormModal pkgId={packageId}/> : null}
             {/* <FormModal /> */}
             <Helmet>
                 <title>{title}</title>
@@ -301,12 +341,17 @@ export default function CmsDetail() {
 function Package(props) {
     const { pkgDetail } = props;
 
+    const handlePackageClick = (pkgId) => {
+        console.log(`Clicked on package with id: ${pkgId}`);
+        props.onClick(pkgId);
+    };
+    
     return <>
         <h2>เลือกแพ็กเกจ</h2>
         <p className="text-align-right">ราคาสำหรับ personal use หากใช้ในเชิงอื่นอาจกำหนดราคาขึ้นมากกว่านี้</p>
         {Array.isArray(pkgDetail) ? (
             pkgDetail.map((pkg) => (
-                <div className="select-package-item" onClick={props.onClick} key={pkg.pkg_id}>
+                <div className="select-package-item" onClick={() => handlePackageClick(pkg.pkg_id)} key={pkg.pkg_id} >
                     <div>
                         <h3>{pkg.pkg_name}</h3>
                         <p>{pkg.pkg_min_price}+ THB</p>
@@ -319,22 +364,22 @@ function Package(props) {
                     </div>
                 </div>
             ))
-            ) : (
-            <div className="select-package-item" onClick={props.onClick}>
+        ) : (
+            <div className="select-package-item" onClick={() => handlePackageClick(pkgDetail.pkg_id)}>
                 <div>
                     <h3>{pkgDetail.pkg_name}</h3>
                     <p>{pkgDetail.pkg_min_price}+ THB</p>
                     <p>ราคาสำหรับเส้นเปล่า ลงสีพื้น+{pkgDetail.pkg_min_price} บาท ลงสีเต็ม(ลงเงา) +{pkgDetail.pkg_min_price + 50} บาท</p>
-                    </div>
-                    <div>
+                </div>
+                <div>
                     <p>ระยะเวลาทำงาน {pkgDetail.pkg_duration} วัน</p>
                     <p>ประเภทงานที่อนุญาต ทุกประเภท</p>
                     <p>จำนวนครั้งแก้ไขงาน {pkgDetail.pkg_edits} ครั้ง</p>
                 </div>
             </div>
-            )
-        }
+        )}
     </>
+    
 
 }
 

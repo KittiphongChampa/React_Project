@@ -48,7 +48,15 @@ export default function AdminManageCms() {
             }
           })
           .catch((error) => {
-            console.error("Error:", error);
+            if (error.response && error.response.status === 401 && error.response.data === "Token has expired") {
+              // Handle token expired error
+              alert("Token has expired. Please log in again.");
+              localStorage.removeItem("token");
+              navigate("/login");
+            } else {
+              // Handle other errors here
+              console.error("Error:", error);
+            }
           });
     };
 
@@ -99,10 +107,19 @@ export default function AdminManageCms() {
                 <tbody>
                     {cmsData.map((item, index) => (
                         <tr key={index}>
-                            <td>{index}</td>
+                            <td>{item.cms_id}</td>
                             <td>{item.cms_name}</td>
                             <td>{item.usr_id}</td>
-                            <td>{item.created_at}</td>
+                            <td>
+                              {new Date(item.created_at).toLocaleString("th-TH", {
+                                day: "2-digit",
+                                month: "short",
+                                year: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                                second: "2-digit",
+                              })}
+                            </td>
                             <td><Link to={`/admin/commission/problem/${item.cms_id}`}>จัดการ</Link></td>
                         </tr>
                     ))}

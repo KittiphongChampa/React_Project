@@ -44,6 +44,7 @@ import Test from './yunscreens/Test';
 import Editprofile from './yunscreens/Editprofile';
 import Buytoken from './yunscreens/Buytoken';
 import PackageToken from './yunscreens/PackageToken';
+import Artistseeorder from './yunscreens/artistseeorder';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -89,6 +90,8 @@ root.render(
       <Route path="/profileTest" element={<ProfileTest />} />
       <Route path="/alluser" element={<AllUser />} />
       <Route path="/verify-resetPassword" element={<VerifyMail_ResetPassword/>} />
+
+      <Route path="/artistseeorder" element={<Artistseeorder/>} />
 
     </Routes>
   </BrowserRouter>

@@ -55,10 +55,8 @@ function UserBox(props) {
 
     const banBtnRef = useRef(null)
     const handleClick = (item) => {
-
-            setSelectedItem(item);
-            setpopup(true);
-            // console.log(banBtnRef.current)
+        setSelectedItem(item);
+        setpopup(true);
     };
     
     return (
@@ -72,7 +70,7 @@ function UserBox(props) {
             <p className="username">{props.username}</p>
             <p>{props.userid}</p>
             <p>{props.email}</p>
-                <button ref={banBtnRef} onClick={(e) => { e.stopPropagation(); handleClick(props.userid) }}>ระงับบัญชีผู้ใช้</button>
+            <button ref={banBtnRef} onClick={(e) => { e.stopPropagation(); handleClick(props.userid) }}>ระงับบัญชีผู้ใช้</button>
         </div>
         <Modal show={popup} onHide={Close}>
             <Modal.Header>
