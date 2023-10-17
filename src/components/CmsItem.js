@@ -4,7 +4,6 @@ import * as Icon from 'react-feather';
 
 
 export default function CmsItem(props) {
-
     return (
         <div class="cms-card">
             <Icon.Check class="cms-status" />
@@ -20,6 +19,5 @@ export default function CmsItem(props) {
                 </div>
             </div>
         </div>
-
     )
 }

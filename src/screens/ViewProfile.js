@@ -218,37 +218,38 @@ export default function ViewProfile() {
 
   //admin
   const [banReason, setBanReason] = useState("");
-  const handleClick = () => {setpopup(true)};
+  const handleClick = () => {
+    setpopup(true);
+  };
   const [popup, setpopup] = useState(false);
   const Close = () => {
-      setBanReason("");
-      setpopup(false);
+    setBanReason("");
+    setpopup(false);
   };
   const deleteUser = async () => {
     setpopup(false);
     const userId = userdata.id;
     await axios
-    .patch(`${host}/alluser/delete/${userId}`, {
+      .patch(`${host}/alluser/delete/${userId}`, {
         headers: {
           Authorization: "Bearer " + jwt_token,
         },
         banReason: banReason,
-    })
-    .then((response) => {
+      })
+      .then((response) => {
         const data = response.data;
         console.log(data);
         if (data.status === "ok") {
-        Swal.fire({ ...alertData.deleteUserSuccess }).then(() => {
-          window.location = "/admin/alluser";
-        });
+          Swal.fire({ ...alertData.deleteUserSuccess }).then(() => {
+            window.location = "/admin/alluser";
+          });
         } else {
-        Swal.fire({ ...alertData.deleteUserFailed }).then(() => {
+          Swal.fire({ ...alertData.deleteUserFailed }).then(() => {
             window.location.reload(false);
-        });
+          });
         }
-    });
+      });
   };
- 
 
   return (
     <>
@@ -308,30 +309,30 @@ export default function ViewProfile() {
                     <button onClick={handleClick}>ระงับบัญชีผู้ใช้</button>
                     <Modal show={popup} onHide={Close}>
                       <Modal.Header>
-                      <Modal.Title>เหตุผลการแบน</Modal.Title>
+                        <Modal.Title>เหตุผลการแบน</Modal.Title>
                       </Modal.Header>
 
                       <Modal.Body>
                         <Form>
-                            <Form.Control
+                          <Form.Control
                             as="textarea"
                             rows={3}
                             placeholder="เหตุผลการแบน..."
                             value={banReason}
                             onChange={(e) => setBanReason(e.target.value)}
-                            />
+                          />
                         </Form>
                       </Modal.Body>
 
                       <Modal.Footer>
                         <Button variant="secondary" onClick={Close}>
-                            ปิด
+                          ปิด
                         </Button>
                         <Button variant="danger" onClick={deleteUser}>
-                            แบนไอดี
+                          แบนไอดี
                         </Button>
                       </Modal.Footer>
-                  </Modal>
+                    </Modal>
                   </>
                 )}
                 <p className="bio-profile">{userdata.urs_bio}</p>
@@ -412,44 +413,49 @@ export default function ViewProfile() {
 
 function AllCms(props) {
   const { myCommission, userID } = props;
-  const handleLinkClick = (cms_id) => {
-    const clickstreamData = {
-      userID: userID,
-      page_url: window.location.href + "cmsdetail/" + cms_id, // หรือใช้ URL ปัจจุบัน
-      target_cms_id: cms_id, // ID ของคอมมิชชันที่ผู้ใช้คลิก
-    };
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const adminParam = queryParams.get("admin");
 
-    axios
-      .post(`${host}/click`, clickstreamData)
-      .then((response) => {
-        console.log(response.data.message);
-        // หลังจากบันทึก Clickstream เสร็จสิ้น คุณสามารถเรียกใช้การนำทางไปยังรายละเอียดคอมมิชชัน
-        // โดยใช้ react-router-dom หรือวิธีการนำทางอื่น ๆ ตามที่คุณใช้
-      })
-      .catch((error) => {
-        console.error(error);
-        // ในกรณีที่เกิดข้อผิดพลาดในการบันทึก Clickstream คุณสามารถจัดการตามที่เหมาะสม
-      });
-  };
+  const admin = "admin";
+  const handleRedirect = (cms_id) => {
+      window.location = (`/cmsdetail/${cms_id}?admin=${admin}`);
+  }
   return (
     <>
       <p className="h3 mt-3 mb-2">คอมมิชชัน</p>
       <div class="content-items">
-        {myCommission.map((mycms) => (
-          <div key={mycms.cms_id} style={{ display: "flex" }}>
-            <Link
-              to={`/cmsdetail/${mycms.cms_id}`}
-              onClick={() => handleLinkClick(mycms.cms_id)}
-            >
-              <CmsItem
-                src={mycms.ex_img_path}
-                headding={mycms.cms_name}
-                price="100"
-                desc={mycms.cms_desc}
-              />
-            </Link>
-          </div>
-        ))}
+        {adminParam === null ? (
+          <>
+            {myCommission.map((mycms) => (
+              <div key={mycms.cms_id} style={{ display: "flex" }}>
+                <Link to={`/cmsdetail/${mycms.cms_id}`}>
+                  <CmsItem
+                    src={mycms.ex_img_path}
+                    headding={mycms.cms_name}
+                    price={mycms.pkg_min_price}
+                    desc={mycms.cms_desc}
+                  />
+                </Link>
+              </div>
+            ))}
+          </>
+        ) : (
+          <>
+            {myCommission.map((mycms) => (
+              <div key={mycms.cms_id} style={{ display: "flex" }}>
+                <Link onClick={()=>handleRedirect(mycms.cms_id)}>
+                  <CmsItem
+                    src={mycms.ex_img_path}
+                    headding={mycms.cms_name}
+                    price={mycms.pkg_min_price}
+                    desc={mycms.cms_desc}
+                  />
+                </Link>
+              </div>
+            ))}
+          </>
+        )}
       </div>
     </>
   );

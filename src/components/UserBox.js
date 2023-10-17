@@ -50,7 +50,6 @@ function UserBox(props) {
 
     const handleRedirect = (id) => {
         window.location = (`/profile/${id}?admin=${admin}`);
-
     }
 
     const banBtnRef = useRef(null)

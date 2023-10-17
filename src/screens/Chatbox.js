@@ -58,7 +58,6 @@ function ChatMessage(props) {
 
 export default function ChatBox() {
   const chat = useRef(null);
-  // const message = 'Contrary to popular belsssssssssssssssssssssadfe   grgegief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.3'
   const [messages, setMessages] = useState([]);
   const [chatlist, setChatlist] = useState();
   const [activeChat, setActiveChat] = useState();
@@ -68,7 +67,6 @@ export default function ChatBox() {
   const chat_partner_id = queryParams.get("id");
   
   const [partnerChat, setPartnerChat] = useState([]);
-  // console.log(partnerChat.id);
 
   useEffect(() => {
     chat.current?.scrollIntoView({ behavior: "smooth" });
@@ -162,15 +160,17 @@ export default function ChatBox() {
   const handleToggle = () => {
     setIsToggled((prevState) => !prevState);
   };
+
   /*--------------------------------------------------------------------------------- */
   const navigate = useNavigate();
   const socket = useRef();
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState([]); // คู่สนทนาที่เราสมารถแชทด้วยได้
   const [currentChat, setCurrentChat] = useState(undefined); //คนที่เราเลือกสนทนา
 
   // const [currentUser, setCurrentUser] = useState(undefined);
   const token = localStorage.getItem("token");
   const [userdata, setUserdata] = useState([]);
+
   const getPartnerChat = async () => {
     await axios
       .get(`http://localhost:3333/chat/partner/${chat_partner_id}`, {
@@ -179,10 +179,11 @@ export default function ChatBox() {
         },
       })
       .then((response) => {
-        // console.log(response.data[0]);
+        console.log(response.data[0]);
         setPartnerChat(response.data[0]);
       });
   };
+
   const getUser = async () => {
     try {
       const response = await axios.get(`${host}/index`, {
@@ -217,6 +218,21 @@ export default function ChatBox() {
       socket.current = io("http://localhost:3333");
       socket.current.emit("add-user", userdata.id);
     }
+    // try {
+    //   axios
+    //     .get(`http://localhost:3333/allchat/${userdata.id}`)
+    //     .then((response) => {
+    //       setContacts(response.data); //แสดงผลคนที่เราสามารถแชทด้วยได้ทั้งหมด
+    //     });
+    // } catch (error) {
+    //   // Handle error
+    //   console.log("catch");
+    // }
+    
+  }, [userdata]);
+
+  //โค้ดใหม่
+  useEffect(() => {
     try {
       axios
         .get(`http://localhost:3333/allchat/${userdata.id}`)
@@ -227,7 +243,7 @@ export default function ChatBox() {
       // Handle error
       console.log("catch");
     }
-  }, [userdata]);
+  }, [contacts])
 
 
   const handleChatChange = (chat) => {
@@ -293,10 +309,10 @@ export default function ChatBox() {
               {/* {chatlist} */}
               <Contacts
                 partnerID={chat_partner_id}
-                contacts={contacts}
-                changeChat={handleChatChange}
-                userdata={userdata}
-                Toggled={isToggled}
+                contacts={contacts} //ส่งค่าคนที่เราสามารถแชทด้วยได้
+                changeChat={handleChatChange} //เลือกว่าเราสนทนากับใคร
+                Toggled={isToggled} //ปุ่มกดสำหรับ
+                socket={socket}
               />
             </div>
           </div>

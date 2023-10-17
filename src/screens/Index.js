@@ -78,14 +78,15 @@ export default function Index() {
   const [cmsLatests, setCmsLatest] = useState([]);
   const [cmsArtists, setCmsArtist] = useState([]);
   const [cmsPopular, setCmsPopular] = useState([]);
-  console.log(cmsPopular);
+  // console.log(cmsPopular);
   const getLatestCommission = async () => {
-    await axios.get("http://localhost:3333/latestCommission", {
+    await axios.get(`http://localhost:3333/latestCommission`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
       },
     }).then((response) => {
+      console.log(response.data);
       const Cmslatest = response.data;
       setCmsLatest(Cmslatest.commissions)
     })
@@ -113,22 +114,22 @@ export default function Index() {
     })
   }
   const handleLinkClick = (cms_id) => {
-    const clickstreamData = {
-      userID: userdata.id,
-      page_url: window.location.href+"cmsdetail/"+cms_id, // หรือใช้ URL ปัจจุบัน
-      target_cms_id: cms_id, // ID ของคอมมิชชันที่ผู้ใช้คลิก
-    };
+    // const clickstreamData = {
+    //   userID: userdata.id,
+    //   page_url: window.location.href+"cmsdetail/"+cms_id, // หรือใช้ URL ปัจจุบัน
+    //   target_cms_id: cms_id, // ID ของคอมมิชชันที่ผู้ใช้คลิก
+    // };
 
-    axios.post('http://localhost:3333/click', clickstreamData)
-      .then(response => {
-        console.log(response.data.message);
+    // axios.post('http://localhost:3333/click', clickstreamData)
+      // .then(response => {
+        // console.log(response.data.message);
         // หลังจากบันทึก Clickstream เสร็จสิ้น คุณสามารถเรียกใช้การนำทางไปยังรายละเอียดคอมมิชชัน
         // โดยใช้ react-router-dom หรือวิธีการนำทางอื่น ๆ ตามที่คุณใช้
-      })
-      .catch(error => {
-        console.error(error);
+      // })
+      // .catch(error => {
+        // console.error(error);
         // ในกรณีที่เกิดข้อผิดพลาดในการบันทึก Clickstream คุณสามารถจัดการตามที่เหมาะสม
-      });
+      // });
   };
 
   return (
@@ -188,7 +189,7 @@ export default function Index() {
                               {cmsLatests.map(cmsLatest => (
                                 <div key={cmsLatest.cms_id} style={{display:"flex"}}>
                                   <Link to={`/cmsdetail/${cmsLatest.cms_id}`} onClick={() => handleLinkClick(cmsLatest.cms_id)} >
-                                    <CmsItem src={cmsLatest.ex_img_path} headding={cmsLatest.cms_name} price="100" desc={cmsLatest.cms_desc}/>
+                                    <CmsItem src={cmsLatest.ex_img_path} headding={cmsLatest.cms_name} price={cmsLatest.pkg_min_price} desc={cmsLatest.cms_desc}/>
                                   </Link>
                                 </div>
                               ))}
@@ -205,7 +206,7 @@ export default function Index() {
                             {cmsArtists.map(cmsArtstdata => (
                               <div key={cmsArtstdata.cms_id} style={{display:"flex"}}>
                                 <Link to={`/cmsdetail/${cmsArtstdata.cms_id}`} onClick={() => handleLinkClick(cmsArtstdata.cms_id)}>
-                                  <CmsItem src={cmsArtstdata.ex_img_path} headding={cmsArtstdata.cms_name} price="100" desc={cmsArtstdata.cms_desc}/>
+                                  <CmsItem src={cmsArtstdata.ex_img_path} headding={cmsArtstdata.cms_name} price={cmsArtstdata.pkg_min_price} desc={cmsArtstdata.cms_desc}/>
                                 </Link>
                               </div>
                             ))}

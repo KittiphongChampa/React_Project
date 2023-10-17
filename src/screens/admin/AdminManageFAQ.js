@@ -22,6 +22,11 @@ import * as Icon from "react-feather";
 
 import { AdminBox, UserBox } from "../../components/UserBox";
 
+const host = "http://localhost:3333";
+const title = "จัดการคำถามที่พบบ่อย";
+const bgImg = "";
+const body = { backgroundColor: "#F4F1F9" };
+
 export default function AdminManageFAQ() {
   const navigate = useNavigate();
   const jwt_token = localStorage.getItem("token");
@@ -41,7 +46,7 @@ export default function AdminManageFAQ() {
 
   const getFAQdata = async () => {
     await axios
-      .get("http://localhost:3333/allfaq", {
+      .get(`${host}/allfaq`, {
         headers: {
           Authorization: "Bearer " + jwt_token,
         },
@@ -78,7 +83,7 @@ export default function AdminManageFAQ() {
 
   const handleAddFAQ = async () => {
     await axios
-      .post("http://localhost:3333/faq/add", formData, {
+      .post(`${host}/faq/add`, formData, {
         headers: {
           Authorization: "Bearer " + jwt_token,
         },
@@ -97,7 +102,7 @@ export default function AdminManageFAQ() {
   const handleEditFAQ = async (e, ID) => {
     e.preventDefault();
     await axios
-      .patch(`http://localhost:3333/faq/update/${ID}`, formData, {
+      .patch(`${host}/faq/update/${ID}`, formData, {
         headers: {
           Authorization: "Bearer " + jwt_token,
         },
@@ -115,7 +120,7 @@ export default function AdminManageFAQ() {
   };
   const handleDeleteFAQ = async (faqID) => {
     await axios
-      .patch(`http://localhost:3333/faq/delete/${faqID}`,{
+      .patch(`${host}/faq/delete/${faqID}`,{
         headers: {
           Authorization: "Bearer " + jwt_token,
         },

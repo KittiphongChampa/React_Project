@@ -37,7 +37,7 @@ function ImgSlide({imgDetail}) {
                 }}
                 navigation={true}
                 modules={[Autoplay, Pagination, Navigation]}
-                className="mySwiper"
+                className="cms-example-swiper"
                 >
                 {Array.isArray(imgDetail) ? (
                     imgDetail.map((image) => (

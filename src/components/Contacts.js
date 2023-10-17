@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import io from "socket.io-client";
 // import Logo from "../assets/logo.svg";
 
-export default function Contacts({ contacts, changeChat, userdata, Toggled, partnerID}) {
+export default function Contacts({ contacts, changeChat, Toggled, partnerID, socket}) {
   const [currentUserName, setCurrentUserName] = useState(undefined);
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
   const [currentSelected, setCurrentSelected] = useState(undefined);
 
   const uniqueContactIds = new Set();
   const filteredContacts = [];
+
+  //ทำการ ลูปค่าเพื่อ หายูนีค id
   contacts.forEach((contact) => {
     if (!uniqueContactIds.has(contact.id)) {
       uniqueContactIds.add(contact.id);
@@ -18,21 +21,13 @@ export default function Contacts({ contacts, changeChat, userdata, Toggled, part
     }
   });
 
-  //   useEffect(async () => {
-  //     const data = await JSON.parse(
-  //       localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
-  //     );
-  //     setCurrentUserName(data.username);
-  //     setCurrentUserImage(data.avatarImage);
-  //   }, []);
-
+ 
   const token = localStorage.getItem("token");
 
   useEffect(() => {
     //ตึงข้อมูลตัวเอง
     if (partnerID !== null) {
       setCurrentSelected(partnerID)
-      // console.log("bbbbbbbbbbbbbbbbbbb",currentSelected)
     }
     getUser();
   }, []);
@@ -55,8 +50,7 @@ export default function Contacts({ contacts, changeChat, userdata, Toggled, part
 
   const changeCurrentChat = (index, contact) => {
     setCurrentSelected(index);
-    changeChat(contact);
-    // console.log("id ใน ฟังชัน",index)
+    changeChat(contact); //เลือกว่าเราสนทนากับใคร
   };
 
   const [activeChat, setActiveChat] = useState();
@@ -72,6 +66,7 @@ export default function Contacts({ contacts, changeChat, userdata, Toggled, part
       {currentUserImage && currentUserImage && (
         <>
           {filteredContacts.map((contact, index) => {
+            // {console.log(contact);}
             // <UserChat name={contact.urs_name} src={contact.urs_profile_img} key={contact.id} id="1" onClick={() => chatSelected("1") }  />;
             return (
               <>

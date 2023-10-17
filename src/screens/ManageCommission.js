@@ -67,7 +67,6 @@ export default function ManageCommission() {
   let userID = userdata.id;
   const [isLoading, setLoading] = useState(false);
 
-
   //---------------------------------------------------------------------
 
   useEffect(() => {
@@ -116,8 +115,6 @@ export default function ManageCommission() {
   const { Dragger } = Upload;
   const [api, contextHolder] = notification.useNotification();
 
-
-
   const options = [];
   for (let i = 10; i < 36; i++) {
     options.push({
@@ -153,34 +150,62 @@ export default function ManageCommission() {
       file.name || file.url.substring(file.url.lastIndexOf("/") + 1)
     );
   };
-
   const handleChange = ({ fileList: newFileList }) => {
-    setFileList(newFileList)
-  }
+    setFileList(newFileList);
+  };
   const ref = useRef();
 
+  const [topicValues, setTopicValues] = useState([]);
+
+  function handleTopic(value) {
+    setTopicValues(value);
+  }
+
+  const all_option = [
+    { value: "1", label: "Sequentail Art" },
+    { value: "2", label: "SD scale" },
+    { value: "3", label: "Traditional Art" },
+    { value: "4", label: "doodle Art" },
+    { value: "5", label: "Semi-realistic" },
+    { value: "6", label: "Realistic" },
+    { value: "7", label: "Pixel Art" },
+    { value: "8", label: "Vector" },
+    { value: "9", label: "Anime" },
+    { value: "10", label: "Digital Art" },
+    { value: "11", label: "Furry" },
+    { value: "12", label: "Cubism Art" },
+    { value: "13", label: "Isometric Art" },
+    { value: "14", label: "Midcentury Illustration" },
+    { value: "15", label: "Minimalism" },
+    { value: "16", label: "Mosaic Art" },
+    { value: "17", label: "Pop Art" },
+    { value: "18", label: "Sketchy Style Art" },
+    { value: "19", label: "Watercolor" },
+  ];
+
+  const [selectedValues, setSelectedValues] = useState([]);
 
   const onFinish = (values) => {
-
     const formData = new FormData();
-
     fileList.forEach((file) => {
-        formData.append('image_file', file.originFileObj);
+      formData.append("image_file", file.originFileObj);
     });
-
-
     formData.append("commission_name", values.cmsName);
     formData.append("commission_description", values.cmsDesc);
-
+    formData.append("commission_que", values.cmsQ);
+    formData.append("typeofuse", selectedValues.join(","));
+    formData.append("good", values.cmsName);
+    formData.append("bad", values.cmsName);
+    formData.append("no_talking", values.cmsName);
     for (const pkg of values.pkgs) {
-        formData.append("package_name", pkg.pkgName);
-        formData.append("package_detail", pkg.pkgDesc);
-        formData.append("duration", pkg.pkgDuration);
-        formData.append("price", pkg.pkgPrice);
-        formData.append("edits", pkg.pkgEdit);
+      formData.append("package_name", pkg.pkgName);
+      formData.append("package_detail", pkg.pkgDesc);
+      formData.append("duration", pkg.pkgDuration);
+      formData.append("price", pkg.pkgPrice);
+      formData.append("edits", pkg.pkgEdit);
+      formData.append("step", pkg.step);
     }
-  
-    // formData.append("image_file", fileList);
+    formData.append("commission_topic", topicValues);
 
     axios
       .post("http://localhost:3333/commission/add", formData, {
@@ -191,179 +216,20 @@ export default function ManageCommission() {
       })
       .then((response) => {
         const data = response.data;
-        console.log(data);
         if (data.status == "ok") {
-            formData.append("userID", userID);
-            const data = response.data;
-            const res_array = data.images;
-            const arr_imageID = [];
-            const arr_image_name = [];
-            if (data.status == "ok") {
-                if (Array.isArray(res_array)) {
-                    res_array.forEach((fileItem) => {
-                      arr_imageID.push(fileItem.example_img_Id)
-                      arr_image_name.push(fileItem.image_name)
-                    });
-                    formData.append("arr_imageID", arr_imageID)
-                    formData.append("arr_image_name", arr_image_name)
-                    axios.post("http://localhost:5000/api/upload", formData ,{
-                        headers: {
-                            'Content-Type': 'multipart/form-data'
-                        }
-                    }).then((response) => {
-                        setLoading(false);
-                        const arr_similar_multi = response.data.similar_filenames;
-                        if (response.data.status == "ok") {
-                            axios.patch(`http://localhost:3333/commission/update/${data.insertedCommissionId}`,{
-                                headers: {
-                                    Authorization: "Bearer " + jwt_token,
-                                },
-                                status: "pass"
-                            }).then((response) => {
-                                if (response.data.status == "ok") {
-                                    console.log("upload pass");
-                                    Swal.fire({ ...alertData.uploadpass }).then(() => {
-                                        window.location.reload(false);
-                                    });
-                                } else {
-                                    console.log("upload fail");
-                                    Swal.fire({ ...alertData.uploadfail }).then(() => {
-                                        window.location.reload(false);
-                                    });
-                                }
-                            })
-                        } else if (response.data.status == "similar") {
-                            console.log("arr_similar_multi : ",arr_similar_multi);
-                            axios.patch(`http://localhost:3333/commission/update/${data.insertedCommissionId}`,{
-                                headers: {
-                                    Authorization: "Bearer " + jwt_token,
-                                },
-                                status: "pending"
-                            }).then((response) => {
-                                if (response.data.status == "ok") {
-                                    console.log("upload fail");
-                                    axios.post(`http://localhost:3333/example_img/update`,{
-                                        headers: {
-                                            Authorization: "Bearer " + jwt_token,
-                                        },
-                                        similar : arr_similar_multi
-                                    }).then((response) => {
-                                        console.log(response.data);
-                                        if (response.data.status == 'ok') {
-                                            console.log("บันทึกรูปผิดพลาดสำเร็จ");
-                                            Swal.fire({ ...alertData.similar }).then(() => {
-                                                window.location.reload(false);
-                                            });
-                                        } else {
-                                            console.log("Error");
-                                            Swal.fire({ ...alertData.IsError }).then(() => {
-                                                window.location.reload(false);
-                                            });
-                                        }
-                                    })
-                                } else {
-                                    console.log("upload");
-                                    Swal.fire({ ...alertData.changeCoverIsError }).then(() => {
-                                        window.location.reload(false);
-                                    });
-                                }
-                            })
-                        } else {
-                            console.log("error บางอย่างที่ Array.isArray(res_array)");
-                        }
-                    })
-                }
-            } else {
-                // กรณีที่ file เป็นอ็อบเจกต์เดี่ยว
-                const imageID = data.example_img_Id;
-                const image_name = data.image_name;
-                formData.append("image_name", image_name)
-                formData.append("imageID", imageID)
-                // axios.post("http://localhost:5000/api/upload", formData ,{
-                axios.post("http://127.0.0.1:5000/upload-json", formData ,{
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                }).then((response) => {
-                    setLoading(false);
-                    console.log(response.data);
-                    const arr_similar_single = response.data.similar_filenames;
-                    console.log(arr_similar_single);
-                    if (response.data.status == "ok"){
-                        axios.patch(`http://localhost:3333/commission/update/${data.insertedCommissionId}`,{
-                            headers: {
-                                Authorization: "Bearer " + jwt_token,
-                            },
-                            status: "pass"
-                        }).then((response) => {
-                            if (response.data.status == "ok") {
-                                console.log("upload pass");
-                                Swal.fire({ ...alertData.uploadpass }).then(() => {
-                                    window.location.reload(false);
-                                });
-                            } else {
-                                console.log("upload fail");
-                                Swal.fire({ ...alertData.uploadfail }).then(() => {
-                                    window.location.reload(false);
-                                });
-                            }
-                        })
-                    } else if (response.data.status == "similar"){
-                        axios.patch(`http://localhost:3333/commission/update/${data.insertedCommissionId}`,{
-                            headers: {
-                                Authorization: "Bearer " + jwt_token,
-                            },
-                            status: "pending"
-                        }).then((response) => {
-                            if (response.data.status == "ok") {
-                                console.log("upload fail");
-                                axios.patch(`http://localhost:3333/example_img/update/${data.example_img_Id}`,{
-                                    headers: {
-                                        Authorization: "Bearer " + jwt_token,
-                                    },
-                                    similar : arr_similar_single
-                                }).then((response) => {
-                                    // ******************************************************************
-                                    if (response.data.status == 'ok') {
-                                        console.log("บันทึกรูปผิดพลาดสำเร็จ");
-                                        Swal.fire({ ...alertData.similar }).then(() => {
-                                            window.location.reload(false);
-                                        });
-                                    } else {
-                                        console.log("Error");
-                                        Swal.fire({ ...alertData.IsError }).then(() => {
-                                            window.location.reload(false);
-                                        });
-                                    }
-                                })
-                            } else {
-                                console.log("upload");
-                                Swal.fire({ ...alertData.changeCoverIsError }).then(() => {
-                                    window.location.reload(false);
-                                });
-                            }
-                        })
-                    } else {
-                        console.log("error บางอย่าง");
-                        Swal.fire({ ...alertData.changeCoverIsError }).then(() => {
-                            window.location.reload(false);
-                        });
-                    }
-                })
-            }
+          console.log("ok");
+          formData.append("userID", userID);
+          const data = response.data;
         } else if (data.status == "error") {
-            console.log("error");
+          console.log("error");
         }
       })
       .catch((error) => {
-        console.error('เกิดข้อผิดพลาดในการอัปโหลดไฟล์', error);
+        console.error("เกิดข้อผิดพลาดในการอัปโหลดไฟล์", error);
       });
 
     const btn = (
       <Space>
-        {/* <Button type="link" size="small" onClick={() => api.destroy()}>
-                    Destroy All
-                </Button> */}
         <Button type="link" danger size="small">
           ยกเลิกการอัปโหลด
         </Button>
@@ -379,12 +245,11 @@ export default function ManageCommission() {
       // icon: <LoadingOutlined style={{ color: '#108ee9' }} />
       icon: <Progress type="circle" percent={50} size={20} />,
     });
-
-
   };
 
   return (
-    <div>
+    <div className="body-con">
+      {contextHolder}
       <Helmet>
         <title>{title}</title>
       </Helmet>
@@ -418,7 +283,6 @@ export default function ManageCommission() {
                     onPreview={handlePreview}
                     onChange={handleChange}
                     multiple={true}
-                    openFileDialogOnClick={false}
                   >
                     <div onClick={() => setUploadModalOpen(true)}>
                       <PlusOutlined />
@@ -449,7 +313,7 @@ export default function ManageCommission() {
                         อัปโหลดรูปจากเครื่อง
                       </Button>
                     </Upload>
-                    <Button>รูปจากแกลเลอรี</Button>
+                    {/* <Button>รูปจากแกลเลอรี</Button> */}
                   </Modal>
                   <Modal
                     open={previewOpen}
@@ -466,6 +330,7 @@ export default function ManageCommission() {
                     />
                   </Modal>
                 </Form.Item>
+
                 <Form.Item
                   label="ชื่อคอมมิชชัน"
                   name="cmsName"
@@ -473,13 +338,14 @@ export default function ManageCommission() {
                   rules={[
                     {
                       required: true,
-                      message: "กรุณากรอกชื่อคอมมิชชัน",
+                      message: "กรุณาใส่ชื่อคอมมิชชัน",
                     },
                     { type: "text" },
                   ]}
                 >
                   <Input />
                 </Form.Item>
+
                 <Form.Item
                   name="cmsTou"
                   label={
@@ -500,14 +366,26 @@ export default function ManageCommission() {
                     },
                   ]}
                 >
-                  <Checkbox.Group>
-                    <Checkbox value="1" style={{ lineHeight: "32px" }}>
+                  <Checkbox.Group
+                    value={selectedValues}
+                    onChange={(values) => setSelectedValues(values)}
+                  >
+                    <Checkbox
+                      value="1"
+                      style={{ lineHeight: "32px" }}
+                    >
                       Personal use (ใช้ส่วนตัว)
                     </Checkbox>
-                    <Checkbox value="2" style={{ lineHeight: "32px" }}>
+                    <Checkbox
+                      value="2"
+                      style={{ lineHeight: "32px" }}
+                    >
                       License (มีสิทธ์บางส่วน)
                     </Checkbox>
-                    <Checkbox value="3" style={{ lineHeight: "32px" }}>
+                    <Checkbox
+                      value="3"
+                      style={{ lineHeight: "32px" }}
+                    >
                       Exclusive right (ซื้อขาด)
                     </Checkbox>
                   </Checkbox.Group>
@@ -532,7 +410,94 @@ export default function ManageCommission() {
                     placeholder="เขียนรายละเอียดคอมมิชชัน.."
                   />
                 </Form.Item>
+                <Space
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    flexWrap: "wrap",
+                    // backgroundColor: 'pink'
+                  }}
+                >
+                  <Form.Item
+                    label="จำนวนคิว"
+                    name={"cmsQ"}
+                    rules={[
+                      {
+                        required: true,
+                        message: "กรุณาใส่จำนวนคิว",
+                      },
+                      { type: "number" },
+                    ]}
+                  >
+                    <InputNumber suffix="คิว" className="inputnumber-css" />
+                  </Form.Item>
+                </Space>
 
+                <Form.Item
+                  label="งานที่ถนัด"
+                  name="cmsGood"
+                  rules={[
+                    {
+                      required: true,
+                      // whitespace: true,
+                      message: "กรุณาใส่งานที่ถนัด",
+                    },
+                  ]}
+                >
+                  <TextArea
+                    placeholder="เช่น ผู้หญิง ผู้ชาย เฟอร์นิเจอร์บางชิ้น"
+                    showCount
+                    maxLength={200}
+                    autoSize={{
+                      minRows: 3,
+                      maxRows: 5,
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item
+                  label="งานที่ไม่ถนัด"
+                  name="cmsBad"
+                  rules={[
+                    {
+                      required: true,
+                      // whitespace: true,
+                      message: "กรุณาใส่งานที่ไม่ถนัด",
+                    },
+                  ]}
+                >
+                  <TextArea
+                    placeholder="เช่น ผู้หญิง ผู้ชาย เฟอร์นิเจอร์บางชิ้น"
+                    showCount
+                    maxLength={200}
+                    autoSize={{
+                      minRows: 3,
+                      maxRows: 5,
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item
+                  label="งานไม่รับ"
+                  name="cmsNo"
+                  rules={[
+                    {
+                      required: true,
+                      // whitespace: true,
+                      message: "กรุณาใส่งานที่ไม่รับ'",
+                    },
+                  ]}
+                >
+                  <TextArea
+                    placeholder="เช่น ผู้หญิง ผู้ชาย เฟอร์นิเจอร์บางชิ้น"
+                    showCount
+                    maxLength={200}
+                    autoSize={{
+                      minRows: 3,
+                      maxRows: 5,
+                    }}
+                  />
+                </Form.Item>
+
+                {/* <Button onClick={() => console.log(editorValue)}>เทส</Button> */}
                 <Form.Item name="" label="แพ็กเกจ">
                   <Form.List name="pkgs">
                     {(fields, { add, remove }, { errors }) => (
@@ -591,6 +556,7 @@ export default function ManageCommission() {
                                 }}
                               />
                             </Form.Item>
+
                             <Space
                               style={{
                                 display: "flex",
@@ -672,13 +638,12 @@ export default function ManageCommission() {
                                   showIcon
                                 />
                               )}
-
                               <Form.List
                                 name={[field.name, "step"]}
                                 rules={[
                                   {
                                     validator: async (_, step) => {
-                                      if (!step || step.length == 0) {
+                                      if (!step || step.length === 0) {
                                         console.log("ยังไม่เพิ่มการทำงาน");
                                         return Promise.reject(
                                           new Error(
@@ -690,7 +655,7 @@ export default function ManageCommission() {
                                   },
                                 ]}
                               >
-                                {(subFields, subOpt) => (
+                                {(subFields, subOpt, { errors }) => (
                                   <div
                                     style={{
                                       display: "flex",
@@ -722,7 +687,6 @@ export default function ManageCommission() {
                                         />
                                       </Form.Item>
                                     </Space>
-
                                     {subFields.map((subField) => (
                                       <>
                                         <Space
@@ -757,7 +721,6 @@ export default function ManageCommission() {
                                           >
                                             <Input placeholder="ตัวอย่าง ภาพลงสี" />
                                           </Form.Item>
-
                                           <MinusCircleOutlined
                                             onClick={() =>
                                               subOpt.remove(subField.name)
@@ -767,21 +730,23 @@ export default function ManageCommission() {
                                       </>
                                     ))}
 
-                                    <Button
-                                      type="dashed"
-                                      id="aa"
-                                      ref={ref}
+                                    <Form.Item
                                       style={{
-                                        width: "fit-content",
                                         marginLeft: "1.5rem",
-                                        marginBottom: "1.5rem",
                                       }}
-                                      onClick={() => subOpt.add()}
-                                      block
                                     >
-                                      + เพิ่มขั้นตอนการทำงาน
-                                    </Button>
-                                    <Form.ErrorList errors={subOpt.errors} />
+                                      <Button
+                                        type="dashed"
+                                        style={{
+                                          width: "fit-content",
+                                          // marginLeft: '1.5rem',
+                                        }}
+                                        onClick={() => subOpt.add()}
+                                        block
+                                      >
+                                        + เพิ่มขั้นตอนการทำงาน
+                                      </Button>
+                                    </Form.Item>
 
                                     <Space
                                       style={{
@@ -805,12 +770,16 @@ export default function ManageCommission() {
                                         />
                                       </Form.Item>
                                     </Space>
-                                    {/* {subFields.length === 0 && subOpt.add()} */}
+                                    <Form.ErrorList
+                                      errors={errors}
+                                      style={{
+                                        marginLeft: "1.5rem",
+                                      }}
+                                    />
                                   </div>
                                 )}
                               </Form.List>
                             </Form.Item>
-                            {/* </Form.Item> */}
                           </Card>
                         ))}
 
@@ -825,7 +794,6 @@ export default function ManageCommission() {
                 <Form.Item
                   label="หัวข้อ"
                   name="cmsTopic"
-                  id="cmsTopic"
                   rules={[
                     {
                       required: true,
@@ -835,15 +803,13 @@ export default function ManageCommission() {
                 >
                   <Select
                     mode="multiple"
+                    placeholder="เลือกหัวข้อ"
+                    value={topicValues}
+                    id="topicSelector"
+                    onChange={handleTopic}
+                    options={all_option}
                     allowClear
-                    style={{
-                      width: "100%",
-                    }}
-                    placeholder="Please select"
-                    defaultValue={["a10", "c12"]}
-                    onChange={handleChange}
-                    options={options}
-                  />
+                  ></Select>
                 </Form.Item>
                 <Button htmlType="submit">บันทึก</Button>
               </Form>

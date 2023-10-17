@@ -25,6 +25,7 @@ import "sweetalert2/src/sweetalert2.scss";
 import * as alertData from "../../alertdata/alertData";
 import { AdminBox, UserBox } from "../../components/UserBox";
 
+const host = "http://localhost:3333";
 const title = "จัดการผู้ใช้งาน";
 const bgImg = "";
 const body = { backgroundColor: "#F4F1F9" };
@@ -54,7 +55,7 @@ export default function AdminManageUser() {
 
   const getData = async () => {
     await axios
-      .get("http://localhost:3333/alluser", {
+      .get(`${host}/alluser`, {
         headers: {
           Authorization: "Bearer " + jwt_token,
         },
@@ -97,7 +98,7 @@ export default function AdminManageUser() {
               <div>
                 <input
                   type="search"
-                  placeholder="search"
+                  placeholder=" ค้นหา..."
                   onChange={handleSearch}
                   style={{ borderRadius: "200px", border: "1px solid gray" }}
                 ></input>

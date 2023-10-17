@@ -26,9 +26,9 @@ input.defInput {
     flex: 1;
 }
 
-input:focus {
+/* input:focus {
     background-color: #f0f4ff;
-}
+} */
 
 .verify-email button {
     border: 1px solid #9D9EB8;

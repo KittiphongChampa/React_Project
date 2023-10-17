@@ -19,6 +19,7 @@ import * as Icon from 'react-feather';
 
 import {AdminBox,UserBox} from "../../components/UserBox";
 
+const host = "http://localhost:3333";
 const title = 'จัดการแอดมิน';
 const bgImg = ""
 const body = { backgroundColor: "#F4F1F9" }
@@ -75,7 +76,7 @@ export default function AdminManageAdmin() {
 
     const getAdminData = async () => {
         await axios
-          .get("http://localhost:3333/alladmin", {
+          .get(`${host}/alladmin`, {
             headers: {
               Authorization: "Bearer " + jwt_token,
             },
@@ -147,7 +148,7 @@ export default function AdminManageAdmin() {
         if (handleValidation()) {
             setLoading(true);
             await axios
-            .post(`http://localhost:3333/alladmin/email/verify`, {
+            .post(`${host}/alladmin/email/verify`, {
                 headers: {
                     Authorization: "Bearer " + jwt_token,
                 },
@@ -178,7 +179,7 @@ export default function AdminManageAdmin() {
         setpopup_verifyOTP(false);
         if (handleValidationOTP()) {
             await axios
-            .post(`http://localhost:3333/alladmin/otp/verify/`, {
+            .post(`${host}/alladmin/otp/verify/`, {
             headers: {
                 Authorization: "Bearer " + jwt_token,
             },
@@ -212,7 +213,7 @@ export default function AdminManageAdmin() {
             formData.append("password", password);
             formData.append("file", file);
             await axios
-            .patch(`http://localhost:3333/alladmin/add/${id}`, formData,{
+            .patch(`${host}/alladmin/add/${id}`, formData,{
                 headers: {
                     Authorization: "Bearer " + jwt_token,
                 },

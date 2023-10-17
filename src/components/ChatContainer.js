@@ -14,32 +14,23 @@ import Button from "react-bootstrap/Button";
 import Scrollbars from 'react-scrollbars-custom';
 import ImgFullscreen from './openFullPic'
 
-export default function ChatContainer({ currentChat, socket }) {
+export default function ChatContainer({ currentChat, socket,  }) {
   const token = localStorage.getItem("token");
   const [userid, setUserid] = useState();
   const [messages, setMessages] = useState([]);
   const scrollRef = useRef();
-  const [arrivalMessage, setArrivalMessage] = useState(null);
-  // console.log(currentChat);
+  const [arrivalMessage, setArrivalMessage] = useState(null); //สำคัญ
 
+  
+  // console.log(currentChat); //คนที่เราเลือกคือใคร
   const date = new Date();
   const date_now = date.toLocaleDateString("th-TH", {
     hour: "2-digit",
     minute: "2-digit",
   });
-  const timestamp_chat = date_now.split(" ")[1];
-  // const timestamp_chat = date_now;
+  // const timestamp_chat = date_now.split(" ")[1];
+  const timestamp_chat = date_now;
   // console.log(timestamp_chat);
-
-  //   const data = await JSON.parse(
-  //     localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
-  //   );
-  //   const response = await axios.post(recieveMessageRoute, {
-  //     from: data._id,
-  //     to: currentChat._id,
-  //   });
-  //   setMessages(response.data);
-  // }, [currentChat]);
 
   useEffect(() => {
     const getUser = async () => {
@@ -52,17 +43,18 @@ export default function ChatContainer({ currentChat, socket }) {
         const data = response.data;
         if (data.status === "ok") {
           setUserid(data.users[0].id);
+          const getChatdata = await axios.post(
+            "http://localhost:3333/messages/getmsg",
+            {
+              from: data.users[0].id,
+              to: currentChat.id,
+            }
+          );
+          setMessages(getChatdata.data);
         } else {
           console.log("เข้า else");
         }
-        const getChatdata = await axios.post(
-          "http://localhost:3333/messages/getmsg",
-          {
-            from: data.users[0].id,
-            to: currentChat.id,
-          }
-        );
-        setMessages(getChatdata.data);
+        
       } catch (error) {
         console.log("catch", error);
       }
@@ -71,7 +63,7 @@ export default function ChatContainer({ currentChat, socket }) {
   }, [currentChat, token]);
 
   const handleSendMsg = async (msg) => {
-    //รับค่ามาจากอีกหน้า+ส่งแชทและแสดงผลแชทบนหน้าจอ
+    //รับค่ามาและส่งแชทและแสดงผลแชทบนหน้าจอ
     socket.current.emit("send-msg", {
       to: currentChat.id,
       from: userid,
@@ -94,7 +86,6 @@ export default function ChatContainer({ currentChat, socket }) {
     formData.append("from", userid);
     formData.append("to", currentChat.id);
     formData.append("image", image);
-    console.log(formData);
     await axios
       .post("http://localhost:3333/messages/addmsg", formData, {})
       .then((response) => {
@@ -113,10 +104,12 @@ export default function ChatContainer({ currentChat, socket }) {
       });
   };
 
+
   useEffect(() => {
     //รับข้อความ
     if (socket.current) {
       socket.current.on("msg-receive", (msg) => {
+        // ปัญหาคือ จะทำงานแค่เฉพาะ path url คือ chatbox หากมี id ด้วยจะไม่สามารถแสดงแชทได้
         console.log("Received message:", msg);
         setArrivalMessage({
           fromSelf: false,
@@ -125,12 +118,13 @@ export default function ChatContainer({ currentChat, socket }) {
         });
       });
     }
-  }, []);
+  }, [socket.current]);
 
   useEffect(() => {
     arrivalMessage &&
       setMessages((prevMessages) => [...prevMessages, arrivalMessage]);
   }, [arrivalMessage]);
+  
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ block: "end" }); // เลื่อนมุมมองไปยังตำแหน่งสุดท้ายของข้อความทั้งหมด
@@ -160,6 +154,7 @@ export default function ChatContainer({ currentChat, socket }) {
     event.preventDefault();
   };
 
+  //เช็คค่า msg = ข้อความ
   const sendChat = (event) => {
     event.preventDefault();
     if (msg.length > 0) {
@@ -222,22 +217,19 @@ export default function ChatContainer({ currentChat, socket }) {
                       )}
                       {/* <p className="time-sent">02.12</p> */}
                       <p className="time-sent">
-                        <span>
-                            {new Date(message.created_at).toLocaleString("th-TH", {
+                      <span>
+                        {message.created_at
+                          ? new Date(message.created_at).toLocaleString("th-TH", {
+                              // year: "numeric",
+                              // month: "2-digit",
+                              // day: "2-digit",
                               hour: "2-digit",
                               minute: "2-digit",
-                            }) !== "Invalid Date" ? (
-                              <span>
-                                {new Date(message.created_at).toLocaleString("th-TH", {
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                })}
-                              </span>
-                            ) : (
-                              <span>{message.timestamp_chat}</span>
-                            )}
-                          </span>
-                        </p>
+                            })
+                          : message.timestamp_chat}
+                      </span>
+
+                      </p>
                     </div>
                   </div>
                 </>
@@ -254,21 +246,17 @@ export default function ChatContainer({ currentChat, socket }) {
                       )}
                       {/* <p className="time-sent">02.12</p> */}
                       <p className="time-sent">
-                        <span>
-                          {new Date(message.created_at).toLocaleString("th-TH", {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          }) !== "Invalid Date" ? (
-                            <span>
-                              {new Date(message.created_at).toLocaleString("th-TH", {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                              })}
-                            </span>
-                          ) : (
-                            <span>{message.timestamp_chat}</span>
-                          )}
-                        </span>
+                      <span>
+                        {message.created_at
+                          ? new Date(message.created_at).toLocaleString("th-TH", {
+                              // year: "numeric",
+                              // month: "2-digit",
+                              // day: "2-digit",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })
+                          : message.timestamp_chat}
+                      </span>
                       </p>
                     </div>
                   </div>
@@ -284,8 +272,8 @@ export default function ChatContainer({ currentChat, socket }) {
         </div>
         </Scrollbars>
 
+        {/* ฟอร์มส่งข้อความ */}
       <form className="input-container" onSubmit={(event) => sendChat(event)}>
-        
           <div className="chat-sender">
           <Icon.Plus className="plus-icon" onClick={openModal} />
           <input
@@ -308,6 +296,8 @@ export default function ChatContainer({ currentChat, socket }) {
         <div class="d-flex justify-content-center mt-3">
           <h5>เลือกรูปภาพ</h5>
         </div>
+
+        {/* ฟอร์มส่งรูปภาพ */}
         <Modal.Body class="d-flex justify-content-center">
           <form
             id="sendImage"

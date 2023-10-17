@@ -167,15 +167,14 @@ const LineChart = () => {
         <input type="date" value={endDate} onChange={handleEndDateChange} />
         <button onClick={handleDateChange}>กรอง</button>
       </div>
-      <div>
+      {/* <div>
         <label>เลือกปี: </label>
         <select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)}>
           <option value="">ทั้งหมด</option>
           <option value="2022">2022</option>
           <option value="2023">2023</option>
-          {/* เพิ่มตัวเลือกปีอื่น ๆ ตามต้องการ */}
         </select>
-      </div>
+      </div> */}
       <Line options={options} data={lineChartData} />
     </div>
   )
