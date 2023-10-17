@@ -229,12 +229,13 @@ export default function ViewProfile() {
   const deleteUser = async () => {
     setpopup(false);
     const userId = userdata.id;
+    const formData = new FormData();
+    formData.append("banReason", banReason);
     await axios
-      .patch(`${host}/alluser/delete/${userId}`, {
+      .patch(`${host}/alluser/delete/${userId}`, formData, {
         headers: {
           Authorization: "Bearer " + jwt_token,
         },
-        banReason: banReason,
       })
       .then((response) => {
         const data = response.data;
@@ -390,7 +391,7 @@ export default function ViewProfile() {
                 className="sub-menu"
                 onClick={(event) => menuProfile(event, "gallery")}
               >
-                แกลลอรี่
+                แกลเลอรี่
               </button>
               <button
                 className="sub-menu"

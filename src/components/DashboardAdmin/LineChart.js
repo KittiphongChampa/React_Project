@@ -106,26 +106,6 @@ const LineChart = () => {
           },
         ],
       });
-      // setLineChartData({
-      //   labels: datetime,
-      //   datasets: [
-      //     {
-      //       label: 'นักวาด',
-      //       data: artistsData,
-      //       fill: false,
-      //       borderColor: 'red',
-      //       backgroundColor: 'red',
-      //       tension: 0.1,
-      //     },
-      //     {
-      //       label: 'ผู้ใช้งานทั่วไป',
-      //       data: usersData,
-      //       borderColor: 'blue',
-      //       backgroundColor: 'blue',
-      //       tension: 0.1,
-      //     },
-      //   ],
-      // });
     })
   }
   const [lineChartData, setLineChartData] = useState({
@@ -159,14 +139,14 @@ const LineChart = () => {
   };
 
   return (
-    <div style={{width: 1000}}>
-      <div>
+    <div>
+      {/* <div>
         <label>ช่วง: </label>
         <input type="date" value={startDate} onChange={handleStartDateChange} />
         <label>ถึง: </label>
         <input type="date" value={endDate} onChange={handleEndDateChange} />
         <button onClick={handleDateChange}>กรอง</button>
-      </div>
+      </div> */}
       {/* <div>
         <label>เลือกปี: </label>
         <select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)}>

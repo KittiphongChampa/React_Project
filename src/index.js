@@ -4,6 +4,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import AdminManage from './screens/admin/AdminManage';
 
 
 //important screens
@@ -28,6 +29,9 @@ import AdminPage from './screens/admin/AdminPage';
 import ManageCommission from "./screens/ManageCommission";
 import ChatBox from "./screens/Chatbox";
 import CmsDetail from "./screens/CmsDetail";
+import Dashboard from "./screens/Dashboard";
+import ArtworkDetail from "./screens/ArtworkDetail";
+import ArtistManagement from './screens/ArtistManagement';
 
 //important screens two
 import ForgotPassword from './secondary_screens/ForgotPassword';
@@ -46,11 +50,13 @@ import Buytoken from './yunscreens/Buytoken';
 import PackageToken from './yunscreens/PackageToken';
 import Artistseeorder from './yunscreens/artistseeorder';
 
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<Index />} />
+    <Route path="/" element={<Index />} />
+      <Route path="/:submenu" element={<Index />} />
       <Route path="/welcome" element={<Welcome />} />
       <Route path="/login" element={<Login />} />
       <Route path="/verify" element={<Verify />} />
@@ -70,6 +76,10 @@ root.render(
       <Route path="/newpassword" element={<NewPassword />} />
       <Route path="/chatbox" element={<ChatBox />} />
       <Route path="/cmsdetail/:id" element={<CmsDetail />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/artworkdetail" element={<ArtworkDetail />} />
+      <Route path="/artistmanagement/:menu" element={<ArtistManagement />} />
+      
 
       {/*admin*/}
       <Route path="/admin" element={<AdminPage/>} />
@@ -80,6 +90,8 @@ root.render(
       <Route path="/admin/commission" element={<AdminManageCms />} />
       <Route path="/admin/commission/problem/:id" element={<AdminManageCmsProblem />} />
       <Route path="/admin/allfaq" element={<AdminManageFAQ />} />
+      <Route path="/admin/adminmanage/:menu" element={<AdminManage />} />
+      
 
 
 

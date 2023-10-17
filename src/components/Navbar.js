@@ -13,6 +13,7 @@ const NavbarUser = (props) => {
     const dropdownRef = useRef();
     const [userdata, setUserdata] = useState([]);
     const [urs_token, setUrs_token] = useState();
+    
     // console.log('urs_type '+userdata.urs_type);
 
     useEffect(() => {
@@ -28,26 +29,26 @@ const NavbarUser = (props) => {
         return () => {
             document.removeEventListener("mousedown", handler);
         }
-    },[])
+    }, [])
     const getUser = async () => {
         const token = localStorage.getItem("token");
         await axios
-          .get("http://localhost:3333/index", {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-          })
-          .then((response) => {
-            const data = response.data;
-            if (data.status === "ok") {
-              setUserdata(data.users[0]);
-              setUrs_token(data.urs_token);
-            }
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-          });
+            .get("http://localhost:3333/index", {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + token,
+                },
+            })
+            .then((response) => {
+                const data = response.data;
+                if (data.status === "ok") {
+                    setUserdata(data.users[0]);
+                    setUrs_token(data.urs_token);
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
     };
 
     const handleLogout = (event) => {
@@ -70,7 +71,7 @@ const NavbarUser = (props) => {
                     {/* <a href="/manage-commission"><Icon.PlusSquare className='nav-icon' /></a>  */}
                     {userdata.urs_type === 1 ? (
                         <>
-                            <a href="/manage-commission"><Icon.PlusSquare className='nav-icon' /></a> 
+                            <a href="/manage-commission"><Icon.PlusSquare className='nav-icon' /></a>
                         </>
                     ) : (
                         <></>
@@ -79,17 +80,17 @@ const NavbarUser = (props) => {
                         <p>{urs_token} P</p>
                     </div> */}
                     <div className="dropdown-nav" ref={dropdownRef}>
-                        <button onClick={() => { setOpen(!open) }} 
-                            // style={{ backgroundImage: "url(mainmoon.jpg)" }}
+                        <button onClick={() => { setOpen(!open) }}
+                        // style={{ backgroundImage: "url(mainmoon.jpg)" }}
                         >
-                            <img src={userdata.urs_profile_img} style={{width: "50px", height: "45px", borderRadius:"45px"}}/>
+                            <img src={userdata.urs_profile_img} style={{ width: "45px", height: "45px", borderRadius: "45px" }} />
                         </button>
                         <div className={`dropdown-area ${open ? 'open' : 'close'}`} >
                             <a href="/profile" className="in-dropdown"><Icon.User className='nav-icon mx-2' />โปรไฟล์ของฉัน</a>
                             <a href="/setting-profile" className="in-dropdown"><Icon.Settings className='nav-icon mx-2' />ตั้งค่าโปรไฟล์</a>
                             {userdata.urs_type === 1 ? (
                                 <>
-                                    <a href="#" className="in-dropdown"><ggIcon.GridView className='nav-icon mx-2' />Dashborad</a>
+                                    <a href="/artistmanagement/dashboard" className="in-dropdown"><ggIcon.GridView className='nav-icon mx-2' />Dashborad</a>
                                     <a href="/chatbox" className="in-dropdown"><Icon.MessageCircle className='nav-icon mx-2' />แชทและออเดอร์</a>
                                 </>
                             ) : (
@@ -135,7 +136,7 @@ const NavbarHomepage = (props) => {
     // })
 
     return (
-        <div class="nav-box" style={{ position:"fixed",backgroundColor: "transparent", border: "none" }}>
+        <div class="nav-box" style={{ position: "fixed", backgroundColor: "transparent", border: "none" }}>
             <nav class="nav-container" >
                 <div class="inline-nav inhomepage" >
                     <a href="#"><Icon.Search className='nav-icon' /></a>
@@ -225,26 +226,26 @@ const NavbarAdmin = (props) => {
         return () => {
             document.removeEventListener("mousedown", handler);
         }
-    },[])
+    }, [])
 
     const getAdmin = async () => {
         const token = localStorage.getItem("token");
         await axios
-          .get("http://localhost:3333/admin", {
-            headers: {
-              Authorization: "Bearer " + token,
-            },
-          })
-          .then((response) => {
-            const data = response.data;
-            if (data.status === "ok") {
-                setAdmindata(data.admins[0]);
-                setAdmintoken(data.admintoken);
-            } 
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-          });
+            .get("http://localhost:3333/admin", {
+                headers: {
+                    Authorization: "Bearer " + token,
+                },
+            })
+            .then((response) => {
+                const data = response.data;
+                if (data.status === "ok") {
+                    setAdmindata(data.admins[0]);
+                    setAdmintoken(data.admintoken);
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
     };
 
     const handleLogout = (event) => {
@@ -260,33 +261,24 @@ const NavbarAdmin = (props) => {
                     <a href="/admin"><Icon.Home className='nav-icon' /></a>
                 </div>
                 <div class="inline-nav">
-                    <a href="#"><Icon.Bell className='nav-icon' /><i data-feather="bell" class="nav-icon"></i></a>
-                    {/* <a href="#"><Icon.MessageCircle className='nav-icon' /><i data-feather="message-circle" class="nav-icon"></i></a> */}
-                    {/* <a href="#"><Icon.PlusSquare className='nav-icon' /></a> */}
-                    {/* <div className="show-coin">
-                        <p>{admintoken} P</p>
-                    </div> */}
+                    <a href="#"><Icon.Bell className='nav-icon' /></a>
+                    <a href="/admin/adminmanage/alladmin"><ggIcon.AdminPanelSettings className='nav-icon' /></a>
                     <div className="dropdown-nav" ref={dropdownRef}>
-                        <button onClick={() => { setOpen(!open) }} 
-                            // style={{ backgroundImage: "url(mainmoon.jpg)" }}
-                        >
-                            <img src={admindata.admin_profile} style={{width: "45px", height: "45px", borderRadius:"50px"}}/>
+                        <button onClick={() => { setOpen(!open) }}>
+                            <img src={admindata.admin_profile} style={{ width: "45px", height: "45px", borderRadius: "50px" }} />
                         </button>
                         <div className={`dropdown-area ${open ? 'open' : 'close'}`} >
-                        {/* <a href="/buycoin" className="in-dropdown"><ggIcon.MonetizationOn className='nav-icon mx-2' />เติมเหรียญ</a> */}
-                            {/* <a href="/admin/transaction" className="in-dropdown"><ggIcon.CurrencyExchange className='nav-icon mx-2' />ประวัติการซื้อเหรียญ</a> */}
-                            {/* <a href="/editcoin" className="in-dropdown"><ggIcon.MonetizationOn className='nav-icon mx-2' />จัดการเหรียญ</a> */}
                             {admindata.admin_type === 0 ? (
                                 <>
                                     <a href="#" className="in-dropdown"><Icon.User className='nav-icon mx-2' />ตั้งค่าโปรไฟล์</a>
-                                    <a href="/admin/alladmin" className="in-dropdown"><ggIcon.AdminPanelSettings className='nav-icon mx-2' />จัดการแอดมิน</a>
+                                    <a href="/admin/adminmanage/alladmin" className="in-dropdown"><ggIcon.AdminPanelSettings className='nav-icon mx-2' />จัดการแอดมิน</a>
                                 </>
                             ) : (
                                 <></>
                             )}
-                            <a href="/admin/alluser" className="in-dropdown"><ggIcon.Group className='nav-icon mx-2' />จัดการบัญชีผู้ใช้งาน</a>
+                            <a href="/admin/adminmanage/alluser" className="in-dropdown"><ggIcon.Group className='nav-icon mx-2' />จัดการผู้ใช้งาน</a>
                             <a href="/admin/commission" className="in-dropdown"><ggIcon.ImageSearch className='nav-icon mx-2' />ตรวจสอบรายงานรูปภาพ</a>
-                            <a href="/admin/allfaq" className="in-dropdown"><ggIcon.ImageSearch className='nav-icon mx-2' />จัดการคำถามที่พบบ่อย</a>
+                            <a href="/admin/adminmanage/allfaq" className="in-dropdown"><Icon.HelpCircle className='nav-icon mx-2' />จัดการคำถามที่พบบ่อย</a>
                             <a href="#" onClick={handleLogout} className="in-dropdown"><Icon.LogOut className='nav-icon mx-2' />ออกจากระบบ</a>
                         </div>
                     </div>

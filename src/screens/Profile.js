@@ -15,6 +15,7 @@ import inputSetting from "../function/function";
 import ProfileImg from "../components/ProfileImg";
 // import Profile from '../yunscreens/Profile';
 import { NavbarUser, NavbarAdmin, NavbarHomepage } from "../components/Navbar";
+import ArtistBox from '../components/ArtistBox'
 
 
 import ChangeProfileImgModal from "../modal/ChangeProfileImgModal";
@@ -37,8 +38,8 @@ export default function Profile() {
     const [showCoverModal, setShowCoverModal] = useState(null)
     const [showProfileModal, setShowProfileModal] = useState(null)
 
-    const [myFollower, setMyFollowerIds] = useState([]);
-    const [iFollowing, setIFollowingsIds] = useState([]);
+    // const [myFollower, setMyFollowerIds] = useState([]);
+    // const [iFollowing, setIFollowingsIds] = useState([]);
 
     const [myFollowerData, setMyFollowerData] = useState([]);
     const [IFollowerData, setIFollowerData] = useState([]);
@@ -64,17 +65,40 @@ export default function Profile() {
     
     const getUser = async () => {
         await axios
-          .get("http://localhost:3333/profile", {
+          .get(`http://localhost:3333/profile`, {
             headers: {
               Authorization: "Bearer " + token,
             },
           })
           .then((response) => {
             const data = response.data;
+
             if (data.status === "ok") {
-              setUserdata(data.users[0]);
-              setMyFollowerIds(data.MyFollowerIds);
-              setIFollowingsIds(data.IFollowingsIds);
+                setUserdata(data.users[0]);
+                // setMyFollowerIds(data.MyFollowerIds);
+                // setIFollowingsIds(data.IFollowingsIds);
+
+                const formData = new FormData();
+                formData.append("iFollowing", data.IFollowingsIds);
+                formData.append("iFollowier", data.MyFollowerIds);
+                axios .post("http://localhost:3333/openFollowing", formData,{
+                    headers: {
+                        Authorization: "Bearer " + token,
+                    },
+                }).then((response) => {
+                    const data = response.data;
+                    setIFollowerData(data.results)
+                })
+                axios .post("http://localhost:3333/openFollower", formData,{
+                    headers: {
+                        Authorization: "Bearer " + token,
+                    },
+                }).then((response) => {
+                    const data = response.data;
+                    setMyFollowerData(data.results)
+                })
+                
+              
             } else if (data.status === "no_access") {
                 alert(data.message);
                 navigate('/admin');
@@ -105,6 +129,7 @@ export default function Profile() {
     };
 
     function menuProfile(event, menu) {
+        setprofileMenuSelected(menu)
         let oldSelected = document.querySelector('.sub-menu.selected')
         oldSelected.classList.remove('selected')
         event.target.classList.add('selected')
@@ -124,30 +149,6 @@ export default function Profile() {
 
     const [profileMenuSelected, setprofileMenuSelected] = useState('cms')
 
-    const openFollower = () => {
-        const formData = new FormData();
-        formData.append("myFollower", myFollower);
-        axios .post("http://localhost:3333/openFollower", formData,{
-            headers: {
-                Authorization: "Bearer " + token,
-            },
-        }).then((response) => {
-            const data = response.data;
-            setMyFollowerData(data.results)
-        })
-    }
-    const openFollowing = () => {
-        const formData = new FormData();
-        formData.append("iFollowing", iFollowing);
-        axios .post("http://localhost:3333/openFollowing", formData,{
-            headers: {
-                Authorization: "Bearer " + token,
-            },
-        }).then((response) => {
-            const data = response.data;
-            setIFollowerData(data.results)
-        })
-    }
 
 
     return (
@@ -187,31 +188,15 @@ export default function Profile() {
                                 </div>
                                 <div className="user-col-about">
                                     <div className="user-about-menu">
-                                        <button className="sub-menu selected">overview</button>
+                                        <button className="sub-menu">overview</button>
                                         <button className="sub-menu">about me</button>
                                     </div>
                                     <div className="user-about-content">
                                         <div className="user-about-review mb-4"><p className="fs-3">4.0</p> <p>จาก 5 รีวิว</p></div>
                                         <div className="user-about-text">
                                             <div>
-                                                <p>ผู้ติดตาม {myFollower.length} <button onClick={openFollower}>ดู</button></p>
-                                                <div>
-                                                    {myFollowerData.map(data => (
-                                                        <a key={data.id} href={`/profile/${data.id}`} style={{display : "flex"}}>
-                                                            <img src={data.urs_profile_img} style={{width: "30px"}}/>
-                                                            <p>{data.urs_name}</p>
-                                                        </a>
-                                                    ))}
-                                                </div>
-                                                <p>กำลังติดตาม {iFollowing.length} <button onClick={openFollowing}>ดู</button></p>
-                                                <div>
-                                                    {IFollowerData.map(data => (
-                                                        <a key={data.id} href={`/profile/${data.id}`} style={{display : "flex"}}>
-                                                            <img src={data.urs_profile_img} style={{width: "30px"}}/>
-                                                            <p>{data.urs_name}</p>
-                                                        </a>
-                                                    ))}
-                                                </div>
+                                                <p>ผู้ติดตาม {myFollowerData.length} </p>
+                                                <p>กำลังติดตาม {IFollowerData.length} </p>
                                                 <p>งานสำเร็จแล้ว 10 งาน</p>
                                                 <p>ใช้งานล่าสุดเมื่อ 12 ชั่วโมงที่แล้ว</p>
                                                 <p>ตอบกลับภายใน 1 ชั่วโมง</p>
@@ -228,16 +213,18 @@ export default function Profile() {
                         </div>
                         <div className="user-profile-contentCard">
                             {/* <button className="sub-menu selected" onClick={(event) => menuProfile(event, 'all')}>ทั้งหมด</button> */}
-                            <button className="sub-menu selected" onClick={(event) => menuProfile(event, 'cms')}>คอมมิชชัน</button>
-                            <button className="sub-menu" onClick={(event) => menuProfile(event, 'gallery')}>แกลลอรี่</button>
-                            <button className="sub-menu" onClick={(event) => menuProfile(event, 'review')}>รีวิว</button>
-                            {profileMenuSelected === "cms" ? <AllCms myCommission={myCommission} userID={userdata.id} /> : null}
+                            <div className="user-profile-contentCard sub-menu-group">
+                                <Link className="sub-menu selected" onClick={(event) => menuProfile(event, 'cms')}>คอมมิชชัน</Link>
+                                <Link className="sub-menu" onClick={(event) => menuProfile(event, 'gallery')}>แกเลอรี</Link>
+                                <Link className="sub-menu" onClick={(event) => menuProfile(event, 'review')}>รีวิว</Link>
+                                <Link className="sub-menu" onClick={(event) => menuProfile(event, 'follower')}>ผู้ติดตาม</Link>
+                                <Link className="sub-menu" onClick={(event) => menuProfile(event, 'following')}>กำลังติดตาม</Link>
+                            </div>
+                            {profileMenuSelected === "cms" ? <AllCms myCommission={myCommission} userID={userdata.id}/> : null}
                             {profileMenuSelected === "gallery" ? <AllArtworks /> : null}
                             {profileMenuSelected === "review" ? <AllReviews /> : null}
-
-                            {/* <div className="headding-seeall"><p className="h2">รีวิว</p> <p>ดูรีวิวทั้งหมด</p></div>
-                            <div className="headding-seeall"><p className="h2">แกลอรี่</p> <p>ดูทั้งหมด</p></div> */}
-
+                            {profileMenuSelected === "follower" ? <Followers myFollowerData={myFollowerData}/> : null}
+                            {profileMenuSelected === "following" ? <Followings IFollowerData={IFollowerData}/> : null}
                         </div>
                     </div>
 
@@ -246,6 +233,39 @@ export default function Profile() {
             </div>
         </div>
     );
+}
+
+function Followers(props) {
+    const {myFollowerData} = props
+    console.log(myFollowerData);
+
+    return <>
+        <p className="h3 mt-3 mb-2">ผู้ติดตาม</p>
+        {myFollowerData.map(data => (
+            <a key={data.id} href={`/profile/${data.id}`}>
+                <div className="artistbox-items">
+                    <ArtistBox img={data.urs_profile_img} name={data.urs_name}/>
+                </div>
+            </a>
+        ))}
+
+
+    </>
+}
+
+function Followings(props) {
+    const { IFollowerData } = props;
+
+    return <>
+        <p className="h3 mt-3 mb-2">กำลังติดตาม</p>   
+        <div className="artistbox-items">
+            {IFollowerData.map(data => (
+                <a key={data.id} href={`/profile/${data.id}`}>
+                    <ArtistBox img={data.urs_profile_img} name={data.urs_name}/>
+                </a>
+            ))}
+        </div>
+    </>
 }
 
 function AllCms(props) {
@@ -279,19 +299,20 @@ function AllCms(props) {
                 </div>
             ))}
         </div>
-
     </>
 }
 
 function AllArtworks(props) {
     return <>
-        <p className="h3 mt-3 mb-2">แกลอรี่</p>
-        <div className="profile-gallery">
-            <img src="b3.png" />
-            <img src="AB1.png" />
-            <img src="mainmoon.jpg" />
-            <img src="b3.png" />
-            <img src="b3.png" />
+        <p className="h3 mt-3 mb-2">แกเลอรี</p>
+        <div className="profile-gallery-container">
+            <div className="profile-gallery">
+                <img src="b3.png" />
+                <img src="AB1.png" />
+                <img src="mainmoon.jpg" />
+                <img src="b3.png" />
+                <img src="b3.png" />
+            </div>
         </div>
     </>
 }

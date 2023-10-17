@@ -51,6 +51,7 @@ export default function Contacts({ contacts, changeChat, Toggled, partnerID, soc
   const changeCurrentChat = (index, contact) => {
     setCurrentSelected(index);
     changeChat(contact); //เลือกว่าเราสนทนากับใคร
+    window.history.pushState({}, '', `/chatbox?id=${contact.id}&od_id=${contact.od_id}`)
   };
 
   const [activeChat, setActiveChat] = useState();

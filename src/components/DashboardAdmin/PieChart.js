@@ -28,7 +28,6 @@ const PieChart = () => {
     useEffect(() => {
       getData();
     },[]);
-
     const getData = async () => {
         await axios.get(`${host}/getdataPieChart`).then((response) => {
             const data = response.data;
@@ -41,13 +40,13 @@ const PieChart = () => {
         datasets: [
             {
             data: [artist.count, customer.count],
-            backgroundColor: ['red', 'blue'],
-            borderColor: ['red','blue'],
+            backgroundColor: ['#AF9669', '#212280'],
+            borderColor: ['#AF9669','#212280'],
             },
         ],
     };
     return (
-      <div style={{width: 450}}>
+      <div style={{width: '100%'}}>
         <Pie options={options} data={pieChartData} />
       </div>
     );

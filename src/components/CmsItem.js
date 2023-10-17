@@ -1,5 +1,6 @@
 import "../css/indexx.css";
 import * as Icon from 'react-feather';
+import { Rate } from 'antd';
 
 
 
@@ -13,9 +14,11 @@ export default function CmsItem(props) {
                     style={{ backgroundImage: `url("${props.src}")` }}
                 ></div>
                 <div class="cms-card-text-box">
-                    <p class="cms-card-price">{props.price}+ THB</p>
-                    <p class="cms-card-headding">{props.headding}</p>
-                    <p class="cms-card-desc">{props.desc}</p>
+                    <div>
+                        <p class="cms-card-headding text-center">{props.headding}</p>
+                        <p class="cms-card-price">{props.price}+ THB</p>
+                    </div>
+                    <div><Rate disabled defaultValue={2} className="one-star" />4.5 (12 รีวิว)</div>
                 </div>
             </div>
         </div>

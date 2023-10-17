@@ -24,12 +24,13 @@ function UserBox(props) {
     const deleteUser = async () => {
         setpopup(false);
         const userId = selectedItem;
+        const formData = new FormData();
+        formData.append("banReason", banReason);
         await axios
-        .patch(`http://localhost:3333/alluser/delete/${userId}`, {
+        .patch(`http://localhost:3333/alluser/delete/${userId}`, formData, {
             headers: {
-            Authorization: "Bearer " + jwt_token,
-            },
-            banReason: banReason,
+                Authorization: "Bearer " + jwt_token,
+            }
         })
         .then((response) => {
             const data = response.data;

@@ -115,6 +115,9 @@
 .gall-item-swiper .swiper-slide img {
   border-radius: 1rem;
   width: 14rem;
+  height: 14rem;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .quill .ql-toolbar {
@@ -1704,7 +1707,7 @@ table.queue-table th.q {
 
 .artistbox-items {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
   gap: 0.5rem;
 }
 

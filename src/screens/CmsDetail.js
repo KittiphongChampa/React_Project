@@ -57,49 +57,49 @@ export default function CmsDetail() {
     // } else {
     //   navigate("/login");
     // }
-    getUser();
+    // getUser();
     getDetailCommission(); //ใช้ได้ไม่มีปัญหา
   }, []);
   const token = localStorage.getItem("token");
 
-  const getUser = async () => {
-    await axios
-      .get(`${host}/index`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((response) => {
-        const data = response.data;
-        if (data.status === "ok") {
-          setUserdata(data.users[0]);
-          // } else if (data.status === "no_access") {
-          //   alert(data.message);
-          //   navigate("/admin");
-        } else if (data.status === "ok_butnotuser") {
-          console.log("ไม่มี token หรือเป็น admin");
-        } else {
-          localStorage.removeItem("token");
-          navigate("/login");
-        }
-      })
-      .catch((error) => {
-        if (
-          error.response &&
-          error.response.status === 401 &&
-          error.response.data === "Token has expired"
-        ) {
-          // Handle token expired error
-          alert("Token has expired. Please log in again.");
-          localStorage.removeItem("token");
-          navigate("/login");
-        } else {
-          // Handle other errors here
-          console.error("Error:", error);
-        }
-      });
-  };
+//   const getUser = async () => {
+//     await axios
+//       .get(`${host}/index`, {
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: "Bearer " + token,
+//         },
+//       })
+//       .then((response) => {
+//         const data = response.data;
+//         if (data.status === "ok") {
+//           setUserdata(data.users[0]);
+//           // } else if (data.status === "no_access") {
+//           //   alert(data.message);
+//           //   navigate("/admin");
+//         } else if (data.status === "ok_butnotuser") {
+//           console.log("ไม่มี token หรือเป็น admin");
+//         } else {
+//         //   localStorage.removeItem("token");
+//         //   navigate("/login");
+//         }
+//       })
+//       .catch((error) => {
+//         if (
+//           error.response &&
+//           error.response.status === 401 &&
+//           error.response.data === "Token has expired"
+//         ) {
+//           // Handle token expired error
+//           alert("Token has expired. Please log in again.");
+//         //   localStorage.removeItem("token");
+//         //   navigate("/login");
+//         } else {
+//           // Handle other errors here
+//           console.error("Error:", error);
+//         }
+//       });
+//   };
 
   const [activeMenu, setActiveMenu] = useState({
     package: true,
@@ -124,7 +124,6 @@ export default function CmsDetail() {
       .get(`${host}/detailCommission/${cmsID.id}`, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
         },
       })
       .then((response) => {
@@ -150,15 +149,15 @@ export default function CmsDetail() {
   }
   const minPrice = findMinPrice();
 
-  const goodAtItems = cmsDetail.cms_good_at
-    ? cmsDetail.cms_good_at.split(/[\s,|-]+/).map((item) => item.trim())
-    : [];
-  const badAtItems = cmsDetail.cms_bad_at
-    ? cmsDetail.cms_bad_at.split(/[\s,|-]+/).map((item) => item.trim())
-    : [];
-  const no_talkingAtItems = cmsDetail.cms_no_talking
-    ? cmsDetail.cms_no_talking.split(/[\s,|-]+/).map((item) => item.trim())
-    : [];
+//   const goodAtItems = cmsDetail.cms_good_at
+//     ? cmsDetail.cms_good_at.split(/[\s,|-]+/).map((item) => item.trim())
+//     : [];
+//   const badAtItems = cmsDetail.cms_bad_at
+//     ? cmsDetail.cms_bad_at.split(/[\s,|-]+/).map((item) => item.trim())
+//     : [];
+//   const no_talkingAtItems = cmsDetail.cms_no_talking
+//     ? cmsDetail.cms_no_talking.split(/[\s,|-]+/).map((item) => item.trim())
+//     : [];
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -247,7 +246,6 @@ export default function CmsDetail() {
                         title: "ส่งคำขอจ้างสำเร็จ",
                         confirmButtonText: 'ตกลง',
                     }).then(() => {
-                        // navigate(`/chatbox?id=${artistDetail.artistId}&od_id=${od_id}`);
                         window.location.href = `/chatbox?id=${artistDetail.artistId}&od_id=${od_id}`;
                     });
                 } else {

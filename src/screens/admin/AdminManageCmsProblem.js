@@ -6,26 +6,18 @@ import { NavbarUser, NavbarAdmin, NavbarHomepage } from "../../components/Navbar
 import { width } from '@mui/system';
 import { styled } from 'styled-components';
 import { Height } from "@mui/icons-material";
-import Swal from "sweetalert2/dist/sweetalert2.js";
-import "sweetalert2/src/sweetalert2.scss";
-import * as alertData from "../../alertdata/alertData";
-
-const host = "http://localhost:3333";
 
 export default function AdminManageCmsProblem() {
     const navigate = useNavigate();
     const cmsID = useParams();
     const [admindata, setAdmindata] = useState([]);
-    // const [admintoken, setAdmintoken] = useState();
+    const [admintoken, setAdmintoken] = useState();
     const [cmsData, setCmsdata] = useState([]);
-    const [imageDefult, setImageDefult] = useState([]);
     const [problemImage, setProblemImage] = useState([]);
-
     // console.log(problemImage);
     console.log("cmsData : ",cmsData);
-    console.log("imageDefult : ",imageDefult);
 
-    const baseUrl = `${host}/images_cms/`;
+    const baseUrl = "http://localhost:3333/images_cms/";
 
     useEffect(() => {
         if (localStorage.getItem("token")) {
@@ -42,7 +34,7 @@ export default function AdminManageCmsProblem() {
     const token = localStorage.getItem("token");
     const getAdmin = async () => {
         await axios
-          .get(`${host}/admin`, {
+          .get("http://localhost:3333/admin", {
             headers: {
               Authorization: "Bearer " + token,
             },
@@ -51,7 +43,7 @@ export default function AdminManageCmsProblem() {
             const data = response.data;
             if (data.status === "ok") {
                 setAdmindata(data.admins[0]);
-                // setAdmintoken(data.admintoken);
+                setAdmintoken(data.admintoken);
             } else if (data.status === "no_access") {
               console.log("no_access");
               alert(data.message);
@@ -62,20 +54,12 @@ export default function AdminManageCmsProblem() {
             }
           })
           .catch((error) => {
-            if (error.response && error.response.status === 401 && error.response.data === "Token has expired") {
-              // Handle token expired error
-              alert("Token has expired. Please log in again.");
-              localStorage.removeItem("token");
-              navigate("/login");
-            } else {
-              // Handle other errors here
-              console.error("Error:", error);
-            }
+            console.error("Error:", error);
           });
     };
     const getData = async () => {
         await axios
-        .get(`${host}/commission/problem/${cmsID.id}`, {
+        .get(`http://localhost:3333/commission/problem/${cmsID.id}`, {
           headers: {
             Authorization: "Bearer " + token,
           },
@@ -84,8 +68,7 @@ export default function AdminManageCmsProblem() {
           const data = response.data;
           if (data.status === "ok") {
               setCmsdata(data.results);
-              // setProblemImage(data.result[0]);
-              setImageDefult(data.result);
+              setProblemImage(data.results[0]);
           } else {
               console.log("error");
           }
@@ -94,7 +77,7 @@ export default function AdminManageCmsProblem() {
 
     const approve = async(cmsID) => {
       await axios
-      .patch(`${host}/commission/problem/approve/${cmsID}`, {
+      .patch(`http://localhost:3333/commission/problem/approve/${cmsID}`, {
         headers: {
           Authorization: "Bearer " + token,
         },
@@ -102,94 +85,101 @@ export default function AdminManageCmsProblem() {
       .then((response) => {
         const data = response.data;
         if (data.status === "ok") {
-            // setCmsdata(data.results);
-            // setProblemImage(data.results[0]);
-            Swal.fire({
-              title: 'อนุมัติแล้ว',
-              icon: 'success',
-              iconColor: '#7E9AFA',
-              confirmButtonText: 'ตกลง',
-            }).then(() => {
-              window.location = "/admin/commission";
-            });
+            setCmsdata(data.results);
+            setProblemImage(data.results[0]);
         } else {
-            Swal.fire({...alertData.IsError}).then(() => {
-              window.location.reload(false);
-            });
+            console.log("error");
         }
       })
     }
 
     const not_approve = async(cmsID) => {
-      Swal.fire({ 
-        title: 'ไม่อนุมัติคอมมิชชันหรือไม่',
-        icon: 'question',
-        iconColor: '#7E9AFA',
-        showCancelButton: true,
-        confirmButtonText: 'ตกลง',
-        cancleButtonText: "ยกเลิก",
-       }).then((result) => {
-        if (result.isConfirmed) {
-          axios
-          .patch(`${host}/commission/problem/notapprove/${cmsID}`, {
-            headers: {
-              Authorization: "Bearer " + token,
-            },
-          })
-          .then((response) => {
-            const data = response.data;
-            console.log(data);
-            if (data.status === "ok") {
-                Swal.fire({   
-                  title: 'จัดการคอมมิชชันสำเร็จ',
-                  icon: 'success',
-                  iconColor: '#7E9AFA',
-                  confirmButtonText: 'ตกลง', 
-                }).then(() => {
-                  window.location = "/admin/commission";
-                });
-            } else {
-              Swal.fire({...alertData.IsError}).then(() => {
-                window.location.reload(false);
-              });
-            }
-          })
+      await axios
+      .patch(`http://localhost:3333/commission/problem/notapprove/${cmsID}`, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((response) => {
+        const data = response.data;
+        if (data.status === "ok") {
+            setCmsdata(data.results);
+            setProblemImage(data.results[0]);
+        } else {
+            console.log("error");
         }
-      });
+      })
     }
 
 
   return (
     <>
-      <div style={{display: "flex"}}>
-        <div>
-          <h3>ภาพที่เป็นปัญหา</h3>
-          {[...new Set(cmsData.map(item => item.ex_img_path))].map((exImgPath, index) => (
+    <div style={{display: "flex"}}>
+      <div>
+        <h3>ภาพที่เป็นปัญหา</h3>
+        {cmsData.map((item, index) => {
+          // ตรวจสอบว่า image_similar ไม่ใช่ null
+          if (item.image_similar !== null) {
+            return (
+              <div key={index}>
+                <img src={item.ex_img_path} style={{width: "300px"}} />
+                <p>xxx</p>
+              </div>
+            )
+          } else {
+            // ถ้า image_similar เป็น null ให้แสดงสิ่งที่คุณต้องการในกรณีนี้
+            return (
+              <div key={index}>
+                {/* <img src={item.ex_img_path} style={{width: "300px"}} /> */}
+                {/* <p>xxx</p> */}
+              </div>
+            );
+          }
+        })}
+
+        {/* {cmsData.map((item, index) => {
+          return (
             <div key={index}>
-              <img src={exImgPath} style={{ width: "300px" }} />
-              <p>Image ID : {cmsData.find(item => item.ex_img_path === exImgPath).ex_img_id}</p>
-              <p>ความคล้าย : {cmsData.find(item => item.ex_img_path === exImgPath).percentage}</p>
+              <img src={item.ex_img_path} style={{width: "300px"}} />
+              <p>xxx</p>
             </div>
-          ))}
-        </div>
-        <div>
-          <h3>อาจคล้ายกับ</h3>
-          <div style={{display: "flex"}}>
-            {imageDefult.map((data, dataIndex) => {
-              return (
-                <div key={dataIndex}>
-                  <img src={data.ex_img_path} style={{width: "300px"}}/>
-                  <p>Image ID : {data.ex_img_id}</p>
-                  <p>ผู้ใช้ : {data.urs_name}</p>
-                  <p>คอมมิชชัน : {data.cms_name}</p>
-                </div>
-              )
-            })}
-          </div>
-        </div>
+          )
+        })} */}
+
+        {/* <img src={problemImage.ex_img_path} style={{width: "300px"}}/> */}
       </div>
-      <button onClick={() => approve(cmsID.id)}>อนุมัติ</button>
-      <button onClick={() => not_approve(cmsID.id)}>ไม่อนุมัติ</button>
+      <div>
+        <h3>อาจคล้ายกับ</h3>
+        {cmsData.map((item, index) => {
+          // ตรวจสอบว่าข้อมูล image_similar ไม่ใช่ null หรือไม่
+          if (item.image_similar !== null) {
+            const similarData = JSON.parse(item.image_similar);
+            return (
+              <div key={index}>
+              {/* <img src={`${baseUrl}${item.ex_img_name}`} alt={`Image ${index}`} /> */}
+                <div style={{display: "flex"}}>
+                  {similarData.map((data, dataIndex) => {
+                    const [imageName, percentage] = data.split('/');
+                    return (
+                      <div key={dataIndex}>
+                        {/* <span>Image Name: {imageName}</span> */}
+                        <img src={`${baseUrl}${imageName}`} alt="Image Name" style={{width: "300px"}} />
+                        <p>Similarity Percentage: {percentage}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          } else {
+            return null; // หรือสามารถแสดงข้อความหรือสิ่งอื่น ๆ แทน
+          }
+        })}
+
+      </div>
+    </div>
+    <button onClick={() => approve(cmsID.id)}>อนุมัติ</button>
+    <button onClick={() => not_approve(cmsID.id)}>ไม่อนุมัติ</button>
     </>
   )
 }
