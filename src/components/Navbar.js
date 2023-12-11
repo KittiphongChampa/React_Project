@@ -12,7 +12,6 @@ const NavbarUser = (props) => {
     const [open, setOpen] = useState(false)
     const dropdownRef = useRef();
     const [userdata, setUserdata] = useState([]);
-    const [urs_token, setUrs_token] = useState();
     
     // console.log('urs_type '+userdata.urs_type);
 
@@ -43,7 +42,6 @@ const NavbarUser = (props) => {
                 const data = response.data;
                 if (data.status === "ok") {
                     setUserdata(data.users[0]);
-                    setUrs_token(data.urs_token);
                 }
             })
             .catch((error) => {
@@ -76,9 +74,7 @@ const NavbarUser = (props) => {
                     ) : (
                         <></>
                     )}
-                    {/* <div className="show-coin">
-                        <p>{urs_token} P</p>
-                    </div> */}
+                
                     <div className="dropdown-nav" ref={dropdownRef}>
                         <button onClick={() => { setOpen(!open) }}
                         // style={{ backgroundImage: "url(mainmoon.jpg)" }}

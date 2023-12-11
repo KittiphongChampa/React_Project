@@ -111,22 +111,23 @@ export default function SignIn() {
                       { type: "password" },
                     ]}
                   >
-                    <Input.Password />
+                    <Input.Password style={{ borderRadius: "1rem", padding:"0.5rem 1rem"}}/>
                   </Form.Item>
 
-                  <Form.Item
+                  {/* <Form.Item
                     wrapperCol={{
                       offset: 8,
                       span: 16,
                     }}
-                  ></Form.Item>
+                  ></Form.Item> */}
                   <div className="text-align-right">
                     <a href="/forgot-password">ลืมรหัสผ่าน</a>
                   </div>
                   <div className="login-btn-group">
-                    <button className="login-btn" type="submit">
+                    {/* <button className="login-btn" type="submit">
                       เข้าสู่ระบบ
-                    </button>
+                    </button> */}
+                    <Button htmlType="submit" type="primary" shape="round" size="large">เข้าสู่ระบบ</Button>
                     <a href="/verify">สมัครสมาชิก</a>
                   </div>
                 </Form>

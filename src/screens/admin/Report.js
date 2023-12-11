@@ -30,13 +30,8 @@ export default function Report(props) {
                 <Link to="/homepage/gallery" id="gallery" className="sub-menu" >ลบแล้ว</Link>
             </div>
             <div className="report-item-area">
-                <ReportItem src="/mac-kaveh.jpg"  />
-                <ReportItem src="/mac-kaveh.jpg"  />
                 <ReportItem src="/monlan.png"  />
-                {/* <ReportItem src="/mac-kaveh.jpg"  />
-
-
- */}            </div>
+            </div>
 
         </>
     )

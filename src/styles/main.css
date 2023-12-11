@@ -74,8 +74,8 @@
   width: 100%;
   height: 70vh;
   -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 .cms-example-swiper .swiper-slide {
   text-align: center;
@@ -90,7 +90,7 @@
   width: 100%;
   height: 100%;
   -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
   overflow: hidden;
 }
 
@@ -117,7 +117,7 @@
   width: 14rem;
   height: 14rem;
   -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 
 .quill .ql-toolbar {
@@ -131,9 +131,15 @@
   min-height: 20rem;
 }
 
-.oneline-textoverflow, .backdrop-modal-area .od-modal-card .od-headder div, .chatbox-container .chat-room .chat-header div.status-chat-header p,
-.chatbox-container .aside-main-card .chat-header div.status-chat-header p, .chatbox-container .chat-room .chat-header div.chat-name div p,
-.chatbox-container .aside-main-card .chat-header div.chat-name div p, .chatbox-container .chat-list .chat-item div p.time, .chatbox-container .chat-list .chat-item div p.message, .chatbox-container .chat-list .chat-item div p.order {
+.oneline-textoverflow,
+.backdrop-modal-area .od-modal-card .od-headder div,
+.chatbox-container .chat-room .chat-header div.status-chat-header p,
+.chatbox-container .aside-main-card .chat-header div.status-chat-header p,
+.chatbox-container .chat-room .chat-header div.chat-name div p,
+.chatbox-container .aside-main-card .chat-header div.chat-name div p,
+.chatbox-container .chat-list .chat-item div p.time,
+.chatbox-container .chat-list .chat-item div p.message,
+.chatbox-container .chat-list .chat-item div p.order {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -141,7 +147,7 @@
 
 .txtarea-input {
   border-radius: 1.5rem;
-  border: 1px solid #9D9EB8;
+  border: 1px solid #9d9eb8;
   background: rgba(255, 255, 255, 0.54);
   padding: 0.7rem;
 }
@@ -158,17 +164,17 @@
 .form-item .tou-radio-btn-group {
   display: flex;
   -moz-column-gap: 2rem;
-       column-gap: 2rem;
+  column-gap: 2rem;
 }
 .form-item .tou-radio-btn-group div span {
   font-weight: 300;
   margin-left: 0.1rem;
 }
 .form-item p {
-  color: #495C83;
+  color: #495c83;
 }
 .form-item label {
-  color: #495C83;
+  color: #495c83;
   font-weight: 500;
 }
 
@@ -323,7 +329,7 @@ a:focus {
 }
 .body .login-soloCard .login-col-img .login-img {
   -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   width: 100%;
   z-index: 99;
 }
@@ -346,7 +352,7 @@ a:focus {
 }
 .body .login-soloCard .login-col-text .input-login-box .text-align-right a {
   text-decoration: none;
-  color: #495C83;
+  color: #495c83;
 }
 .body .login-soloCard .login-col-text .input-login-box .login-btn-group {
   display: flex;
@@ -361,7 +367,7 @@ a:focus {
 }
 .body .login-soloCard .login-col-text .input-login-box .login-btn-group a {
   margin-inline: auto;
-  color: #1E1C7B;
+  color: #1e1c7b;
 }
 
 .content-top {
@@ -374,7 +380,7 @@ a:focus {
 .content-top .submenu-filter {
   display: flex;
   -moz-column-gap: 0.5rem;
-       column-gap: 0.5rem;
+  column-gap: 0.5rem;
   align-items: center;
 }
 
@@ -434,9 +440,9 @@ a:focus {
   width: 100%;
 }
 .modal.cms-detail table.history-order-detail tr {
-  border-bottom: 1px solid #A9AAC1;
+  border-bottom: 1px solid #a9aac1;
   -moz-column-gap: 1rem;
-       column-gap: 1rem;
+  column-gap: 1rem;
 }
 .modal.cms-detail table.history-order-detail tr td {
   padding: 1.5rem 0.5rem;
@@ -462,7 +468,7 @@ a:focus {
   height: -moz-fit-content;
   height: fit-content;
   -webkit-backdrop-filter: blur(10px);
-          backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 .modal.cms-detail .form-order-card div.close-tab {
   padding: 1rem;
@@ -497,7 +503,7 @@ div.form-order .selected-packgage {
 div.form-order .att-img-item {
   display: flex;
   -moz-column-gap: 1rem;
-       column-gap: 1rem;
+  column-gap: 1rem;
 }
 div.form-order .att-img-item div.small-show-att-img {
   width: 5rem;
@@ -522,15 +528,16 @@ div.form-order .addNewAttImgBtn {
   padding: 0.5rem;
   border: 1px solid black;
   background-color: transparent;
-  background: linear-gradient(#F4F4F6, #F4F4F6) padding-box, linear-gradient(0deg, #5400FE, #9400CF) border-box;
+  background: linear-gradient(#f4f4f6, #f4f4f6) padding-box,
+    linear-gradient(0deg, #5400fe, #9400cf) border-box;
   border: 2px solid transparent;
-  color: #7A86B6;
+  color: #7a86b6;
   font-weight: 500;
   text-align: left;
 }
 div.form-order .orderSubmitBtn {
   border-radius: 5.3125rem;
-  background: #7E9AFA;
+  background: #7e9afa;
   box-shadow: 0px 18px 45px -12px rgba(2, 49, 240, 0.35);
   color: white;
   padding: 1rem 1rem;
@@ -547,7 +554,7 @@ div.form-order .orderSubmitBtn {
   border-radius: 20px;
   padding: 2.5rem;
   -webkit-backdrop-filter: blur(25px);
-          backdrop-filter: blur(25px);
+  backdrop-filter: blur(25px);
 }
 .content-card div.cms-overview {
   display: flex;
@@ -558,7 +565,7 @@ div.form-order .orderSubmitBtn {
   font-weight: 400;
   border-radius: 100px;
   padding: 0.2rem 0.7rem;
-  background-color: #7AB675;
+  background-color: #7ab675;
   height: -moz-fit-content;
   height: fit-content;
 }
@@ -608,9 +615,9 @@ div.form-order .orderSubmitBtn {
   width: -moz-fit-content;
   width: fit-content;
   margin-left: 5px;
-  color: #7A86B6;
+  color: #7a86b6;
   font-weight: 500;
-  text-shadow: 0px 1px 6px #A3C7BF;
+  text-shadow: 0px 1px 6px #a3c7bf;
   /* offset-x | offset-y | blur-radius | color */
 }
 
@@ -641,7 +648,7 @@ div.select-package-item {
   width: 100%;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   -moz-column-gap: 2rem;
-       column-gap: 2rem;
+  column-gap: 2rem;
   background-color: antiquewhite;
   border: solid 1px #bcacdc;
   border-radius: 20px;
@@ -650,8 +657,8 @@ div.select-package-item {
   padding: 2rem;
   margin-bottom: 0.5rem;
   -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 div.select-package-item:hover {
   background-color: #f3f5ff;
@@ -661,7 +668,7 @@ div.select-package-item:hover {
 }
 div.select-package-item:hover div h3,
 div.select-package-item:hover p {
-  color: #7F6EA3;
+  color: #7f6ea3;
 }
 div.select-package-item div {
   word-wrap: break-word;
@@ -676,7 +683,7 @@ div.select-package-item div {
 .review-box .reviewer-box {
   display: flex;
   -moz-column-gap: 1rem;
-       column-gap: 1rem;
+  column-gap: 1rem;
   margin-bottom: 1rem;
 }
 .review-box .reviewer-box div:first-child {
@@ -689,7 +696,7 @@ div.select-package-item div {
   width: 100%;
   height: 100%;
   -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 .review-box .reviewer-box div:last-child p:first-of-type {
   font-weight: 500;
@@ -702,7 +709,7 @@ div.select-package-item div {
   width: 10rem;
   height: 10rem;
   -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   border: 1rem;
   margin-top: 1rem;
   overflow: hidden;
@@ -716,7 +723,7 @@ table.queue-table {
   margin-inline: auto;
 }
 table.queue-table tr {
-  border-bottom: 1px solid #A9AAC1;
+  border-bottom: 1px solid #a9aac1;
 }
 table.queue-table tr td {
   padding: 1.5rem 0.5rem;
@@ -739,10 +746,10 @@ table.queue-table th.q {
   width: fit-content;
   display: grid;
   grid-template-rows: repeat(auto-fill, 5rem);
-  background-color: #F5F3FA;
+  background-color: #f5f3fa;
   -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+  user-select: none;
   cursor: pointer;
 }
 .artist-aside-nav .artist-nav {
@@ -751,7 +758,7 @@ table.queue-table th.q {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  color: #4C4D78;
+  color: #4c4d78;
 }
 .artist-aside-nav .artist-nav p {
   font-size: 0.8rem;
@@ -766,15 +773,15 @@ table.queue-table th.q {
   height: 100%;
   min-height: 0;
   width: 100vw;
-  background: linear-gradient(180deg, #1E1C7B 0%, #6394DE 100%);
+  background: linear-gradient(180deg, #1e1c7b 0%, #6394de 100%);
   /* *ฝั่งด้านข้างแชท */
 }
 .chatbox-container .aside-chatbox {
   flex-basis: 20rem;
   flex-shrink: 0;
   -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 .chatbox-container .aside-chatbox .headding {
   display: grid;
@@ -795,7 +802,7 @@ table.queue-table th.q {
   display: flex;
   justify-content: space-evenly;
   -moz-column-gap: 0.5rem;
-       column-gap: 0.5rem;
+  column-gap: 0.5rem;
   background-color: rgba(255, 255, 255, 0.501);
   border-radius: 10rem;
   padding: 0.5rem;
@@ -810,7 +817,7 @@ table.queue-table th.q {
 }
 .chatbox-container div.menu-chat-grid div.menu-chat button.selected {
   color: white;
-  background-color: #342E3D;
+  background-color: #342e3d;
 }
 .chatbox-container .toggle-button-div {
   display: grid;
@@ -857,7 +864,7 @@ table.queue-table th.q {
   min-width: 3.5rem;
   height: 3.5rem;
   -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   border-radius: 200px;
   margin-right: 1rem;
 }
@@ -878,7 +885,7 @@ table.queue-table th.q {
 .chatbox-container .chat-list .chat-item div p.time {
   display: flex;
   -moz-column-gap: 0.3rem;
-       column-gap: 0.3rem;
+  column-gap: 0.3rem;
   font-size: 0.8rem;
 }
 .chatbox-container .chat-list .chat-item div p.time span {
@@ -886,10 +893,10 @@ table.queue-table th.q {
   padding: 0.1rem 0.7rem;
 }
 .chatbox-container .chat-list .chat-item div p.time span.q {
-  background-color: #BEC7F3;
+  background-color: #bec7f3;
 }
 .chatbox-container .chat-list .chat-item div p.time span.stat {
-  background-color: #BEC7F3;
+  background-color: #bec7f3;
   font-size: 14px;
 }
 .chatbox-container .chat-list .chat-item.unseen {
@@ -925,7 +932,7 @@ table.queue-table th.q {
 .chatbox-container .chat-room,
 .chatbox-container .aside-main-card {
   flex: 1;
-  background-color: #FCFBFF;
+  background-color: #fcfbff;
   display: flex;
   flex-direction: column;
   border-radius: 26px 0 0 26px;
@@ -934,7 +941,7 @@ table.queue-table th.q {
 .chatbox-container .chat-room .chat-header,
 .chatbox-container .aside-main-card .chat-header {
   border-radius: 0rem 0rem 0rem 1.625rem;
-  background: #FFF;
+  background: #fff;
   box-shadow: 0px 4px 60px 0px rgba(119, 127, 146, 0.17);
   padding: 1.2rem 1.5rem;
   display: grid;
@@ -957,7 +964,7 @@ table.queue-table th.q {
   width: 3rem;
   height: 3rem;
   -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   border-radius: 200px;
   margin-right: 1rem;
 }
@@ -980,15 +987,15 @@ table.queue-table th.q {
   padding: 1rem 1.5rem;
   display: flex;
   -moz-column-gap: 1rem;
-       column-gap: 1rem;
+  column-gap: 1rem;
   border-radius: 0 0 0 26px;
 }
 .chatbox-container .chat-room .chat-sender input,
 .chatbox-container .aside-main-card .chat-sender input {
   padding: 0.5rem 1rem;
   border-radius: 3.125rem;
-  border: 1px solid #CACACA;
-  background: #F8F6FA;
+  border: 1px solid #cacaca;
+  background: #f8f6fa;
   width: 100%;
 }
 .chatbox-container .chat-room .chat-sender button,
@@ -1036,8 +1043,16 @@ table.queue-table th.q {
 .chatbox-container .aside-main-card .chat .system-message.progress {
   width: 70%;
 }
-.chatbox-container .chat-room .chat .system-message.progress .progress-img-container,
-.chatbox-container .aside-main-card .chat .system-message.progress .progress-img-container {
+.chatbox-container
+  .chat-room
+  .chat
+  .system-message.progress
+  .progress-img-container,
+.chatbox-container
+  .aside-main-card
+  .chat
+  .system-message.progress
+  .progress-img-container {
   display: grid;
   width: 100%;
   grid-template-rows: repeat(auto-fit, minmax(10rem, 1fr));
@@ -1045,8 +1060,18 @@ table.queue-table th.q {
   gap: 0.5rem;
   margin: 1rem 0;
 }
-.chatbox-container .chat-room .chat .system-message.progress .progress-img-container div,
-.chatbox-container .aside-main-card .chat .system-message.progress .progress-img-container div {
+.chatbox-container
+  .chat-room
+  .chat
+  .system-message.progress
+  .progress-img-container
+  div,
+.chatbox-container
+  .aside-main-card
+  .chat
+  .system-message.progress
+  .progress-img-container
+  div {
   aspect-ratio: 1/1;
   background-color: pink;
   width: 100%;
@@ -1055,35 +1080,79 @@ table.queue-table th.q {
   overflow: hidden;
   display: block;
 }
-.chatbox-container .chat-room .chat .system-message.progress .progress-img-container div img,
-.chatbox-container .aside-main-card .chat .system-message.progress .progress-img-container div img {
+.chatbox-container
+  .chat-room
+  .chat
+  .system-message.progress
+  .progress-img-container
+  div
+  img,
+.chatbox-container
+  .aside-main-card
+  .chat
+  .system-message.progress
+  .progress-img-container
+  div
+  img {
   width: 100%;
   height: 100%;
   -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
-.chatbox-container .chat-room .chat .system-message.progress p.progress-headding,
-.chatbox-container .aside-main-card .chat .system-message.progress p.progress-headding {
+.chatbox-container
+  .chat-room
+  .chat
+  .system-message.progress
+  p.progress-headding,
+.chatbox-container
+  .aside-main-card
+  .chat
+  .system-message.progress
+  p.progress-headding {
   text-align: center;
 }
 .chatbox-container .chat-room .chat .system-message.progress div.btn-group,
-.chatbox-container .aside-main-card .chat .system-message.progress div.btn-group {
+.chatbox-container
+  .aside-main-card
+  .chat
+  .system-message.progress
+  div.btn-group {
   display: flex;
   font-size: initial;
   justify-content: center;
   -moz-column-gap: 0.5rem;
-       column-gap: 0.5rem;
+  column-gap: 0.5rem;
 }
-.chatbox-container .chat-room .chat .system-message.progress div.btn-group button,
-.chatbox-container .aside-main-card .chat .system-message.progress div.btn-group button {
+.chatbox-container
+  .chat-room
+  .chat
+  .system-message.progress
+  div.btn-group
+  button,
+.chatbox-container
+  .aside-main-card
+  .chat
+  .system-message.progress
+  div.btn-group
+  button {
   padding: 0.8rem 1.4rem;
   border-radius: 30rem;
-  color: #7E9AFA;
+  color: #7e9afa;
   background-color: transparent;
-  border: 1px solid #7E9AFA;
+  border: 1px solid #7e9afa;
 }
-.chatbox-container .chat-room .chat .system-message.progress div.btn-group .remove-btn,
-.chatbox-container .aside-main-card .chat .system-message.progress div.btn-group .remove-btn {
+.chatbox-container
+  .chat-room
+  .chat
+  .system-message.progress
+  div.btn-group
+  .remove-btn,
+.chatbox-container
+  .aside-main-card
+  .chat
+  .system-message.progress
+  div.btn-group
+  .remove-btn {
   padding: 0.8rem 1.4rem;
   border-radius: 30rem;
   color: red;
@@ -1091,7 +1160,12 @@ table.queue-table th.q {
   border: 1px solid red;
 }
 .chatbox-container .chat-room .chat .system-message.progress div.btn-group p,
-.chatbox-container .aside-main-card .chat .system-message.progress div.btn-group p {
+.chatbox-container
+  .aside-main-card
+  .chat
+  .system-message.progress
+  div.btn-group
+  p {
   justify-self: center;
 }
 .chatbox-container .chat-room .chat .time-message,
@@ -1108,17 +1182,23 @@ table.queue-table th.q {
   grid-template-columns: 1fr 1fr;
   font-weight: 300;
   -moz-column-gap: 2rem;
-       column-gap: 2rem;
+  column-gap: 2rem;
 }
 .chatbox-container .chat-room .chat .user-message .their-message div,
 .chatbox-container .aside-main-card .chat .user-message .their-message div {
   display: flex;
   align-items: flex-end;
   -moz-column-gap: 0.5rem;
-       column-gap: 0.5rem;
+  column-gap: 0.5rem;
 }
 .chatbox-container .chat-room .chat .user-message .their-message div p.message,
-.chatbox-container .aside-main-card .chat .user-message .their-message div p.message {
+.chatbox-container
+  .aside-main-card
+  .chat
+  .user-message
+  .their-message
+  div
+  p.message {
   border-radius: 0rem 1.5625rem 1.5625rem 1.5625rem;
   border: 1px solid #9392cd;
   background: rgba(249, 247, 254, 0.88);
@@ -1127,14 +1207,40 @@ table.queue-table th.q {
   width: fit-content;
   word-break: break-word;
 }
-.chatbox-container .chat-room .chat .user-message .their-message div p.time-sent,
-.chatbox-container .aside-main-card .chat .user-message .their-message div p.time-sent {
+.chatbox-container
+  .chat-room
+  .chat
+  .user-message
+  .their-message
+  div
+  p.time-sent,
+.chatbox-container
+  .aside-main-card
+  .chat
+  .user-message
+  .their-message
+  div
+  p.time-sent {
   white-space: nowrap;
   color: #525764;
   font-size: 0.8rem;
 }
-.chatbox-container .chat-room .chat .user-message .their-message div div.att-image img,
-.chatbox-container .aside-main-card .chat .user-message .their-message div div.att-image img {
+.chatbox-container
+  .chat-room
+  .chat
+  .user-message
+  .their-message
+  div
+  div.att-image
+  img,
+.chatbox-container
+  .aside-main-card
+  .chat
+  .user-message
+  .their-message
+  div
+  div.att-image
+  img {
   width: 100%;
   height: auto;
 }
@@ -1148,11 +1254,17 @@ table.queue-table th.q {
   display: flex;
   align-items: flex-end;
   -moz-column-gap: 0.5rem;
-       column-gap: 0.5rem;
+  column-gap: 0.5rem;
 }
 .chatbox-container .chat-room .chat .user-message .my-message div p.message,
-.chatbox-container .aside-main-card .chat .user-message .my-message div p.message {
-  background-color: #7E9AFA;
+.chatbox-container
+  .aside-main-card
+  .chat
+  .user-message
+  .my-message
+  div
+  p.message {
+  background-color: #7e9afa;
   border-radius: 1.75rem 0rem 1.75rem 1.75rem;
   box-shadow: 1px 1px 13px 0px #c6c4fd;
   padding: 1rem 2rem;
@@ -1164,18 +1276,44 @@ table.queue-table th.q {
   order: 2;
 }
 .chatbox-container .chat-room .chat .user-message .my-message div p.time-sent,
-.chatbox-container .aside-main-card .chat .user-message .my-message div p.time-sent {
+.chatbox-container
+  .aside-main-card
+  .chat
+  .user-message
+  .my-message
+  div
+  p.time-sent {
   white-space: nowrap;
   color: #525764;
   font-size: 0.8rem;
   order: 1;
 }
 .chatbox-container .chat-room .chat .user-message .my-message div div.att-image,
-.chatbox-container .aside-main-card .chat .user-message .my-message div div.att-image {
+.chatbox-container
+  .aside-main-card
+  .chat
+  .user-message
+  .my-message
+  div
+  div.att-image {
   order: 2;
 }
-.chatbox-container .chat-room .chat .user-message .my-message div div.att-image img,
-.chatbox-container .aside-main-card .chat .user-message .my-message div div.att-image img {
+.chatbox-container
+  .chat-room
+  .chat
+  .user-message
+  .my-message
+  div
+  div.att-image
+  img,
+.chatbox-container
+  .aside-main-card
+  .chat
+  .user-message
+  .my-message
+  div
+  div.att-image
+  img {
   width: 100%;
   height: auto;
 }
@@ -1217,7 +1355,7 @@ table.queue-table th.q {
 .add-item {
   display: flex;
   -moz-column-gap: 1rem;
-       column-gap: 1rem;
+  column-gap: 1rem;
   align-items: center;
   background-color: transparent;
 }
@@ -1225,7 +1363,8 @@ table.queue-table th.q {
   border: 1px solid transparent;
   border-radius: 100rem;
   padding: 1.5rem;
-  background: linear-gradient(#EEEEEE, #EEEEEE) padding-box, linear-gradient(0deg, #5400FE, #9400CF) border-box;
+  background: linear-gradient(#eeeeee, #eeeeee) padding-box,
+    linear-gradient(0deg, #5400fe, #9400cf) border-box;
 }
 .add-item .text {
   height: -moz-fit-content;
@@ -1258,30 +1397,30 @@ table.queue-table th.q {
   display: flex;
   min-width: 0;
   -moz-column-gap: 1rem;
-       column-gap: 1rem;
+  column-gap: 1rem;
   align-items: center;
 }
 .backdrop-modal-area .od-modal-card .od-headder img {
   width: 6rem;
   height: 4rem;
   -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   border-radius: 1rem;
 }
 .backdrop-modal-area .od-modal-card .od-headder div {
   min-width: 0;
 }
 .backdrop-modal-area .od-modal-card .od-headder div p:last-child {
-  color: #7A86B6;
+  color: #7a86b6;
 }
 .backdrop-modal-area .od-modal-card .od-all-status {
   text-align: center;
 }
 .backdrop-modal-area .od-modal-card .od-edit-brief button {
   background-color: transparent;
-  color: #7E9AFA;
+  color: #7e9afa;
   font-weight: 300;
-  border: 2px solid #7A86B6;
+  border: 2px solid #7a86b6;
   border-radius: 100px;
   padding: 0.3rem 0.7rem;
 }
@@ -1292,7 +1431,7 @@ table.queue-table th.q {
   row-gap: 0.3rem;
 }
 .backdrop-modal-area .od-modal-card .od-quota-grid p.quota-amount {
-  color: #7A86B6;
+  color: #7a86b6;
   justify-self: flex-end;
 }
 .backdrop-modal-area .od-modal-card .od-progress-check {
@@ -1330,7 +1469,7 @@ table.queue-table th.q {
   width: 1rem;
   height: 1rem;
   border-radius: 7.5px;
-  background: linear-gradient(180deg, #5400FE 0%, #9400CF 100%);
+  background: linear-gradient(180deg, #5400fe 0%, #9400cf 100%);
   margin-right: 1rem;
   margin-left: 0.3rem;
 }
@@ -1348,7 +1487,7 @@ table.queue-table th.q {
 }
 .profile-gallery-container .profile-gallery {
   -moz-columns: 3 250px;
-       columns: 3 250px;
+  columns: 3 250px;
   gap: 15px;
 }
 .profile-gallery-container .profile-gallery img {
@@ -1377,7 +1516,7 @@ table.queue-table th.q {
 .settingCard.dashboard .income-summary {
   display: flex;
   -moz-column-gap: 1rem;
-       column-gap: 1rem;
+  column-gap: 1rem;
 }
 .settingCard.dashboard .income-summary div {
   border: 1px solid black;
@@ -1389,7 +1528,8 @@ table.queue-table th.q {
   width: 12rem;
   min-width: -moz-fit-content;
   min-width: fit-content;
-  background: linear-gradient(#fff, #fff) padding-box, linear-gradient(0deg, #5400FE, #9400CF) border-box;
+  background: linear-gradient(#fff, #fff) padding-box,
+    linear-gradient(0deg, #5400fe, #9400cf) border-box;
   border: 1px solid transparent;
   border-radius: 1rem;
 }
@@ -1409,7 +1549,7 @@ table.queue-table th.q {
   width: 100%;
 }
 .settingCard.dashboard table.income tr {
-  border-bottom: 1px solid #7A86B6;
+  border-bottom: 1px solid #7a86b6;
 }
 .settingCard.dashboard table.income tr td {
   padding: 0.8rem 0.5rem;
@@ -1424,12 +1564,12 @@ table.queue-table th.q {
 
 .artist-mn-container {
   -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+  user-select: none;
   width: 100%;
   height: 100%;
   padding: 0 1.3rem 1.3rem 1.3rem;
-  background: linear-gradient(180deg, #1E1C7B 0%, #6394DE 100%);
+  background: linear-gradient(180deg, #1e1c7b 0%, #6394de 100%);
   display: flex;
   flex-direction: column;
 }
@@ -1445,33 +1585,61 @@ table.queue-table th.q {
   width: 100%;
 }
 .artist-mn-container .artist-mn-card table.overview-order-table tr.tr-detail {
-  background-color: #F2F1F7;
+  background-color: #f2f1f7;
   border-bottom: 1px solid #d9d9d9;
 }
-.artist-mn-container .artist-mn-card table.overview-order-table tr.tr-detail td div {
+.artist-mn-container
+  .artist-mn-card
+  table.overview-order-table
+  tr.tr-detail
+  td
+  div {
   padding: 2rem 1rem;
   display: grid;
   grid-template-columns: max-content max-content max-content;
   -moz-column-gap: 2rem;
-       column-gap: 2rem;
+  column-gap: 2rem;
   row-gap: 0.5rem;
 }
-.artist-mn-container .artist-mn-card table.overview-order-table tr.tr-detail td div p {
+.artist-mn-container
+  .artist-mn-card
+  table.overview-order-table
+  tr.tr-detail
+  td
+  div
+  p {
   white-space: nowrap;
   font-weight: 300;
   color: #525764;
 }
-.artist-mn-container .artist-mn-card table.overview-order-table tr.tr-detail td div p span {
+.artist-mn-container
+  .artist-mn-card
+  table.overview-order-table
+  tr.tr-detail
+  td
+  div
+  p
+  span {
   font-weight: 300;
 }
-.artist-mn-container .artist-mn-card table.overview-order-table tr.order-data-row {
+.artist-mn-container
+  .artist-mn-card
+  table.overview-order-table
+  tr.order-data-row {
   border-bottom: 1px solid #d9d9d9;
   cursor: pointer;
 }
-.artist-mn-container .artist-mn-card table.overview-order-table tr.order-data-row:hover {
-  background-color: #F2F1F7;
+.artist-mn-container
+  .artist-mn-card
+  table.overview-order-table
+  tr.order-data-row:hover {
+  background-color: #f2f1f7;
 }
-.artist-mn-container .artist-mn-card table.overview-order-table tr.order-data-row td {
+.artist-mn-container
+  .artist-mn-card
+  table.overview-order-table
+  tr.order-data-row
+  td {
   font-weight: 300;
   padding: 1.5rem 0.5rem;
   font-weight: 300;
@@ -1482,7 +1650,8 @@ table.queue-table th.q {
   color: #525764;
   font-weight: 400;
 }
-.artist-mn-container .artist-mn-card table.overview-order-table th.number, .artist-mn-container .artist-mn-card table.overview-order-table th.q {
+.artist-mn-container .artist-mn-card table.overview-order-table th.number,
+.artist-mn-container .artist-mn-card table.overview-order-table th.q {
   width: 1%;
   white-space: nowrap;
 }
@@ -1520,7 +1689,7 @@ table.queue-table th.q {
   width: 100%;
   height: 100%;
   -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 
 /*-----------------------------------------------------------------------------*/
@@ -1548,7 +1717,7 @@ table.queue-table th.q {
 }
 .user-item .profile-image img {
   -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   width: 100%;
   height: 100%;
 }
@@ -1564,14 +1733,14 @@ table.queue-table th.q {
   margin-top: 1rem;
   margin-bottom: 1rem;
   background-color: transparent;
-  color: #E75757;
+  color: #e75757;
   font-weight: 300;
-  border: 1px solid #E75757;
+  border: 1px solid #e75757;
   border-radius: 100px;
   padding: 0.3rem 0.7rem;
 }
 .user-item button:hover {
-  background-color: #E75757;
+  background-color: #e75757;
   color: white;
 }
 
@@ -1584,7 +1753,7 @@ table.queue-table th.q {
 .all-admin-head div {
   display: flex;
   -moz-column-gap: 1rem;
-       column-gap: 1rem;
+  column-gap: 1rem;
   align-items: center;
 }
 
@@ -1624,11 +1793,11 @@ table.queue-table th.q {
   height: fit-content;
   margin-left: 0.5rem;
   padding: 0.4rem 1rem;
-  background: #F8F6FA;
-  border: 1px solid #BCACDC;
+  background: #f8f6fa;
+  border: 1px solid #bcacdc;
   box-shadow: 0px 1.25rem 45px -12px rgba(2, 49, 240, 0.1);
   border-radius: 6.25rem;
-  color: #58648F;
+  color: #58648f;
   text-decoration: none;
 }
 
@@ -1637,10 +1806,10 @@ table.queue-table th.q {
   background-color: #fefdff;
   border-radius: 1rem;
   padding: 1rem;
-  border: 1px solid #BCACDC;
+  border: 1px solid #bcacdc;
   align-items: center;
   -moz-column-gap: 1rem;
-       column-gap: 1rem;
+  column-gap: 1rem;
   box-shadow: 0px 20px 45px -12px rgba(2, 50, 240, 0.043);
 }
 .artistbox-swiper .artist-box {
@@ -1656,9 +1825,9 @@ table.queue-table th.q {
   width: 100%;
   height: 100%;
   -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   -o-object-position: center;
-     object-position: center;
+  object-position: center;
 }
 .artist-box p {
   font-weight: 400;
@@ -1692,7 +1861,7 @@ table.queue-table th.q {
   padding: 2rem 4rem;
   background: rgba(255, 255, 255, 0.8);
   -webkit-backdrop-filter: blur(1.5rem);
-          backdrop-filter: blur(1.5rem);
+  backdrop-filter: blur(1.5rem);
 }
 .content-container .content-items {
   /* display: flex;
@@ -1727,7 +1896,7 @@ table.queue-table th.q {
 }
 .content-items div.artwork img {
   -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   width: 100%;
   height: 100%;
 }
@@ -1743,7 +1912,7 @@ table.queue-table th.q {
   flex-wrap: wrap;
   width: 60%;
   -moz-column-gap: 10%;
-       column-gap: 10%;
+  column-gap: 10%;
 }
 .roles-container .role-item {
   flex: 1;
@@ -1756,21 +1925,22 @@ table.queue-table th.q {
   aspect-ratio: 1/1;
   border-radius: 100rem;
   background-color: transparent;
-  border: 1px solid #A7B4CE;
+  border: 1px solid #a7b4ce;
   margin-bottom: 1rem;
 }
 .roles-container .role-item p {
   text-align: center;
 }
 .roles-container .role-item.select button {
-  background: linear-gradient(#efeffa, #efeffa) padding-box, linear-gradient(0deg, #5400FE, #9400CF) border-box;
+  background: linear-gradient(#efeffa, #efeffa) padding-box,
+    linear-gradient(0deg, #5400fe, #9400cf) border-box;
   border: 3px solid transparent;
 }
 .roles-container .role-item.select button .iconn {
-  color: #5400FE;
+  color: #5400fe;
 }
 .roles-container .role-item.select p {
-  color: #5400FE;
+  color: #5400fe;
   font-weight: 500;
 }
 
@@ -1791,7 +1961,7 @@ table.queue-table th.q {
   width: 100%;
   height: 100%;
   -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
 }
 .unnamedcard .desc-col {
   flex: 1;
@@ -1801,7 +1971,7 @@ table.queue-table th.q {
 .unnamedcard .desc-col .artwork-headder {
   display: flex;
   -moz-column-gap: 1rem;
-       column-gap: 1rem;
+  column-gap: 1rem;
   align-items: center;
 }
 .unnamedcard .desc-col .artwork-headder .artist-profile {
@@ -1814,7 +1984,7 @@ table.queue-table th.q {
   width: 100%;
   height: 100%;
   -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 .unnamedcard .desc-col .artwork-headder .artist-name {
   flex: 100%;
@@ -1847,7 +2017,7 @@ table.queue-table th.q {
 }
 
 .ant-btn-primary {
-  background-color: #7E9AFA;
+  background-color: #7e9afa;
   box-shadow: 0 2px 0 rgba(16, 80, 255, 0.137);
 }
 
@@ -1867,6 +2037,10 @@ textarea,
   border-radius: 1rem;
   border-radius: 1rem;
   min-width: 10rem;
+}
+
+input.checkbox-accecpt {
+  min-width: 16px;
 }
 
 .ant-form label {
@@ -1895,7 +2069,7 @@ textarea,
   aspect-ratio: 1/1.3;
   border-radius: 20px;
   overflow: hidden;
-  border: 1px solid #9B9FAD;
+  border: 1px solid #9b9fad;
 }
 .report-card .cms-card-grid {
   display: grid;
@@ -1929,14 +2103,14 @@ textarea,
 
 .cms-card-price {
   font-weight: 800;
-  color: #8C80DA;
-  text-shadow: 0px 1px 6px #A3C7BF;
+  color: #8c80da;
+  text-shadow: 0px 1px 6px #a3c7bf;
   text-align: center;
 }
 
 .cms-card-headding {
   font-weight: 500;
-  color: #58648F;
+  color: #58648f;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -1951,4 +2125,4 @@ textarea,
 
 .ant-collapse-header {
   padding: 1.5rem 0 !important;
-}/*# sourceMappingURL=main.css.map */
+} /*# sourceMappingURL=main.css.map */

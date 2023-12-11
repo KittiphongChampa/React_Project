@@ -72,12 +72,8 @@ export default function Profile() {
           })
           .then((response) => {
             const data = response.data;
-
             if (data.status === "ok") {
                 setUserdata(data.users[0]);
-                // setMyFollowerIds(data.MyFollowerIds);
-                // setIFollowingsIds(data.IFollowingsIds);
-
                 const formData = new FormData();
                 formData.append("iFollowing", data.IFollowingsIds);
                 formData.append("iFollowier", data.MyFollowerIds);
@@ -98,12 +94,12 @@ export default function Profile() {
                     setMyFollowerData(data.results)
                 })
                 
-              
             } else if (data.status === "no_access") {
                 alert(data.message);
                 navigate('/admin');
             } else {
             //   toast.error("ไม่พบผู้ใช้งาน", toastOptions);
+                console.log('test');
             }
           }).catch((error) => {
             if (error.response && error.response.status === 401 && error.response.data === "Token has expired") {
@@ -277,16 +273,16 @@ function AllCms(props) {
         target_cms_id: cms_id, // ID ของคอมมิชชันที่ผู้ใช้คลิก
         };
 
-        axios.post('http://localhost:3333/click', clickstreamData)
-        .then(response => {
-            console.log(response.data.message);
-            // หลังจากบันทึก Clickstream เสร็จสิ้น คุณสามารถเรียกใช้การนำทางไปยังรายละเอียดคอมมิชชัน
-            // โดยใช้ react-router-dom หรือวิธีการนำทางอื่น ๆ ตามที่คุณใช้
-        })
-        .catch(error => {
-            console.error(error);
-            // ในกรณีที่เกิดข้อผิดพลาดในการบันทึก Clickstream คุณสามารถจัดการตามที่เหมาะสม
-        });
+        // axios.post('http://localhost:3333/click', clickstreamData)
+        // .then(response => {
+        //     console.log(response.data.message);
+        //     // หลังจากบันทึก Clickstream เสร็จสิ้น คุณสามารถเรียกใช้การนำทางไปยังรายละเอียดคอมมิชชัน
+        //     // โดยใช้ react-router-dom หรือวิธีการนำทางอื่น ๆ ตามที่คุณใช้
+        // })
+        // .catch(error => {
+        //     console.error(error);
+        //     // ในกรณีที่เกิดข้อผิดพลาดในการบันทึก Clickstream คุณสามารถจัดการตามที่เหมาะสม
+        // });
     };
     return <>
         <p className="h3 mt-3 mb-2">คอมมิชชัน</p>

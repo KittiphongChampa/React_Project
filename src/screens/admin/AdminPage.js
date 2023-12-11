@@ -139,7 +139,7 @@ export default function AdminPage() {
                     <p>ภาพที่รอตรวจความคล้าย</p>
                   </div>
                 </Link>
-                <Link>
+                <Link to="/admin/adminmanage/report">
                   <div
                     style={{
                       padding: 30,
@@ -154,7 +154,7 @@ export default function AdminPage() {
                     <p>จำนวนรีพอร์ตทั้งหมด</p>
                   </div>
                 </Link>
-                <Link to="/admin/alluser">
+                <Link to="/admin/adminmanage/alluser">
                   <div
                     style={{
                       padding: 30,
@@ -169,7 +169,7 @@ export default function AdminPage() {
                     <p>จำนวนผู้ใช้งานทั้งหมด</p>
                   </div>
                 </Link>
-                <Link to="/admin/alladmin">
+                <Link to="/admin/adminmanage/alladmin">
                   <div
                     style={{
                       padding: 30,
@@ -186,7 +186,7 @@ export default function AdminPage() {
                 </Link>
               </div>
 
-              <div style={{ marginTop: "20px" }}>
+              {/* <div style={{ marginTop: "20px" }}>
                 <label>ช่วง: </label>
                 <input
                   type="date"
@@ -200,7 +200,7 @@ export default function AdminPage() {
                   onChange={handleEndDateChange}
                 />
                 <button onClick={handleDateChange}>กรอง</button>
-              </div>
+              </div> */}
 
               <div style={{ display: "flex", marginTop: "15px" }}>
                 <div

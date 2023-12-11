@@ -246,7 +246,8 @@ export default function SignUp() {
                       name="pdpaAccept"
                       value={pdpaAccept}
                       id="flexCheckDefault"
-                      onChange={handleChange}/>
+                      onChange={handleChange}
+                      className="checkbox-accecpt"/>
                     <label class="form-check-label" for="flexCheckDefault">
                       ยอมรับเงื่อนไขการใช้บริการ
                     </label>

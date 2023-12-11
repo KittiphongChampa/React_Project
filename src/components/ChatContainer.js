@@ -28,8 +28,8 @@ export default function ChatContainer({ currentChat, socket,  }) {
     hour: "2-digit",
     minute: "2-digit",
   });
-  // const timestamp_chat = date_now.split(" ")[1];
-  const timestamp_chat = date_now;
+  const timestamp_chat = date_now.split(" ")[1];
+  // const timestamp_chat = date_now;
   // console.log(timestamp_chat);
 
   useEffect(() => {

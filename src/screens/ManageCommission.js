@@ -185,7 +185,10 @@ export default function ManageCommission() {
 
   const [selectedValues, setSelectedValues] = useState([]);
 
+  const [uploadStatus, setUploadStatus] = useState(null);
+
   const onFinish = (values) => {
+    
     const formData = new FormData();
     fileList.forEach((file) => {
       formData.append("image_file", file.originFileObj);
@@ -194,9 +197,9 @@ export default function ManageCommission() {
     formData.append("commission_description", values.cmsDesc);
     formData.append("commission_que", values.cmsQ);
     formData.append("typeofuse", selectedValues.join(","));
-    formData.append("good", values.cmsName);
-    formData.append("bad", values.cmsName);
-    formData.append("no_talking", values.cmsName);
+    formData.append("good", values.cmsGood);
+    formData.append("bad", values.cmsBad);
+    formData.append("no_talking", values.cmsNo);
     for (const pkg of values.pkgs) {
       formData.append("package_name", pkg.pkgName);
       formData.append("package_detail", pkg.pkgDesc);
@@ -207,6 +210,8 @@ export default function ManageCommission() {
     }
     formData.append("commission_topic", topicValues);
 
+    // setUploadStatus('uploading');
+
     axios
       .post("http://localhost:3333/commission/add", formData, {
         headers: {
@@ -216,21 +221,70 @@ export default function ManageCommission() {
       })
       .then((response) => {
         const data = response.data;
+        // console.log(data);
+        const imagesData = data.exampleImages;
+        const arr_imageID = [];
+        const arr_image_name = [];
+
         if (data.status == "ok") {
-          console.log("ok");
+          imagesData.forEach((fileItem) => {
+            // ทำสิ่งที่ต้องการกับแต่ละ fileItem
+            arr_imageID.push(fileItem.ExampleImageId)
+            arr_image_name.push(fileItem.image_name)
+          });
+          formData.append("arr_imageID", arr_imageID)
+          formData.append("arr_image_name", arr_image_name)
           formData.append("userID", userID);
-          const data = response.data;
+          axios.post("http://127.0.0.1:5000/upload-json", formData ,{
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+            }).then((response) => {
+              console.log(response.data.status);
+              if (response.data.status === "ok") {
+                // btn = null;
+                // setUploadStatus('success');
+                Swal.fire({
+                  title: "สำเร็จ",
+                  icon: "success"
+                }).then(() => {
+                  window.location.reload(false);
+                });
+              } else if ( response.data.status === "similar" ) {
+                // btn = null;
+                // setUploadStatus('success');
+                Swal.fire({
+                  title: "ระบบตรวจพบรูปภาพที่ซ้ำ รอแอดมินตรวจสอบ",
+                  icon: "warning"
+                }).then(() => {
+                  window.location.reload(false);
+                });
+              } else {
+                // setUploadStatus('error');
+                Swal.fire({
+                  title: "เกิดข้อผิดพลาดในการอัปโหลดไฟล",
+                  icon: "error"
+                }).then(() => {
+                  window.location.reload(false);
+                });
+              }
+            })
         } else if (data.status == "error") {
           console.log("error");
+          setUploadStatus('error');
         }
       })
       .catch((error) => {
         console.error("เกิดข้อผิดพลาดในการอัปโหลดไฟล์", error);
       });
 
+    const onCancelUpload = () => {
+
+    }
+    
     const btn = (
       <Space>
-        <Button type="link" danger size="small">
+        <Button type="link" danger size="small" onClick={onCancelUpload}>
           ยกเลิกการอัปโหลด
         </Button>
       </Space>
@@ -296,25 +350,7 @@ export default function ManageCommission() {
                     </div>
                   </Upload>
 
-                  <Modal
-                    open={uploadModalOpen}
-                    title="เลือกจ้าว่าจะโหลดจากไหน"
-                    footer={null}
-                    onCancel={handleCancelModal}
-                  >
-                    <Upload
-                      {...props}
-                      onPreview={handlePreview}
-                      onChange={handleChange}
-                      multiple={true}
-                      showUploadList={false}
-                    >
-                      <Button icon={<UploadOutlined />}>
-                        อัปโหลดรูปจากเครื่อง
-                      </Button>
-                    </Upload>
-                    {/* <Button>รูปจากแกลเลอรี</Button> */}
-                  </Modal>
+       
                   <Modal
                     open={previewOpen}
                     title={previewTitle}

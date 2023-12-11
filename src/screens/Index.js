@@ -36,22 +36,19 @@ const cms_loop = () => {
 export default function Index() {
   const navigate = useNavigate();
   const [userdata, setUserdata] = useState([]);
-  const [urs_token, setUrs_token] = useState();
-
+  const [statusUserLogin, setStatusUserLogin] = useState('not_login');
+  const token = localStorage.getItem("token");
+  
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      if (window.location.pathname === "/login") {
-        navigate("/");
-      }
-    } else {
-      navigate("/login");
+    if (token) {
+      setStatusUserLogin('login');
+      getUser();
     }
-    getUser();
     getLatestCommission();
     // getArtistCommission();
     // getPopular();
   }, []);
-  const token = localStorage.getItem("token");
+  
   const getUser = async () => {
     await axios
       .get("http://localhost:3333/index", {
@@ -64,7 +61,6 @@ export default function Index() {
         const data = response.data;
         if (data.status === "ok") {
           setUserdata(data.users[0]);
-          setUrs_token(data.urs_token);
         } else if (data.status === "no_access") {
           alert(data.message);
           navigate("/admin");
@@ -85,9 +81,9 @@ export default function Index() {
         }
       });
   };
-  const [cmsLatests, setCmsLatest] = useState([]);
-  // const [cmsArtists, setCmsArtist] = useState([]);
-  // const [cmsPopular, setCmsPopular] = useState([]);
+  const [cmsLatests, setCmsLatest] = useState([]); //คอมมิชชันล่าสุด
+  const [cmsArtists, setCmsArtist] = useState([]); //คอมมิชชันของนักวาดที่ติดตาม
+  const [cmsPopular, setCmsPopular] = useState([]); //
   // console.log(cmsPopular);
   const getLatestCommission = async () => {
     await axios.get("http://localhost:3333/latestCommission", {
@@ -100,50 +96,31 @@ export default function Index() {
       setCmsLatest(Cmslatest.commissions)
     })
   }
-  // const getArtistCommission = async () => {
-  //   await axios.get("http://localhost:3333/artistCommission", {
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: "Bearer " + token,
-  //     },
-  //   }).then((response) => {
-  //     const Cmsfollowing = response.data;
-  //     setCmsArtist(Cmsfollowing.commissions);
-  //   })
-  // }
-  // const getPopular = async () => {
-  //   await axios.get("http://localhost:3333/popularCommission", {
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: "Bearer " + token,
-  //     },
-  //   }).then((response) => {
-  //     const Cmspopular = response.data;
-  //     setCmsPopular(Cmspopular.commissions);
-  //   })
-  // }
-  const handleLinkClick = (cms_id) => {
-    const clickstreamData = {
-      userID: userdata.id,
-      page_url: window.location.href + "cmsdetail/" + cms_id, // หรือใช้ URL ปัจจุบัน
-      target_cms_id: cms_id, // ID ของคอมมิชชันที่ผู้ใช้คลิก
-    };
-
-    axios.post('http://localhost:3333/click', clickstreamData)
-      .then(response => {
-        console.log(response.data.message);
-        // หลังจากบันทึก Clickstream เสร็จสิ้น คุณสามารถเรียกใช้การนำทางไปยังรายละเอียดคอมมิชชัน
-        // โดยใช้ react-router-dom หรือวิธีการนำทางอื่น ๆ ตามที่คุณใช้
-      })
-      .catch(error => {
-        console.error(error);
-        // ในกรณีที่เกิดข้อผิดพลาดในการบันทึก Clickstream คุณสามารถจัดการตามที่เหมาะสม
-      });
-  };
+  const getArtistCommission = async () => {
+    await axios.get("http://localhost:3333/artistCommission", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    }).then((response) => {
+      const Cmsfollowing = response.data;
+      setCmsArtist(Cmsfollowing.commissions);
+    })
+  }
+  const getPopular = async () => {
+    await axios.get("http://localhost:3333/popularCommission", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    }).then((response) => {
+      const Cmspopular = response.data;
+      setCmsPopular(Cmspopular.commissions);
+    })
+  }
 
   const { Search } = Input;
   const { submenu } = useParams();
-
 
   useEffect(() => {
     console.log(submenu)
@@ -168,7 +145,9 @@ export default function Index() {
       <Helmet>
         <title>{title}</title>
       </Helmet>
-      <NavbarUser />
+      
+      {statusUserLogin === 'login' ? <NavbarUser /> : <NavbarHomepage />}
+
       <div class="body-nopadding" style={body}>
         <div className="container">
           <div class="search-container">
@@ -185,7 +164,7 @@ export default function Index() {
                 <Link to="/gallery" id="gallery" className="sub-menu" >แกลเลอรี</Link>
                 <Link to="/artists" id="artists" className="sub-menu" >นักวาด</Link>
               </div>
-              {submenu == null ? <Foryou cmsLatests={cmsLatests} handleLinkClick={handleLinkClick} /> : submenu == "commissions" ? <Commissions /> : submenu == "gallery" ? <Gallery /> : submenu == "artists" ? <Artists /> : submenu == "search" && <Search />}
+              {submenu == null ? <Foryou statusUserLogin={statusUserLogin} cmsLatests={cmsLatests} /> : submenu == "commissions" ? <Commissions /> : submenu == "gallery" ? <Gallery /> : submenu == "artists" ? <Artists /> : submenu == "search" && <Search />}
             </> :
               <SearchResults />}
           </div>
@@ -347,7 +326,7 @@ function Commissions() {
 
 }
 
-function Foryou({ cmsLatests, handleLinkClick }) {
+function Foryou({statusUserLogin, cmsLatests, handleLinkClick }) {
   const options = ['Option 1', 'Option 2', 'Option 3', 'Option 4'];
   const [cmsArtists, setCmsArtist] = useState([]);
   const token = localStorage.getItem("token");
@@ -406,117 +385,121 @@ function Foryou({ cmsLatests, handleLinkClick }) {
 
   return (
     <>
-      <div className="content-box">
+      {statusUserLogin === 'login' ? (
+        <>
+          <div className="content-box">
+            <div className="content-top">
+              <p className="h3">นักวาดที่คุณกำลังติดตาม</p>
+              <Link to="http://localhost:3000/homepage/artists"><p>ดูทั้งหมด&gt;</p></Link>
+            </div>
 
-        <div className="content-top">
-          <p className="h3">นักวาดที่คุณกำลังติดตาม</p>
-          <Link to="http://localhost:3000/homepage/artists"><p>ดูทั้งหมด&gt;</p></Link>
-        </div>
+            <Swiper
+              slidesPerView="auto"
+              centeredSlides={false}
+              slidesPerGroupSkip={1}
+              spaceBetween={10}
+              modules={[Navigation]}
+              className="artistbox-swiper"
+            >
+              {/* <SwiperSlide>
+                <ArtistBox IFollowerData={IFollowerData} />
+              </SwiperSlide> */}
 
-        <Swiper
-          slidesPerView="auto"
-          centeredSlides={false}
-          slidesPerGroupSkip={1}
-          spaceBetween={10}
-          modules={[Navigation]}
-          className="artistbox-swiper"
-        >
-          {/* <SwiperSlide>
-            <ArtistBox IFollowerData={IFollowerData} />
-          </SwiperSlide> */}
+              {IFollowerData.map(data => (
+                
+                  <SwiperSlide>
+                    <a key={data.id} href={`/profile/${data.id}`}>
+                      <ArtistBox img={data.urs_profile_img} name={data.urs_name}/>
+                    </a>
+                  </SwiperSlide>
+              
+              ))}
+            </Swiper>
+          </div>
 
-          {IFollowerData.map(data => (
-            
-              <SwiperSlide>
-                <a key={data.id} href={`/profile/${data.id}`}>
-                  <ArtistBox img={data.urs_profile_img} name={data.urs_name}/>
-                </a>
+          <div className="content-box">
+            <div className="content-top">
+              <p className="h3">คอมมิชชันของนักวาดที่ติดตาม</p>
+              <Link to="http://localhost:3000/homepage/commissions"><p>ดูทั้งหมด&gt;</p></Link>
+            </div>
+            <Swiper
+            slidesPerView="auto"
+            centeredSlides={false}
+            slidesPerGroupSkip={1}
+            spaceBetween={10}
+            grabCursor={true}
+            keyboard={{
+              enabled: true,
+            }}
+            scrollbar={false}
+            navigation={true}
+            modules={[Keyboard, Scrollbar, Navigation]}
+            className="cms-item-swiper"
+          >
+            {/* {cms_loop()} */}
+            {cmsArtists.map(cmsArtstdata => (
+              // <div key={cmsLatest.cms_id} style={{ display: "flex" }}>
+              //   <Link to={`/cmsdetail/${cmsLatest.cms_id}`} onClick={() => handleLinkClick(cmsLatest.cms_id)} >
+              //     <CmsItem src={cmsLatest.ex_img_path} headding={cmsLatest.cms_name} price="100" desc={cmsLatest.cms_desc} />
+              //   </Link>
+              // </div>
+              <SwiperSlide key={cmsArtstdata.cms_id}>
+                <Link to={`/cmsdetail/${cmsArtstdata.cms_id}`} onClick={() => handleLinkClick(cmsArtstdata.cms_id)}>
+                  <CmsItem src={cmsArtstdata.ex_img_path} headding={cmsArtstdata.cms_name} price={cmsArtstdata.pkg_min_price} desc={cmsArtstdata.cms_desc}/>
+                </Link>
               </SwiperSlide>
-           
-          ))}
-        </Swiper>
-      </div>
+            ))}
+          </Swiper >
+          </div>
 
-      <div className="content-box">
-        <div className="content-top">
-          <p className="h3">คอมมิชชันของนักวาดที่ติดตาม</p>
-          <Link to="http://localhost:3000/homepage/commissions"><p>ดูทั้งหมด&gt;</p></Link>
-        </div>
-      </div>
-      <Swiper
-        slidesPerView="auto"
-        centeredSlides={false}
-        slidesPerGroupSkip={1}
-        spaceBetween={10}
-        grabCursor={true}
-        keyboard={{
-          enabled: true,
-        }}
-        scrollbar={false}
-        navigation={true}
-        modules={[Keyboard, Scrollbar, Navigation]}
-        className="cms-item-swiper"
-      >
-        {/* {cms_loop()} */}
-        {cmsArtists.map(cmsArtstdata => (
-          // <div key={cmsLatest.cms_id} style={{ display: "flex" }}>
-          //   <Link to={`/cmsdetail/${cmsLatest.cms_id}`} onClick={() => handleLinkClick(cmsLatest.cms_id)} >
-          //     <CmsItem src={cmsLatest.ex_img_path} headding={cmsLatest.cms_name} price="100" desc={cmsLatest.cms_desc} />
-          //   </Link>
-          // </div>
-          <SwiperSlide key={cmsArtstdata.cms_id}>
-            <Link to={`/cmsdetail/${cmsArtstdata.cms_id}`} onClick={() => handleLinkClick(cmsArtstdata.cms_id)}>
-              <CmsItem src={cmsArtstdata.ex_img_path} headding={cmsArtstdata.cms_name} price={cmsArtstdata.pkg_min_price} desc={cmsArtstdata.cms_desc}/>
-            </Link>
-          </SwiperSlide>
-        ))}
-      </Swiper >
+          <div class="content-box">
+            <div class="content-top">
+              <p className="h3">ผลงานนักวาดที่กำลังติดตาม</p>
+              <Link to="http://localhost:3000/homepage/gallery"><p>ดูทั้งหมด&gt;</p></Link>
+            </div>
+            <Swiper
+              slidesPerView="auto"
+              centeredSlides={false}
+              slidesPerGroupSkip={1}
+              spaceBetween={10}
+              grabCursor={true}
+              keyboard={{
+                enabled: true,
+              }}
+              scrollbar={false}
+              navigation={true}
+              modules={[Keyboard, Scrollbar, Navigation]}
+              className="gall-item-swiper"
+            >
 
-      <div class="content-box">
-        <div class="content-top">
-          <p className="h3">ผลงานนักวาดที่กำลังติดตาม</p>
-          <Link to="http://localhost:3000/homepage/gallery"><p>ดูทั้งหมด&gt;</p></Link>
-        </div>
-        <Swiper
-          slidesPerView="auto"
-          centeredSlides={false}
-          slidesPerGroupSkip={1}
-          spaceBetween={10}
-          grabCursor={true}
-          keyboard={{
-            enabled: true,
-          }}
-          scrollbar={false}
-          navigation={true}
-          modules={[Keyboard, Scrollbar, Navigation]}
-          className="gall-item-swiper"
-        >
+              <SwiperSlide >
+                <Link to="/artworkdetail"><img src="/f-b.png" /></Link>
+              </SwiperSlide>
+              <SwiperSlide >
+                <Link to="/artworkdetail"><img src="/f-b.png" /></Link>
+              </SwiperSlide>
+              <SwiperSlide >
+                <Link to="/artworkdetail"><img src="/character.png" /></Link>
+              </SwiperSlide>
+              <SwiperSlide >
+                <Link to="/artworkdetail"><img src="/f-b.png" /></Link>
+              </SwiperSlide>
+              <SwiperSlide >
+                <Link to="/artworkdetail"><img src="/f-b.png" /></Link>
+              </SwiperSlide>
+              <SwiperSlide >
+                <Link to="/artworkdetail"><img src="/f-b.png" /></Link>
+              </SwiperSlide>
+              <SwiperSlide >
+                <Link to="/artworkdetail"><img src="/character.png" /></Link>
+              </SwiperSlide>
+            </Swiper>
+          </div>
+        </>
+      ) : (
+        <></>
+      )}
 
-          <SwiperSlide >
-            <Link to="/artworkdetail"><img src="/f-b.png" /></Link>
-          </SwiperSlide>
-          <SwiperSlide >
-            <Link to="/artworkdetail"><img src="/f-b.png" /></Link>
-          </SwiperSlide>
-          <SwiperSlide >
-            <Link to="/artworkdetail"><img src="/character.png" /></Link>
-          </SwiperSlide>
-          <SwiperSlide >
-            <Link to="/artworkdetail"><img src="/f-b.png" /></Link>
-          </SwiperSlide>
-          <SwiperSlide >
-            <Link to="/artworkdetail"><img src="/f-b.png" /></Link>
-          </SwiperSlide>
-          <SwiperSlide >
-            <Link to="/artworkdetail"><img src="/f-b.png" /></Link>
-          </SwiperSlide>
-          <SwiperSlide >
-            <Link to="/artworkdetail"><img src="/character.png" /></Link>
-          </SwiperSlide>
-
-
-        </Swiper>
-      </div>
       <div class="content-box">
         <div class="content-top">
           <p className="h3">คอมมิชชันล่าสุด</p>
@@ -599,7 +582,6 @@ function Foryou({ cmsLatests, handleLinkClick }) {
     </>
   )
 }
-
 
 function Gallery() {
   return (

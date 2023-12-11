@@ -19,20 +19,29 @@ export const options = {
     // },
 };
 
-  
-
-
 const PieChart = () => {
     const [artist, setArtist] = useState([]);
     const [customer, setCustomer] = useState([]);
+    // console.log(artist, customer);
     useEffect(() => {
       getData();
     },[]);
     const getData = async () => {
         await axios.get(`${host}/getdataPieChart`).then((response) => {
             const data = response.data;
-            setArtist(data.results[0]);
-            setCustomer(data.results[1]);
+            console.log(data);
+            if (data.results[0] !== undefined) {
+              setArtist(data.results[0]);
+            } else {
+              setArtist(0);
+            }
+            if (data.results[1] !== undefined) {
+              setCustomer(data.results[1]);
+            } else {
+              setCustomer(0);
+            }
+            
+            
         })
     }
     const pieChartData = {
@@ -40,8 +49,8 @@ const PieChart = () => {
         datasets: [
             {
             data: [artist.count, customer.count],
-            backgroundColor: ['#AF9669', '#212280'],
-            borderColor: ['#AF9669','#212280'],
+            backgroundColor: ['#6394DE', '#212280'],
+            borderColor: ['#6394DE','#212280'],
             },
         ],
     };

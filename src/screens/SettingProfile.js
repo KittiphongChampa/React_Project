@@ -266,24 +266,6 @@ export default function SettingProfile() {
     });
   };
 
-  const editBank = () => {
-    const ppNumber = document.getElementById("ppNumber");
-    ppNumber.removeAttribute("disabled");
-    ppNumber.style.borderColor = "black";
-
-    const bankAccName = document.getElementById("bankAccName");
-    bankAccName.removeAttribute("disabled");
-    bankAccName.style.borderColor = "black";
-
-    let editBankBtn = document.getElementById("editBankBtn");
-    let sendDataBankBtn = document.getElementById("sendDataBankBtn");
-    editBankBtn.style.display = "none";
-    sendDataBankBtn.style.display = "block";
-    setHide("block");
-  };
-
-
-
   return (
     <div className="body-con">
       <Helmet>
