@@ -14,6 +14,9 @@ import 'sweetalert2/src/sweetalert2.scss'
 import * as alertData from '../alertdata/alertData';
 import ProfileImg from "../components/ProfileImg.js";
 
+const host = "http://188.166.218.38:3333";
+// const host = "http://localhost:3333";
+
 const ChangeProfileImgModal = (props) => {
     const { register, handleSubmit, setValue, formState: { errors, isSubmitting, isDirty, isValid }, reset } = useForm();
     
@@ -63,7 +66,7 @@ const ChangeProfileImgModal = (props) => {
         const formData = new FormData();
         formData.append("file", file);
         await axios
-          .put("http://localhost:3333/profile_img/update", formData, {
+          .put(`${host}/profile_img/update`, formData, {
             headers: {
               "Content-type": "multipart/form-data",
               Authorization: "Bearer " + token,

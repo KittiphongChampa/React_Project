@@ -14,6 +14,9 @@ import * as alertData from '../alertdata/alertData';
 import ProfileImg from "../components/ProfileImg";
 import axios from "axios";
 
+const host = "http://188.166.218.38:3333";
+// const host = "http://localhost:3333";
+
 const openInputColor = () => {
 
 }
@@ -37,7 +40,7 @@ const ChangeCoverModal = (props) => {
         formData.append("cover_color", data.cover);
         Swal.fire({ ...alertData.changeProfileImgConfirm }).then((result) => {
             if (result.isConfirmed) {
-                axios.patch("http://localhost:3333/cover_color/update", formData,{
+                axios.patch(`${host}/cover_color/update`, formData,{
                     headers: {
                         Authorization: "Bearer " + token,
                     }

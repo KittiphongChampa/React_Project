@@ -14,6 +14,8 @@ import Swal from "sweetalert2/dist/sweetalert2.js";
 import "sweetalert2/src/sweetalert2.scss";
 import * as alertData from "../alertdata/alertData";
 
+const host = "http://188.166.218.38:3333";
+// const host = "http://localhost:3333";
 
 const AddEditDeleteCoinModal = (props) => {
   const {
@@ -49,7 +51,7 @@ const AddEditDeleteCoinModal = (props) => {
 
     if (headding === "เพิ่มแพ็กเกจเติมเงิน") {
       await axios
-        .post("http://localhost:3333/packagetoken/add", {
+        .post(`${host}/packagetoken/add`, {
           coins,
           price,
         })
@@ -68,7 +70,7 @@ const AddEditDeleteCoinModal = (props) => {
         });
     } else {
       await axios
-        .patch(`http://localhost:3333/packagetoken/update/${package_Id}`, {
+        .patch(`${host}/packagetoken/update/${package_Id}`, {
           coins,
           price,
         })

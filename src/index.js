@@ -3,59 +3,59 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import AdminManage from './screens/admin/AdminManage';
-
+import "bootstrap/dist/css/bootstrap.min.css";
+import AdminManage from "./screens/admin/AdminManage";
 
 //important screens
-import Register from './screens/Register';
-import Login from './screens/Login';
-import Welcome from './screens/Welcome';
-import Index from './screens/Index';
-import EditCoin from './screens/EditCoin';
-import Profile from './screens/Profile';
-import BuyCoin from './yunscreens/BuyCoin';
-import TransactionHistory from './yunscreens/TransactionHistory';
-import AdminManageUser from './screens/admin/AdminManageUser';
-import AdminManageAdmin from './screens/admin/AdminManageAdmin';
-import AdminManageCms from './screens/admin/AdminManageCms';
-import AdminManageCmsProblem from './screens/admin/AdminManageCmsProblem';
-import AdminManageFAQ from './screens/admin/AdminManageFAQ';
-import SettingProfile from './screens/SettingProfile';
-import SettingCoin from './yunscreens/SettingCoin';
-import NewPassword from './yunscreens/NewPassword';
-import ViewProfile from './screens/ViewProfile';
-import AdminPage from './screens/admin/AdminPage';
+import Register from "./screens/Register";
+import Login from "./screens/Login";
+import Welcome from "./screens/Welcome";
+import Index from "./screens/Index";
+import EditCoin from "./screens/EditCoin";
+import Profile from "./screens/Profile";
+import AdminManageUser from "./screens/admin/AdminManageUser";
+import AdminManageAdmin from "./screens/admin/AdminManageAdmin";
+import AdminManageCms from "./screens/admin/AdminManageCms";
+import AdminManageCmsProblem from "./screens/admin/AdminManageCmsProblem";
+import AdminManageFAQ from "./screens/admin/AdminManageFAQ";
+import SettingProfile from "./screens/SettingProfile";
+import ViewProfile from "./screens/ViewProfile";
+import AdminPage from "./screens/admin/AdminPage";
 import ManageCommission from "./screens/ManageCommission";
+import ManageArtwork from "./screens/ManageArtwork";
 import ChatBox from "./screens/Chatbox";
 import CmsDetail from "./screens/CmsDetail";
 import Dashboard from "./screens/Dashboard";
 import ArtworkDetail from "./screens/ArtworkDetail";
-import ArtistManagement from './screens/ArtistManagement';
+import ArtistManagement from "./screens/ArtistManagement";
 
 //important screens two
-import ForgotPassword from './secondary_screens/ForgotPassword';
-import ResetPassword from './secondary_screens/ResetPassword';
-import Verify from './secondary_screens/Verify';
+import ForgotPassword from "./secondary_screens/ForgotPassword";
+import ResetPassword from "./secondary_screens/ResetPassword";
+import Verify from "./secondary_screens/Verify";
 
 //screens test
-import ChatContainertest from './yunscreens/ChatContainertest';
-import Chat from './yunscreens/Chat';
-import ProfileTest from './yunscreens/ProfileTest';
-import VerifyMail_ResetPassword from './yunscreens/VerifyMail_ResetPassword';
-import AllUser from './yunscreens/AllUser';
-import Test from './yunscreens/Test';
-import Editprofile from './yunscreens/Editprofile';
-import Buytoken from './yunscreens/Buytoken';
-import PackageToken from './yunscreens/PackageToken';
-import Artistseeorder from './yunscreens/artistseeorder';
-
+import ChatContainertest from "./yunscreens/ChatContainertest";
+import Chat from "./yunscreens/Chat";
+import ProfileTest from "./yunscreens/ProfileTest";
+import VerifyMail_ResetPassword from "./yunscreens/VerifyMail_ResetPassword";
+import AllUser from "./yunscreens/AllUser";
+import Test from "./yunscreens/Test";
+import Editprofile from "./yunscreens/Editprofile";
+import Buytoken from "./yunscreens/Buytoken";
+import PackageToken from "./yunscreens/PackageToken";
+import Artistseeorder from "./yunscreens/artistseeorder";
+import BuyCoin from "./yunscreens/BuyCoin";
+import TransactionHistory from "./yunscreens/TransactionHistory";
+import SettingCoin from "./yunscreens/SettingCoin";
+import NewPassword from "./yunscreens/NewPassword";
+import Qrpromptpay from "./yunscreens/qrpromptpay";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <Routes>
-    <Route path="/" element={<Index />} />
+      <Route path="/" element={<Index />} />
       <Route path="/:submenu" element={<Index />} />
       <Route path="/welcome" element={<Welcome />} />
       <Route path="/login" element={<Login />} />
@@ -64,12 +64,13 @@ root.render(
       <Route path="/profile" element={<Profile />} />
       <Route path="/profile/:id" element={<ViewProfile />} />
       <Route path="/editprofile" element={<Editprofile />} />
-      <Route path="/buytoken" element={<Buytoken/>} />
-      <Route path="/packagetoken" element={<PackageToken/>} />
-      <Route path="/forgot-password" element={<ForgotPassword/>} />
-      <Route path="/reset-password" element={<ResetPassword/>} />
-      <Route path="/chat" element={<Chat/>} />
-      <Route path="/manage-commission" element={<ManageCommission/>}/>
+      <Route path="/buytoken" element={<Buytoken />} />
+      <Route path="/packagetoken" element={<PackageToken />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/chat" element={<Chat />} />
+      <Route path="/manage-commission" element={<ManageCommission />} />
+      <Route path="/manage-artwork" element={<ManageArtwork />} />
       <Route path="/editcoin" element={<EditCoin />} />
       <Route path="/buycoin" element={<BuyCoin />} />
       <Route path="/setting-profile" element={<SettingProfile />} />
@@ -77,34 +78,33 @@ root.render(
       <Route path="/chatbox" element={<ChatBox />} />
       <Route path="/cmsdetail/:id" element={<CmsDetail />} />
       <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/artworkdetail" element={<ArtworkDetail />} />
+      <Route path="/artworkdetail/:id" element={<ArtworkDetail />} />
       <Route path="/artistmanagement/:menu" element={<ArtistManagement />} />
-      
 
       {/*admin*/}
-      <Route path="/admin" element={<AdminPage/>} />
+      <Route path="/admin" element={<AdminPage />} />
       <Route path="/setting-coin" element={<SettingCoin />} />
       <Route path="/admin/alluser" element={<AdminManageUser />} />
-      <Route path="/admin/alladmin" element={<AdminManageAdmin/>} />
+      <Route path="/admin/alladmin" element={<AdminManageAdmin />} />
       <Route path="/admin/transaction" element={<TransactionHistory />} />
       <Route path="/admin/commission" element={<AdminManageCms />} />
-      <Route path="/admin/commission/problem/:id" element={<AdminManageCmsProblem />} />
+      <Route path="/admin/adminmanage/cms-problem/:id" element={<AdminManageCmsProblem />}/>
       <Route path="/admin/allfaq" element={<AdminManageFAQ />} />
       <Route path="/admin/adminmanage/:menu" element={<AdminManage />} />
-      
-
-
 
       {/* test */}
       {/* <Route path="/test" element={<App />} /> */}
-      <Route path="/test" element={<Test/>} />
+      <Route path="/test" element={<Test />} />
       <Route path="/testchat" element={<ChatContainertest />} />
       <Route path="/profileTest" element={<ProfileTest />} />
       <Route path="/alluser" element={<AllUser />} />
-      <Route path="/verify-resetPassword" element={<VerifyMail_ResetPassword/>} />
+      <Route
+        path="/verify-resetPassword"
+        element={<VerifyMail_ResetPassword />}
+      />
+      <Route path="/qrpromptpay" element={<Qrpromptpay />} />
 
-      <Route path="/artistseeorder" element={<Artistseeorder/>} />
-
+      <Route path="/artistseeorder" element={<Artistseeorder />} />
     </Routes>
   </BrowserRouter>
 );

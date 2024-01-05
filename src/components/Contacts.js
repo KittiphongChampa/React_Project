@@ -4,6 +4,9 @@ import axios from "axios";
 import io from "socket.io-client";
 // import Logo from "../assets/logo.svg";
 
+const host = "http://188.166.218.38:3333";
+// const host = "http://localhost:3333";
+
 export default function Contacts({ contacts, changeChat, Toggled, partnerID, socket}) {
   const [currentUserName, setCurrentUserName] = useState(undefined);
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
@@ -33,7 +36,7 @@ export default function Contacts({ contacts, changeChat, Toggled, partnerID, soc
   }, []);
   const getUser = async () => {
     try {
-      const response = await axios.get("http://localhost:3333/index", {
+      const response = await axios.get(`${host}/index`, {
         headers: {
           Authorization: "Bearer " + token,
         },
@@ -84,7 +87,7 @@ export default function Contacts({ contacts, changeChat, Toggled, partnerID, soc
                       <>
                         <p className="order">{contact.urs_name}</p>
                         <p>
-                          {contact.message_text.split("images")[0] === "http://localhost:3333/" ? (
+                          {contact.message_text.split("images")[0] === `${host}/` ? (
                             <p className="message">ได้ส่งรูปภาพ</p>
                           ) : (
                             <p className="message">{contact.message_text}</p>

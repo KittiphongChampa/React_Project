@@ -4,7 +4,9 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
-const host = "http://localhost:3333";
+
+const host = "http://188.166.218.38:3333";
+// const host = "http://localhost:3333";
 
 export const options = {
     responsive: true,
@@ -29,7 +31,6 @@ const PieChart = () => {
     const getData = async () => {
         await axios.get(`${host}/getdataPieChart`).then((response) => {
             const data = response.data;
-            console.log(data);
             if (data.results[0] !== undefined) {
               setArtist(data.results[0]);
             } else {

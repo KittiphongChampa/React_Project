@@ -14,6 +14,9 @@ const toastOptions = {
   theme: "dark",
 };
 
+const host = "http://188.166.218.38:3333";
+// const host = "http://localhost:3333";
+
 export default function Editdata() {
   const token = localStorage.getItem("token");
   const [userId, setUserID] = useState("");
@@ -52,7 +55,7 @@ export default function Editdata() {
     // console.log(formData);
     handleClose();
     await axios
-      .post("http://localhost:3333/updateprofile", formData, {
+      .post(`${host}/updateprofile`, formData, {
         headers: {
           "Content-type": "multipart/form-data",
           Authorization: "Bearer " + token,

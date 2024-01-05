@@ -20,191 +20,10 @@ import Lottie from "lottie-react";
 import loading from "../../loading.json";
 import * as Icon from "react-feather";
 import { Input, Collapse, Space, Button, Modal, Form } from 'antd';
-
 import { AdminBox, UserBox } from "../../components/UserBox";
 
-// export default function AdminManageFAQ() {
-//   const navigate = useNavigate();
-//   const jwt_token = localStorage.getItem("token");
-//   const [admin, setAdmin] = useState("");
-//   const [FAQ, setFAQdata] = useState([]);
-
-//   useEffect(() => {
-//     if (localStorage.getItem("token")) {
-//       if (window.location.pathname === "/login") {
-//         navigate("/admin/allfaq");
-//       }
-//     } else {
-//       navigate("/login");
-//     }
-//     getFAQdata()
-//   }, []);
-
-//   const getFAQdata = async () => {
-//     await axios
-//       .get("http://localhost:3333/allfaq", {
-//         headers: {
-//           Authorization: "Bearer " + jwt_token,
-//         },
-//       })
-//       .then((response) => {
-//         const data = response.data;
-//         if (data.status === "ok") {
-//           setFAQdata(data.results);
-//         } else {
-//           alert(data.message);
-//         }
-//     });
-//   }
-
-//   const [ID, setFaqID] = useState("");
-//   const [question , setQuestion] = useState("");
-//   const [answer , setAnswer] = useState("");
-//   // console.log(question,":",answer);
-//   const [isFormVisible, setIsFormVisible] = useState(false);
-//   const [isFormVisible2, setIsFormVisible2] = useState(false);
-//   const toggleForm = () => {setIsFormVisible(!isFormVisible)}
-//   const toggleForm2 = (faqID) => {
-//     setIsFormVisible2(!isFormVisible2)
-//     const faq = FAQ.find(item => item.faq_id === faqID);
-//     if (faq) {
-//       setFaqID(faq.faq_id)
-//       setQuestion(faq.faq_heading);
-//       setAnswer(faq.faq_desc);
-//     }
-//   }
-//   const formData = new FormData();
-//   formData.append("question", question);
-//   formData.append("answer", answer);
-
-//   const handleAddFAQ = async () => {
-//     await axios
-//       .post("http://localhost:3333/faq/add", formData, {
-//         headers: {
-//           Authorization: "Bearer " + jwt_token,
-//         },
-//       })
-//       .then((response) => {
-//         const data = response.data;
-//         if (data.status === "ok") {
-//           alert('สำเร็จ')
-//           window.location.reload(false);
-//         } else {
-//           alert('ไม่สำเร็จ : ' + data.message);
-//           window.location.reload(false);
-//         }
-//       });
-//   };
-//   const handleEditFAQ = async (e, ID) => {
-//     e.preventDefault();
-//     await axios
-//       .patch(`http://localhost:3333/faq/update/${ID}`, formData, {
-//         headers: {
-//           Authorization: "Bearer " + jwt_token,
-//         },
-//       })
-//       .then((response) => {
-//         const data = response.data;
-//         if (data.status === "ok") {
-//           alert('สำเร็จ')
-//           window.location.reload(false);
-//         } else {
-//           alert('ไม่สำเร็จ : ' + data.message);
-//           window.location.reload(false);
-//         }
-//       });
-//   };
-//   const handleDeleteFAQ = async (faqID) => {
-//     await axios
-//       .patch(`http://localhost:3333/faq/delete/${faqID}`,{
-//         headers: {
-//           Authorization: "Bearer " + jwt_token,
-//         },
-//       })
-//       .then((response) => {
-//         const data = response.data;
-//         if (data.status === "ok") {
-//           alert('สำเร็จ')
-//           window.location.reload(false);
-//         } else {
-//           alert('ไม่สำเร็จ : ' + data.message);
-//           window.location.reload(false);
-//         }
-//       });
-//   };
-
-//   return (
-//     <>
-//       <div>
-//         <button onClick={toggleForm}>
-//           {isFormVisible ? 'ซ่อน' : 'แบบฟอร์มเพิ่มคำถามที่พบบ่อย'}
-//         </button>
-//         {isFormVisible && (
-//           <form>
-//             <label>
-//               question:
-//               <input
-//                 type="text"
-//                 name="question"
-//                 value={question}
-//                 onChange={(e) => setQuestion(e.target.value)}
-//               />
-//             </label>
-//             <label>
-//               answer:
-//               <input
-//                 type="text"
-//                 name="answer"
-//                 value={answer}
-//                 onChange={(e) => setAnswer(e.target.value)}
-//               />
-//             </label>
-//               <input type="submit" value="เพิ่มคำถามที่พบบ่อย" onClick={handleAddFAQ}/>
-//           </form>
-//         )}
-//       </div>
-
-//       <div>
-//         {isFormVisible2 && (
-//           <form onSubmit={(e) => handleEditFAQ(e, ID)}>
-//             <label>
-//               question:
-//               <input
-//                 type="text"
-//                 name="question"
-//                 value={question}
-//                 onChange={(e) => setQuestion(e.target.value)}
-//               />
-//             </label>
-//             <label>
-//               answer:
-//               <input
-//                 type="text"
-//                 name="answer"
-//                 value={answer}
-//                 onChange={(e) => setAnswer(e.target.value)}
-//               />
-//             </label>
-//             <input type="submit" value="บันทึก"/>
-//           </form>
-//         )}
-//         {FAQ.map((item, index) => (
-//           <ul key={index}>
-//             <li>
-//               <div>
-//                 <p>{item.faq_id} {item.faq_heading} {item.faq_desc}</p>
-//                 <button onClick={() => toggleForm2(item.faq_id)}>
-//                   {isFormVisible2 ? 'ซ่อน' : 'แก้ไข'}
-//                 </button>
-//                 <button onClick={() => handleDeleteFAQ(item.faq_id)}>ลบ</button>
-//               </div>
-//             </li>
-//           </ul>
-//         ))}
-//       </div>
-//     </>
-//   );
-// }
+const host = "http://188.166.218.38:3333";
+// const host = "http://localhost:3333";
 
 export default function AdminManageFAQ() {
 
@@ -227,18 +46,22 @@ export default function AdminManageFAQ() {
 
   const getFAQdata = async () => {
       await axios
-          .get("http://localhost:3333/allfaq", {
+          .get(`${host}/allfaq`, {
               headers: {
                   Authorization: "Bearer " + jwt_token,
               },
           })
           .then((response) => {
-              const data = response.data;
-              if (data.status === "ok") {
-                  setFAQdata(data.results);
-              } else {
-                  alert(data.message);
-              }
+                const data = response.data;
+                if (data.status === "ok") {
+                    setFAQdata(data.results);
+                } else if (data.status === "no_access") {
+                    alert(data.message);
+                    navigate("/");
+                } else {
+                    localStorage.removeItem("token");
+                    navigate("/login");
+                }
           });
   }
 
@@ -270,7 +93,7 @@ export default function AdminManageFAQ() {
       formData.append("question", values.question);
       formData.append("answer", values.answer);
       await axios
-          .post("http://localhost:3333/faq/add", formData, {
+          .post(`${host}/faq/add`, formData, {
               headers: {
                   Authorization: "Bearer " + jwt_token,
               },
@@ -286,30 +109,11 @@ export default function AdminManageFAQ() {
               }
           });
   };
-  // const handleEditFAQ = async (e, ID) => {
-  //     e.preventDefault();
-  //     await axios
-  //         .patch(`http://localhost:3333/faq/update/${ID}`, formData, {
-  //             headers: {
-  //                 Authorization: "Bearer " + jwt_token,
-  //             },
-  //         })
-  //         .then((response) => {
-  //             const data = response.data;
-  //             if (data.status === "ok") {
-  //                 alert('สำเร็จ')
-  //                 window.location.reload(false);
-  //             } else {
-  //                 alert('ไม่สำเร็จ : ' + data.message);
-  //                 window.location.reload(false);
-  //             }
-  //         });
-  // };
   const handleEditFAQ = async (values) => {
       console.log("แก้ไขฟอร์ม")
       // e.preventDefault();
       await axios
-          .patch(`http://localhost:3333/faq/update/${faqID}`, { // ใช้ค่าจาก state ที่เก็บ faq_id
+          .patch(`${host}/faq/update/${faqID}`, { // ใช้ค่าจาก state ที่เก็บ faq_id
               question: values.question, // ใช้ค่าจาก state ที่เก็บคำถาม
               answer: values.answer, // ใช้ค่าจาก state ที่เก็บคำตอบ
           }, {
@@ -331,7 +135,7 @@ export default function AdminManageFAQ() {
 
   const handleDeleteFAQ = async (faqID) => {
       await axios
-          .patch(`http://localhost:3333/faq/delete/${faqID}`, {
+          .patch(`${host}/faq/delete/${faqID}`, {
               headers: {
                   Authorization: "Bearer " + jwt_token,
               },
@@ -349,46 +153,10 @@ export default function AdminManageFAQ() {
   };
 
   const text = `
-A dog is a type of domesticated animal.
-Known for its loyalty and faithfulness,
-it can be found as a welcome guest in many households across the world.
-`;
-  // const genExtra = () => (
-  //     <Space size="middle">
-  //         <Icon.Edit style={{ width: "1.2rem" }} onClick={(event) => {
-  //             // If you don't want click extra trigger collapse, you can prevent this:
-
-  //             setOpen(true)
-
-  //             event.stopPropagation();
-  //         }} />
-  //         <Icon.Trash style={{ width: "1.2rem" }} onClick={(event) => {
-  //             // If you don't want click extra trigger collapse, you can prevent this:
-
-  //             event.stopPropagation();
-  //         }} />
-
-  //     </Space>
-  // );
-
-  // const mm = [
-  //     {
-  //         key: "123",
-  //         label: "aaaa",
-  //         children: <p>aaaaaa</p>,
-  //         extra: genExtra()
-
-  //     },
-  //     {
-  //         key: "124",
-  //         label: "aaaa",
-  //         children: <p>aaaaaa</p>,
-  //         extra: genExtra()
-
-  //     }
-  // ]
-
-  // console.log("mm=", mm)
+    A dog is a type of domesticated animal.
+    Known for its loyalty and faithfulness,
+    it can be found as a welcome guest in many households across the world.
+    `;
 
 
   const [initialValues, setInitialValues] = useState()

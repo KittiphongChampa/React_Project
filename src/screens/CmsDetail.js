@@ -29,7 +29,9 @@ import Swal from "sweetalert2/dist/sweetalert2.js";
 import "sweetalert2/src/sweetalert2.scss";
 import { Alert, Space, Modal, Form, Button, Input, Radio } from "antd";
 
-const host = "http://localhost:3333";
+const host = "http://188.166.218.38:3333";
+// const host = "http://localhost:3333";
+
 const title = "รายละเอียด cms";
 const body = { backgroundImage: "url('monlan.png')" };
 
@@ -206,13 +208,14 @@ export default function CmsDetail() {
   };
 
   const SendRequest = (values) => {
+    const jwt_token = localStorage.getItem("token");
     const selectedRadio = document.querySelector(
       'input[name="type-of-use"]:checked'
     );
     const selectedValue = selectedRadio ? selectedRadio.value : "";
     const formData = new FormData();
     formData.append("cmsID", cmsID.id);
-    formData.append("userID", userdata.id);
+    // formData.append("userID", userdata.id);
     formData.append("artistId", artistDetail.artistId);
     formData.append("pkgId", pkgID);
     formData.append("selectedValue", touValue);
@@ -226,6 +229,7 @@ export default function CmsDetail() {
       .post(`${host}/order/add`, formData, {
         headers: {
           "Content-type": "multipart/form-data",
+          Authorization: "Bearer " + jwt_token,
         },
       })
       .then((response) => {
@@ -238,6 +242,18 @@ export default function CmsDetail() {
             formData.append("od_id", od_id);
             // ส่งค่าเพื่อเป็น chat ให้นักวาด
             axios .post(`${host}/messages/addmsg-order`, formData, {})
+
+        //     axios.post("http://localhost:3333/messages/addmsg", {
+        //   from: userdata.id,
+        //   to: artistDetail.artistId,
+        //   message: "ส่งคำขอจ้าง",
+        //   step_id: step_id,
+        //   od_id: chat_order_id,
+        //   status: "a",
+        //   checked: 1,
+        // })
+              
+              
             .then((response) => {
                 const data = response.data;
                 if (data.status === 'ok') {
@@ -579,8 +595,20 @@ function Queue(props) {
   const cmsID = props.cmsID;
   const [queue, setQueue] = useState("");
   const [orderAll, setOrderAll] = useState("");
+  const [allqueue, setAllQueue] = useState([]);
   console.log("queue", queue);
   console.log("orderAll", orderAll);
+  console.log(allqueue);
+  useEffect(() => {
+    fetchData()
+  },[])
+  const fetchData = async() => {
+    await axios.get(`${host}/getQueueData/${cmsID}`).then((response) => {
+      const data = response.data;
+      setAllQueue(data.uniqueResults)
+    })
+  }
+
   axios
     .get(`${host}/queue/${cmsID}`, {
       headers: {
@@ -592,7 +620,7 @@ function Queue(props) {
       const data = response.data;
       setQueue(data.Queue);
       setOrderAll(data.latestOdQNumber);
-    });
+  });
 
   return (
     <>
@@ -607,24 +635,15 @@ function Queue(props) {
           <th>ระยะเวลา(วัน)</th>
           <th>ความคืบหน้า</th>
         </tr>
-        <tr>
-          <td>1</td>
-          <td>คอมมิชชัน Full Scale : Headshot</td>
-          <td>2</td>
-          <td>ภาพร่าง</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>คอมมิชชัน Full Scale : Half body</td>
-          <td>3</td>
-          <td>ยังไม่เริ่ม</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>คอมมิชชัน Full Scale : Full Body</td>
-          <td>4</td>
-          <td>ยังไม่เริ่ม</td>
-        </tr>
+
+        {allqueue.map(data => (
+          <tr key={data.od_id}> 
+            <td>{data.od_id}</td>
+            <td>{data.cms_name} : {data.pkg_name}</td>
+            <td>3</td>
+            <td>ยังไม่เริ่ม</td>
+          </tr>
+        ))}
       </table>
     </>
   );

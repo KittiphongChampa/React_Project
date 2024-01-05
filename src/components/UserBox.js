@@ -9,6 +9,11 @@ import Modal from "react-bootstrap/Modal";
 import React, { useState, useEffect,useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
+
+const host = "http://188.166.218.38:3333";
+// const host = "http://localhost:3333";
+
+
 function UserBox(props) {
     const jwt_token = localStorage.getItem("token");
     const [banReason, setBanReason] = useState("");
@@ -27,7 +32,7 @@ function UserBox(props) {
         const formData = new FormData();
         formData.append("banReason", banReason);
         await axios
-        .patch(`http://localhost:3333/alluser/delete/${userId}`, formData, {
+        .patch(`${host}/alluser/delete/${userId}`, formData, {
             headers: {
                 Authorization: "Bearer " + jwt_token,
             }
@@ -115,7 +120,7 @@ function AdminBox(props) {
             }).then((result) => {
             if (result.isConfirmed) {
                 // Swal.fire('ลบแล้ววว!', '', 'success')
-                axios .patch(`http://localhost:3333/alladmin/delete/${id}`).then((response) => {
+                axios .patch(`${host}/alladmin/delete/${id}`).then((response) => {
                     const data = response.data;
                     if (data.status === "ok") {
                         Swal.fire('ลบแล้ววว!', '', 'success').then(() => {

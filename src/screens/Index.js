@@ -32,6 +32,8 @@ const cms_loop = () => {
   return paragraphs;
 }
 
+const host = "http://188.166.218.38:3333";
+// const host = "http://localhost:3333";
 
 export default function Index() {
   const navigate = useNavigate();
@@ -43,15 +45,22 @@ export default function Index() {
     if (token) {
       setStatusUserLogin('login');
       getUser();
+      
     }
+    getAritisIFollow();
+    
     getLatestCommission();
-    // getArtistCommission();
+    getArtistCommission();
     // getPopular();
+    getGalleryLatest();
+    getGalleryArtistIfollow();
+
+    
   }, []);
   
   const getUser = async () => {
     await axios
-      .get("http://localhost:3333/index", {
+      .get(`${host}/index`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -84,20 +93,45 @@ export default function Index() {
   const [cmsLatests, setCmsLatest] = useState([]); //คอมมิชชันล่าสุด
   const [cmsArtists, setCmsArtist] = useState([]); //คอมมิชชันของนักวาดที่ติดตาม
   const [cmsPopular, setCmsPopular] = useState([]); //
-  // console.log(cmsPopular);
+
+  const [gallerylatest, setGallerylatest] = useState([]); //แกลลอรี่ล่าสุด
+  const [galleryIfollow, setGalleryIFollow] = useState([]); //แกลลอรี่ของนักวาดที่ติดตาม
+
+  const [IFollowerData, setIFollowerData] = useState([]);
+  const [IFollowingIDs, setIFollowingIDs] = useState([]); //นักวาดที่เราติดตามมีใครบ้าง
+
+  //หาคนที่เรากำลังติดตามและติดตามเรา
+  const getAritisIFollow = async () => {
+    await axios
+      .get(`${host}/profile`, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((response) => {
+        const data = response.data;
+          if (data.status === "ok") {
+            setIFollowingIDs(data.IFollowingsIds);
+            const formData = new FormData();
+            formData.append("iFollowing", data.IFollowingsIds);
+            axios .post(`${host}/ArtistIndex`, formData).then((response) => {
+                const data = response.data;
+                setIFollowerData(data.results)
+            })
+          } else {
+            console.log("error");
+          }
+      })
+  }
+
   const getLatestCommission = async () => {
-    await axios.get("http://localhost:3333/latestCommission", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    }).then((response) => {
+    await axios.get(`${host}/latestCommission`).then((response) => {
       const Cmslatest = response.data;
       setCmsLatest(Cmslatest.commissions)
     })
   }
   const getArtistCommission = async () => {
-    await axios.get("http://localhost:3333/artistCommission", {
+    await axios.get(`${host}/artistCommission`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
@@ -108,7 +142,7 @@ export default function Index() {
     })
   }
   const getPopular = async () => {
-    await axios.get("http://localhost:3333/popularCommission", {
+    await axios.get(`${host}/popularCommission`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
@@ -119,11 +153,33 @@ export default function Index() {
     })
   }
 
+  const getGalleryLatest = async () => {
+    await axios.get(`${host}/gallerry/latest`).then((response) => {
+      const Gallerylatest = response.data;
+      setGallerylatest(Gallerylatest.results)
+    })
+  }
+  const getGalleryArtistIfollow = async () => {
+    await axios.get(`${host}/gallerry/Ifollow`,{
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    }).then((response) => {
+      const data = response.data;
+      if (data.status === 'ok') {
+        setGalleryIFollow(data.results)
+      } else {
+        // setMessage("ไม่มีนักวาดที่กำลังติดตาม")
+      }
+    })
+  }
+
   const { Search } = Input;
   const { submenu } = useParams();
 
   useEffect(() => {
-    console.log(submenu)
+    // console.log(submenu)
     const oldSelected = document?.getElementsByClassName("selected")
     oldSelected[0]?.classList.remove("selected")
     if (submenu == null) {
@@ -134,7 +190,7 @@ export default function Index() {
         document.getElementById(submenu).classList.add("selected")
       } else {
         if (submenu !== 'search') {
-          window.location.href = "http://localhost:3000/";
+          window.location.href = `${host}/`;
         }
       }
     }
@@ -164,7 +220,11 @@ export default function Index() {
                 <Link to="/gallery" id="gallery" className="sub-menu" >แกลเลอรี</Link>
                 <Link to="/artists" id="artists" className="sub-menu" >นักวาด</Link>
               </div>
-              {submenu == null ? <Foryou statusUserLogin={statusUserLogin} cmsLatests={cmsLatests} /> : submenu == "commissions" ? <Commissions /> : submenu == "gallery" ? <Gallery /> : submenu == "artists" ? <Artists /> : submenu == "search" && <Search />}
+              {submenu == null 
+              ? <Foryou statusUserLogin={statusUserLogin} cmsLatests={cmsLatests} cmsArtists={cmsArtists} IFollowerData={IFollowerData} gallerylatest={gallerylatest} galleryIfollow={galleryIfollow} /> : submenu == "commissions" 
+              ? <Commissions IFollowingIDs={IFollowingIDs}/> : submenu == "gallery" 
+              ? <Gallery IFollowingIDs={IFollowingIDs} /> : submenu == "artists" 
+              ? <Artists IFollowingIDs={IFollowingIDs}/> : submenu == "search" && <Search />}
             </> :
               <SearchResults />}
           </div>
@@ -175,75 +235,114 @@ export default function Index() {
 }
 
 
-function Commissions() {
+function Commissions({IFollowingIDs}) {
+
+  const [Message, setMessage] = useState('');
+  const [sortBy, setSortBy] = useState('ล่าสุด');
+  const [filterBy, setFilterBy] = useState('all');
+  const [topicValues, setTopicValues] = useState([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19])
+  const [topics, setTopics] = useState([]);
+  const [commission, setCommission] = useState([]);
+
+  useEffect(() => {
+    topic();
+    fetchData();
+  }, [sortBy, filterBy, topicValues]);
+
+  const topic = async () => {
+    await axios.get(`${host}/getTopic`).then((response) => {
+      const data = response.data;
+      setTopics(data.topics)
+    });
+  }
 
   const all_option = [
-    { value: '0', label: 'เลือกทั้งหมด' },
-    { value: '1', label: 'Sequentail Art' },
-    { value: '2', label: 'SD scale' },
-    { value: '3', label: 'Traditional Art' },
-    { value: '4', label: 'doodle Art' },
-    { value: '5', label: 'Semi-realistic' },
-    { value: '6', label: 'Realistic' },
-    { value: '7', label: 'Pixel Art' },
-    { value: '8', label: 'Vector' },
-    { value: '9', label: 'Anime' },
-    { value: '10', label: 'Digital Art' },
-    { value: '11', label: 'Furry' },
-    { value: '12', label: 'Cubism Art' },
-    { value: '13', label: 'Isometric Art' },
-    { value: '14', label: 'Midcentury Illustration' },
-    { value: '15', label: 'Minimalism' },
-    { value: '16', label: 'Mosaic Art' },
-    { value: '17', label: 'Pop Art' },
-    { value: '19', label: 'Sketchy Style Art' },
-    { value: '20', label: 'Watercolor' },
+    { value: 0, label: 'เลือกทั้งหมด' },
+    ...topics.map((data) => ({
+      value: data.tp_id,
+      label: data.tp_name,
+    })),
   ]
+  
   const { Option } = Select;
 
   const children = [];
 
-  all_option.map((item, index) => (
-    index === 0 ? <button>เลือกทั้งหมดดด</button> : children.push(<Option key={index}>{item}</Option>)
-  ))
-  const [topicValues, setTopicValues] = useState(["0"])
+  // all_option.map((item, index) => (
+  //   index === "0" ? <button>เลือกทั้งหมด</button> : children.push(<Option key={index}>{item}</Option>)
+  // ))
+
+  all_option.map((item) => (
+    item.value === 0 ? (
+      <button key={item.key}>เลือกทั้งหมด</button>
+    ) : (
+      children.push(<Option key={item.key} value={item.value}>{item.label}</Option>)
+    )
+  ));
+  
+  // const [topicValues, setTopicValues] = useState([0])
   const newTopicValues = [];
   const [checkAll, setCheckAll] = useState(false)
 
-  useEffect(() => {
-    all_option.map((item, index) => {
-      console.log(item.value, 'index:', index)
-      newTopicValues.push(item.value);
-    });
-    setTopicValues(newTopicValues)
-
-  }, [])
-
+  // value is topicValues
   function handleChange(value) {
-    console.log(topicValues[topicValues.length - 1])
-    if (value.includes('0')) {
-
-      if (value[value.length - 1] == "0") {
-
-        console.log("เพิ่งเพิ่มเข้ามา")
-        all_option.map((item, index) => {
-          console.log(item.value, 'index:', index)
+    // console.log(topicValues[topicValues.length - 1])
+    if (value.includes(0)) {
+      if (value[value.length - 1] === 0) {
+        // console.log("เลือกทั้งหมด = เพิ่งเพิ่มเข้ามา")
+        all_option.map((item) => {
           newTopicValues.push(item.value);
         });
+
         setTopicValues(newTopicValues)
       } else {
-        console.log("มียุแล้ว")
-        const filteredArray = value.filter(item => item !== "0");
+        // console.log("เลือกทั้งหมด แต่กดเลือกไม่ครบ = มียุแล้ว")
+        const filteredArray = value.filter(item => item !== 0);
         // อัปเดตค่าใน state ด้วยอาร์เรย์ที่ไม่มีสมาชิกที่มีค่า 0
         setTopicValues(filteredArray);
         //ถ้าความยาว=อาเรย์-1 แล้วไม่มีสมาชิก0 ในนั้น ให้ยกเลิกตัวเลือกทั้งหมดออก
       }
     } else {
+      // console.log("เข้า",value);
       setTopicValues(value)
     }
   }
 
-  const all_cms = ["../monlan.png", "/f-b.png", "/boo.jpg", "/AB1.png", "/monlan.png", "/monlan.png", "/monlan.png"]
+  const fetchData = () => {
+    if (filterBy === 'all') {
+      sortAndFilterData();
+    } else {
+      filter();
+    }
+  };
+
+  const sortAndFilterData = () => {
+    axios.get(`${host}/getCommission?sortBy=${sortBy}&topicValues=${topicValues}`).then((response) => {
+      const data = response.data;
+      setCommission(data.commissions)
+      setMessage('');
+    });
+  }
+
+  //หาก filter กรองจาก ทำอันนี้
+  const filter = () => {
+    axios.get(`${host}/getCommission/Ifollow?sortBy=${sortBy}&IFollowingIDs=${IFollowingIDs}&topicValues=${topicValues}`).then((response) => {
+      const data = response.data;
+      if (data.status === 'ok') {
+        setCommission(data.commissions)
+        setMessage('');
+      } else {
+        setCommission([]);
+        setMessage("ไม่มีผลงาน")
+      }
+    });
+  }
+
+  const handleSortByChange = (selectedOption) => {
+    setSortBy(selectedOption);
+  };
+
+  
   return (
     <>
       <div className="content-box">
@@ -252,20 +351,22 @@ function Commissions() {
           {/* <p>ดูทั้งหมด&gt;</p> */}
           <div className="submenu-filter">
 
-            เรียงตาม :<Select
-              defaultValue="ล่าสุด"
+            เรียงตาม :
+            <Select
+              value={{ value: sortBy, label: sortBy }}
               style={{ width: 120 }}
-              // onChange={handleChange}
+              onChange={handleSortByChange}
               options={[
+                { value: 'ล่าสุด', label: 'ล่าสุด' },
+                { value: 'เก่าสุด', label: 'เก่าสุด' },
                 { value: 'ราคา ↑', label: 'ราคา ↑' },
                 { value: 'ราคา ↓', label: 'ราคา ↓' },
                 { value: 'คะแนนรีวิว ↑', label: 'คะแนนรีวิว ↑' },
                 { value: 'คะแนนรีวิว ↓', label: 'คะแนนรีวิว ↓' },
-                { value: 'ล่าสุด', label: 'ล่าสุด' },
-                { value: 'เก่าสุด', label: 'เก่าสุด' },
-                // { value: 'disabled', label: 'Disabled', disabled: true },
               ]}
             />
+
+
             สถานะ :<Select
               defaultValue="เปิด"
               style={{ width: 100 }}
@@ -277,14 +378,8 @@ function Commissions() {
                 // { value: 'disabled', label: 'Disabled', disabled: true },
               ]}
             />
-            {/* หัวข้อ :<Select
-                            defaultValue="topic"
-                            style={{ width: 120 }}
-                            // onChange={handleChange}
-                            options={[
-                                { value: 'topic', label: 'หัวข้อ' },
-                            ]}
-                        /> */}หัวข้อ : <Select
+
+            หัวข้อ : <Select
               mode="multiple"
               style={{ width: '10rem' }}
               placeholder="Please select"
@@ -296,28 +391,30 @@ function Commissions() {
               options={all_option}
               allowClear
             >
-
               {/* {children} */}
             </Select>
-            กรองจาก :<Select
-              defaultValue="all"
-              style={{ width: 170 }}
-              // onChange={handleChange}
+            
+            กรองจาก :
+            <Select
+              value={{ value: filterBy, label: filterBy === 'all' ? 'นักวาดทั้งหมด' : 'นักวาดที่ติดตาม' }}
+              onChange={(selectedOption) => setFilterBy(selectedOption)}
               options={[
                 { value: 'all', label: 'นักวาดทั้งหมด' },
                 { value: 'follow', label: 'นักวาดที่ติดตาม' },
               ]}
             />
+
           </div>
         </div>
+          
         <div className="content-items">
-
-          {all_cms.map((src) =>
-            <CmsItem src={src} headding="คอมมิชชัน SD" price="100" desc="คมช.เส้นเปล่า-ลงสีรับทุกสเกล สามารถเพิ่มตัวละครหรือเพิ่มพร็อพได้ โดยราคาขึ้นอยู่กับรายละเอียดที่เพิ่มเข้ามา" />
-          )
-          }
-
+          {commission.map((cms)=>(
+            <Link to={`/cmsdetail/${cms.cms_id}`}>
+              <CmsItem src={cms.ex_img_path} headding={cms.cms_name} price={cms.pkg_min_price} desc={cms.cms_desc} />
+            </Link>
+          ))}
         </div>
+          
 
 
       </div>
@@ -326,58 +423,9 @@ function Commissions() {
 
 }
 
-function Foryou({statusUserLogin, cmsLatests, handleLinkClick }) {
+function Foryou({statusUserLogin, cmsLatests, cmsArtists, handleLinkClick, IFollowerData, gallerylatest, galleryIfollow }) {
   const options = ['Option 1', 'Option 2', 'Option 3', 'Option 4'];
-  const [cmsArtists, setCmsArtist] = useState([]);
-  const token = localStorage.getItem("token");
 
-  // const [iFollowing, setIFollowingsIds] = useState([]);
-  const [IFollowerData, setIFollowerData] = useState([]);
-  // console.log(IFollowerData);
-  
-  useEffect(() => {
-    getArtistCommission();
-    getAritisIFollow();
-  },[])
-
-
-  const getArtistCommission = async () => {
-    await axios.get("http://localhost:3333/artistCommission", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    }).then((response) => {
-      const Cmsfollowing = response.data;
-      setCmsArtist(Cmsfollowing.commissions);
-    })
-  }
-
-  const getAritisIFollow = async () => {
-    await axios
-      .get("http://localhost:3333/profile", {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((response) => {
-        const data = response.data;
-          if (data.status === "ok") {
-            const formData = new FormData();
-            formData.append("iFollowing", data.IFollowingsIds);
-            axios .post("http://localhost:3333/openFollowing", formData,{
-                headers: {
-                    Authorization: "Bearer " + token,
-                },
-            }).then((response) => {
-                const data = response.data;
-                setIFollowerData(data.results)
-            })
-          } else {
-            console.log("error");
-          }
-      })
-  }
   // Handle the selection change
   const handleSelectChange = (selectedItems) => {
     console.log(selectedItems);
@@ -390,7 +438,7 @@ function Foryou({statusUserLogin, cmsLatests, handleLinkClick }) {
           <div className="content-box">
             <div className="content-top">
               <p className="h3">นักวาดที่คุณกำลังติดตาม</p>
-              <Link to="http://localhost:3000/homepage/artists"><p>ดูทั้งหมด&gt;</p></Link>
+              <Link to="/homepage/artists"><p>ดูทั้งหมด&gt;</p></Link>
             </div>
 
             <Swiper
@@ -401,18 +449,12 @@ function Foryou({statusUserLogin, cmsLatests, handleLinkClick }) {
               modules={[Navigation]}
               className="artistbox-swiper"
             >
-              {/* <SwiperSlide>
-                <ArtistBox IFollowerData={IFollowerData} />
-              </SwiperSlide> */}
-
               {IFollowerData.map(data => (
-                
                   <SwiperSlide>
                     <a key={data.id} href={`/profile/${data.id}`}>
                       <ArtistBox img={data.urs_profile_img} name={data.urs_name}/>
                     </a>
                   </SwiperSlide>
-              
               ))}
             </Swiper>
           </div>
@@ -420,7 +462,7 @@ function Foryou({statusUserLogin, cmsLatests, handleLinkClick }) {
           <div className="content-box">
             <div className="content-top">
               <p className="h3">คอมมิชชันของนักวาดที่ติดตาม</p>
-              <Link to="http://localhost:3000/homepage/commissions"><p>ดูทั้งหมด&gt;</p></Link>
+              <Link to="/homepage/commissions"><p>ดูทั้งหมด&gt;</p></Link>
             </div>
             <Swiper
             slidesPerView="auto"
@@ -436,13 +478,7 @@ function Foryou({statusUserLogin, cmsLatests, handleLinkClick }) {
             modules={[Keyboard, Scrollbar, Navigation]}
             className="cms-item-swiper"
           >
-            {/* {cms_loop()} */}
             {cmsArtists.map(cmsArtstdata => (
-              // <div key={cmsLatest.cms_id} style={{ display: "flex" }}>
-              //   <Link to={`/cmsdetail/${cmsLatest.cms_id}`} onClick={() => handleLinkClick(cmsLatest.cms_id)} >
-              //     <CmsItem src={cmsLatest.ex_img_path} headding={cmsLatest.cms_name} price="100" desc={cmsLatest.cms_desc} />
-              //   </Link>
-              // </div>
               <SwiperSlide key={cmsArtstdata.cms_id}>
                 <Link to={`/cmsdetail/${cmsArtstdata.cms_id}`} onClick={() => handleLinkClick(cmsArtstdata.cms_id)}>
                   <CmsItem src={cmsArtstdata.ex_img_path} headding={cmsArtstdata.cms_name} price={cmsArtstdata.pkg_min_price} desc={cmsArtstdata.cms_desc}/>
@@ -455,7 +491,7 @@ function Foryou({statusUserLogin, cmsLatests, handleLinkClick }) {
           <div class="content-box">
             <div class="content-top">
               <p className="h3">ผลงานนักวาดที่กำลังติดตาม</p>
-              <Link to="http://localhost:3000/homepage/gallery"><p>ดูทั้งหมด&gt;</p></Link>
+              <Link to="/homepage/gallery"><p>ดูทั้งหมด&gt;</p></Link>
             </div>
             <Swiper
               slidesPerView="auto"
@@ -471,28 +507,12 @@ function Foryou({statusUserLogin, cmsLatests, handleLinkClick }) {
               modules={[Keyboard, Scrollbar, Navigation]}
               className="gall-item-swiper"
             >
+              {galleryIfollow.map((data, index) => (
+                <SwiperSlide key={index}>
+                  <Link to={`/artworkdetail/${data.artw_id}`}><img src={data.ex_img_path} /></Link>
+                </SwiperSlide>
+              ))}
 
-              <SwiperSlide >
-                <Link to="/artworkdetail"><img src="/f-b.png" /></Link>
-              </SwiperSlide>
-              <SwiperSlide >
-                <Link to="/artworkdetail"><img src="/f-b.png" /></Link>
-              </SwiperSlide>
-              <SwiperSlide >
-                <Link to="/artworkdetail"><img src="/character.png" /></Link>
-              </SwiperSlide>
-              <SwiperSlide >
-                <Link to="/artworkdetail"><img src="/f-b.png" /></Link>
-              </SwiperSlide>
-              <SwiperSlide >
-                <Link to="/artworkdetail"><img src="/f-b.png" /></Link>
-              </SwiperSlide>
-              <SwiperSlide >
-                <Link to="/artworkdetail"><img src="/f-b.png" /></Link>
-              </SwiperSlide>
-              <SwiperSlide >
-                <Link to="/artworkdetail"><img src="/character.png" /></Link>
-              </SwiperSlide>
             </Swiper>
           </div>
         </>
@@ -503,7 +523,7 @@ function Foryou({statusUserLogin, cmsLatests, handleLinkClick }) {
       <div class="content-box">
         <div class="content-top">
           <p className="h3">คอมมิชชันล่าสุด</p>
-          <Link to="http://localhost:3000/homepage/commissions"><p>ดูทั้งหมด&gt;</p></Link>
+          <Link to="/homepage/commissions"><p>ดูทั้งหมด&gt;</p></Link>
         </div>
       </div>
       <Swiper
@@ -521,11 +541,6 @@ function Foryou({statusUserLogin, cmsLatests, handleLinkClick }) {
         className="cms-item-swiper"
       >
         {cmsLatests.map(cmsLatest => (
-          // <div key={cmsLatest.cms_id} style={{ display: "flex" }}>
-          //   <Link to={`/cmsdetail/${cmsLatest.cms_id}`} onClick={() => handleLinkClick(cmsLatest.cms_id)} >
-          //     <CmsItem src={cmsLatest.ex_img_path} headding={cmsLatest.cms_name} price="100" desc={cmsLatest.cms_desc} />
-          //   </Link>
-          // </div>
           <SwiperSlide key={cmsLatest.cms_id}>
             <Link to={`/cmsdetail/${cmsLatest.cms_id}`} onClick={() => handleLinkClick(cmsLatest.cms_id)} >
               <CmsItem src={cmsLatest.ex_img_path} headding={cmsLatest.cms_name} price={cmsLatest.pkg_min_price} desc={cmsLatest.cms_desc} />
@@ -536,7 +551,7 @@ function Foryou({statusUserLogin, cmsLatests, handleLinkClick }) {
       <div class="content-box">
         <div class="content-top">
           <p className="h3">ผลงานล่าสุด</p>
-          <Link to="http://localhost:3000/homepage/gallery"><p>ดูทั้งหมด&gt;</p></Link>
+          <Link to="/homepage/gallery"><p>ดูทั้งหมด&gt;</p></Link>
         </div>
         <Swiper
           slidesPerView="auto"
@@ -552,30 +567,11 @@ function Foryou({statusUserLogin, cmsLatests, handleLinkClick }) {
           modules={[Keyboard, Scrollbar, Navigation]}
           className="gall-item-swiper"
         >
-
-          <SwiperSlide >
-            <Link to="/artworkdetail"><img src="/Ares.png" /></Link>
-          </SwiperSlide>
-          <SwiperSlide >
-            <Link to="/artworkdetail"><img src="/character.png" /></Link>
-          </SwiperSlide>
-          <SwiperSlide >
-            <Link to="/artworkdetail"><img src="/f-b.png" /></Link>
-          </SwiperSlide>
-          <SwiperSlide >
-            <Link to="/artworkdetail"><img src="/f-b.png" /></Link>
-          </SwiperSlide>
-          <SwiperSlide >
-            <Link to="/artworkdetail"><img src="/f-b.png" /></Link>
-          </SwiperSlide>
-          <SwiperSlide >
-            <Link to="/artworkdetail"><img src="/character.png" /></Link>
-          </SwiperSlide>
-          <SwiperSlide >
-            <Link to="/artworkdetail"><img src="/f-b.png" /></Link>
-          </SwiperSlide>
-
-
+          {gallerylatest.map(data=>(
+            <SwiperSlide key={data.artw_id}>
+              <Link to={`/artworkdetail/${data.artw_id}`}><img src={data.ex_img_path} /></Link>
+            </SwiperSlide>
+          ))}
         </Swiper>
 
       </div>
@@ -583,7 +579,65 @@ function Foryou({statusUserLogin, cmsLatests, handleLinkClick }) {
   )
 }
 
-function Gallery() {
+function Gallery({IFollowingIDs}) {
+  const [allGallery, setAllGallery] = useState([]);
+  const [Message, setMessage] = useState('');
+  const [sortBy, setSortBy] = useState('ล่าสุด');
+  const [filterBy, setFilterBy] = useState('all');
+  const [selectedTopic, setSelectedTopic] = useState('เลือกทั้งหมด');
+  const [topics, setTopics] = useState([]);
+
+  useEffect(() => {
+    topic();
+    fetchData();
+  }, [sortBy, filterBy, selectedTopic]);
+
+  const topic = () => {
+    axios.get(`${host}/getTopic`).then((response) => {
+      const data = response.data;
+      setTopics(data.topics)
+    });
+  }
+
+  const fetchData = () => {
+    if (filterBy === 'all') {
+      sortAndFilterData();
+    } else {
+      filter();
+    }
+  };
+
+  //หาก filter แค่เรียงตาม ทำอันนี้
+  const sortAndFilterData = () => {
+    axios.get(`${host}/gallerry/all?sortBy=${sortBy}&filterBy=${filterBy}&topic=${selectedTopic}`).then((response) => {
+      const data = response.data;
+      setAllGallery(data.results)
+      setMessage('');
+    });
+  }
+  
+  //หาก filter กรองจาก ทำอันนี้
+  const filter = () => {
+    axios.get(`${host}/galleryIFollowArtist?sortBy=${sortBy}&IFollowingIDs=${IFollowingIDs}&topic=${selectedTopic}`).then((response) => {
+      const data = response.data;
+      if (data.status === 'ok') {
+        setAllGallery(data.results)
+        setMessage('');
+      } else {
+        setAllGallery([]);
+        setMessage("ไม่มีนักวาดที่กำลังติดตาม")
+      }
+    });
+  }
+
+  const handleSortByChange = (selectedOption) => {
+    setSortBy(selectedOption);
+  };
+
+  const handleTopicChange = (selectedOption) => {
+    setSelectedTopic(selectedOption);
+  };
+
   return (
     <div className="content-box">
       <div className="content-top">
@@ -591,32 +645,33 @@ function Gallery() {
         {/* <p>ดูทั้งหมด&gt;</p> */}
         <div className="submenu-filter">
 
-          เรียงตาม :<Select
-            defaultValue="ล่าสุด"
+          เรียงตาม :
+          <Select
+            value={{ value: sortBy, label: sortBy }}
             style={{ width: 120 }}
-            // onChange={handleChange}
+            onChange={handleSortByChange}
             options={[
-              // { value: 'jack', label: 'ราคา ↑' },
-              // { value: 'lucy', label: 'ราคา ↓' },
-              // { value: 'Yiminghe', label: 'คะแนนรีวิว ↑' },
-              // { value: 'Yiminghe', label: 'คะแนนรีวิว ↓' },
               { value: 'ล่าสุด', label: 'ล่าสุด' },
               { value: 'เก่าสุด', label: 'เก่าสุด' },
-              // { value: 'disabled', label: 'Disabled', disabled: true },
             ]}
           />
-          หัวข้อ :<Select
-            defaultValue="topic"
-            style={{ width: 120 }}
-            // onChange={handleChange}
-            options={[
-              { value: 'topic', label: 'หัวข้อ' },
-            ]}
-          />
-          กรองจาก :<Select
-            defaultValue="all"
-            style={{ width: 170 }}
-            // onChange={handleChange}
+          หัวข้อ :
+          <Select
+          value={{ value: selectedTopic, label: selectedTopic.label }}
+          style={{ width: 120 }}
+          onChange={handleTopicChange}
+          options={[
+            { value: 'เลือกทั้งหมด', label: 'เลือกทั้งหมด' },
+            ...topics.map((data) => ({
+              value: data.tp_id,
+              label: data.tp_name,
+            })),
+          ]}
+        />
+          กรองจาก :
+          <Select
+            value={{ value: filterBy, label: filterBy === 'all' ? 'นักวาดทั้งหมด' : 'นักวาดที่ติดตาม' }}
+            onChange={(selectedOption) => setFilterBy(selectedOption)}
             options={[
               { value: 'all', label: 'นักวาดทั้งหมด' },
               { value: 'follow', label: 'นักวาดที่ติดตาม' },
@@ -625,27 +680,65 @@ function Gallery() {
 
         </div>
 
-
       </div>
-      <div className="content-items">
-        <Link to="/artworkdetail"><div className="artwork"><img src="/f-b.png" /></div></Link>
-        <div className="artwork"><img src="/f-b.png" /></div>
-        <div className="artwork"><img src="/f-b.png" /></div>
-        <div className="artwork"><img src="/f-b.png" /></div>
-        <div className="artwork"><img src="/f-b.png" /></div>
-        <div className="artwork"><img src="/f-b.png" /></div>
-        <div className="artwork"><img src="/f-b.png" /></div>
-        <div className="artwork"><img src="/f-b.png" /></div>
-        <div className="artwork"><img src="/f-b.png" /></div>
-
-      </div>
+      {Message == '' ? (
+       
+        <div className="content-items">
+          {allGallery.map((data) => (
+            <Link key={data.artw_id} to={`/artworkdetail/${data.artw_id}`}>
+              <div className="artwork"><img src={data.ex_img_path} /></div>
+            </Link>
+          ))}
+        </div>
+      ) : (
+        <div className="artwork">
+          <h2>{Message}</h2>
+        </div>
+      )}
 
 
     </div>
   )
 }
 
-function Artists() {
+function Artists({IFollowingIDs}) {
+  const [allartist, setAllArtist] = useState([]);
+  const [Message, setMessage] = useState('');
+  const [sortBy, setSortBy] = useState('ล่าสุด');
+  const [filterBy, setFilterBy] = useState('all');
+
+  useEffect(() => {
+    if (filterBy === 'all') {
+      fetchData();
+      setMessage('');
+    } else {
+      fetchData2();
+    }
+  },[sortBy, filterBy])
+
+  const fetchData = () => {
+    axios.get(`${host}/allArtist?sortBy=${sortBy}&filterBy=${filterBy}`).then((response) => {
+      const data = response.data;
+      setAllArtist(data.results)
+    });
+  };
+
+  const fetchData2 = () => {
+    axios.get(`${host}/getAritisIFollow?sortBy=${sortBy}&IFollowingIDs=${IFollowingIDs}`).then((response) => {
+      const data = response.data;
+      if (data.status === 'ok') {
+        setAllArtist(data.results)
+      } else {
+        setMessage("ไม่มีนักวาดที่กำลังติดตาม")
+      }
+    });
+  }
+
+  const handleSortByChange = (selectedOption) => {
+    console.log("Selected Sort By:", selectedOption);
+    setSortBy(selectedOption);
+  };
+
   return (
     <>
       <div className="content-top">
@@ -653,32 +746,21 @@ function Artists() {
         {/* <p>ดูทั้งหมด&gt;</p> */}
         <div className="submenu-filter">
 
-          เรียงตาม :<Select
-            defaultValue="ล่าสุด"
+          เรียงตาม :
+          <Select
+            value={{ value: sortBy, label: sortBy }}
             style={{ width: 120 }}
-            // onChange={handleChange}
+            onChange={handleSortByChange}
             options={[
-              // { value: 'jack', label: 'ราคา ↑' },
-              // { value: 'lucy', label: 'ราคา ↓' },
-              // { value: 'Yiminghe', label: 'คะแนนรีวิว ↑' },
-              // { value: 'Yiminghe', label: 'คะแนนรีวิว ↓' },
               { value: 'ล่าสุด', label: 'ล่าสุด' },
               { value: 'เก่าสุด', label: 'เก่าสุด' },
-              // { value: 'disabled', label: 'Disabled', disabled: true },
             ]}
           />
-          หัวข้อ :<Select
-            defaultValue="topic"
-            style={{ width: 120 }}
-            // onChange={handleChange}
-            options={[
-              { value: 'topic', label: 'หัวข้อ' },
-            ]}
-          />
-          กรองจาก :<Select
-            defaultValue="all"
-            style={{ width: 170 }}
-            // onChange={handleChange}
+          
+          กรองจาก :
+          <Select
+            value={{ value: filterBy, label: filterBy === 'all' ? 'นักวาดทั้งหมด' : 'นักวาดที่ติดตาม' }}
+            onChange={(selectedOption) => setFilterBy(selectedOption)}
             options={[
               { value: 'all', label: 'นักวาดทั้งหมด' },
               { value: 'follow', label: 'นักวาดที่ติดตาม' },
@@ -686,15 +768,20 @@ function Artists() {
           />
 
         </div>
-
-
       </div>
-      <div className="artistbox-items">
-        <ArtistBox />
-        <ArtistBox />
-        <ArtistBox />
-        <ArtistBox />
+      {Message == '' ? (
+        <div className="artistbox-items">
+        {allartist.map(data => (
+          <a key={data.id} href={`/profile/${data.id}`}>
+            <ArtistBox img={data.urs_profile_img} name={data.urs_name}/>
+          </a>
+        ))}
       </div>
+      ) : (
+        <div className="artistbox-items">
+          <h2>{Message}</h2>
+        </div>
+      )}
     </>
   )
 }
@@ -714,7 +801,7 @@ function SearchResults(props) {
 
         <div className="content-top">
           <p className="h3">นักวาด</p>
-          <Link to="http://localhost:3000/homepage/artists"><p>ดูทั้งหมด&gt;</p></Link>
+          <Link to="/homepage/artists"><p>ดูทั้งหมด&gt;</p></Link>
         </div>
 
         <Swiper
@@ -749,7 +836,7 @@ function SearchResults(props) {
       <div className="content-box">
         <div className="content-top">
           <p className="h3">คอมมิชชัน</p>
-          <Link to="http://localhost:3000/homepage/commissions"><p>ดูทั้งหมด&gt;</p></Link>
+          <Link to="/homepage/commissions"><p>ดูทั้งหมด&gt;</p></Link>
         </div>
       </div>
       <Swiper
@@ -772,7 +859,7 @@ function SearchResults(props) {
       <div class="content-box">
         <div class="content-top">
           <p className="h3">ผลงาน</p>
-          <Link to="http://localhost:3000/homepage/gallery"><p>ดูทั้งหมด&gt;</p></Link>
+          <Link to="/homepage/gallery"><p>ดูทั้งหมด&gt;</p></Link>
         </div>
         <div class="content-items">
         </div>

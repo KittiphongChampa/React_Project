@@ -3,6 +3,9 @@ import styled from "styled-components";
 import Robot from "../assets/robot.gif";
 import axios from "axios";
 
+const host = "http://188.166.218.38:3333";
+// const host = "http://localhost:3333";
+
 export default function Welcome() {
   const token = localStorage.getItem("token");
   const [userName, setUserName] = useState("");
@@ -33,7 +36,7 @@ const getUser = async () => {
   //     }
   //   });
   try {
-    const response = await axios.get("http://localhost:3333/index", {
+    const response = await axios.get(`${host}/index`, {
       headers: {
         Authorization: "Bearer " + token,
       },

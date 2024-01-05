@@ -20,7 +20,9 @@ import {
 import { Button, Checkbox, Form, Input } from "antd";
 import axios from "axios";
 
-const host = "http://localhost:3333";
+const host = "http://188.166.218.38:3333";
+// const host = "http://localhost:3333";
+
 const title = "เข้าสู่ระบบ";
 const bgImg = "url('mainmoon.jpg')";
 const body = { backgroundImage: bgImg };
@@ -37,7 +39,7 @@ export default function SignIn() {
 
   const onFinish = (values) => {
 
-    console.log("Success:", values.email, values.password);
+    // console.log("Success:", values.email, values.password);
     axios .post(`${host}/login`,{
       email: values.email,
       password: values.password

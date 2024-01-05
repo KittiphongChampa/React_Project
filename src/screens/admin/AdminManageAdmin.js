@@ -32,6 +32,9 @@ const toastOptions = {
     theme: "dark",
 };
 
+const host = "http://188.166.218.38:3333";
+// const host = "http://localhost:3333";
+
 export default function AdminManageAdmin(props) {
     const navigate = useNavigate();
     const [id, setID] = useState("");
@@ -77,7 +80,7 @@ export default function AdminManageAdmin(props) {
 
     const getAdminData = async () => {
         await axios
-            .get("http://localhost:3333/alladmin", {
+            .get(`${host}/alladmin`, {
                 headers: {
                     Authorization: "Bearer " + jwt_token,
                 },
@@ -90,6 +93,9 @@ export default function AdminManageAdmin(props) {
                 } else if (data.status === "no_access") {
                     alert(data.message);
                     navigate("/");
+                } else {
+                    localStorage.removeItem("token");
+                    navigate("/login");
                 }
             });
     };
@@ -98,8 +104,8 @@ export default function AdminManageAdmin(props) {
         const query = event.target.value.toLowerCase();
         const filtered = admins.filter(
             (item) =>
-                item.admin_name.toLowerCase().includes(query)
-                || item.admin_email.toLowerCase().includes(query)
+                item.admin_name.toLowerCase().includes(query) || 
+                item.admin_email.toLowerCase().includes(query)
         );
         setFilteredUser(filtered);
     };
@@ -149,7 +155,7 @@ export default function AdminManageAdmin(props) {
         if (handleValidation()) {
             setLoading(true);
             await axios
-                .post(`http://localhost:3333/alladmin/email/verify`, {
+                .post(`${host}/alladmin/email/verify`, {
                     headers: {
                         Authorization: "Bearer " + jwt_token,
                     },
@@ -180,7 +186,7 @@ export default function AdminManageAdmin(props) {
         setpopup_verifyOTP(false);
         if (handleValidationOTP()) {
             await axios
-                .post(`http://localhost:3333/alladmin/otp/verify/`, {
+                .post(`${host}/alladmin/otp/verify/`, {
                     headers: {
                         Authorization: "Bearer " + jwt_token,
                     },
@@ -214,7 +220,7 @@ export default function AdminManageAdmin(props) {
             formData.append("password", password);
             formData.append("file", file);
             await axios
-                .patch(`http://localhost:3333/alladmin/add/${id}`, formData, {
+                .patch(`${host}/alladmin/add/${id}`, formData, {
                     headers: {
                         Authorization: "Bearer " + jwt_token,
                     },

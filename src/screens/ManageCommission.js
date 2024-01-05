@@ -51,6 +51,11 @@ import "swiper/css/thumbs";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 import { isString } from "antd/es/button";
 
+
+const host = "http://188.166.218.38:3333";
+// const host = "http://localhost:3333";
+
+
 const title = "ManageCommission";
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
@@ -76,7 +81,7 @@ export default function ManageCommission() {
   const getUser = async () => {
     const token = localStorage.getItem("token");
     await axios
-      .get("http://localhost:3333/index", {
+      .get(`${host}/index`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -138,6 +143,7 @@ export default function ManageCommission() {
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
   const [fileList, setFileList] = useState([]);
+  console.log(fileList);
   const handleCancel = () => setPreviewOpen(false);
   const handleCancelModal = () => setUploadModalOpen(false);
   const handlePreview = async (file) => {
@@ -213,7 +219,7 @@ export default function ManageCommission() {
     // setUploadStatus('uploading');
 
     axios
-      .post("http://localhost:3333/commission/add", formData, {
+      .post(`${host}/commission/add`, formData, {
         headers: {
           Authorization: "Bearer " + jwt_token,
           "Content-type": "multipart/form-data",
@@ -315,7 +321,7 @@ export default function ManageCommission() {
             <div className="content-body preview-cms">
               <div className="sub-menu-group">
                 <Link className="sub-menu selected">คอมมิชชัน</Link>
-                <Link className="sub-menu">แกลเลอรี</Link>
+                <Link to="/manage-artwork" className="sub-menu">แกลเลอรี</Link>
               </div>
               <h3 className="content-header d-flex justify-content-center mt-4">
                 เพิ่มคอมมิชชัน

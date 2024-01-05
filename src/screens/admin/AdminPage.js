@@ -13,6 +13,9 @@ import { styled } from "styled-components";
 import { width } from "@mui/system";
 import AdminMenuAside from "./AdminMenuAside";
 
+const host = "http://188.166.218.38:3333";
+// const host = "http://localhost:3333";
+
 export default function AdminPage() {
   const navigate = useNavigate();
   const [admindata, setAdmindata] = useState([]);
@@ -36,7 +39,7 @@ export default function AdminPage() {
 
   const getAdmin = async () => {
     await axios
-      .get("http://localhost:3333/admin", {
+      .get(`${host}/admin`, {
         headers: {
           Authorization: "Bearer " + token,
         },
@@ -74,7 +77,7 @@ export default function AdminPage() {
 
   const getAdminData = async () => {
     await axios
-      .get("http://localhost:3333/alladmin", {
+      .get(`${host}/alladmin`, {
         headers: {
           Authorization: "Bearer " + token,
         },
@@ -87,7 +90,7 @@ export default function AdminPage() {
 
   const getData = async () => {
     await axios
-      .get("http://localhost:3333/alluser", {
+      .get(`${host}/alluser`, {
         headers: {
           Authorization: "Bearer " + token,
         },
@@ -98,17 +101,6 @@ export default function AdminPage() {
       });
   };
 
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [selectedYear, setSelectedYear] = useState("");
-
-  const handleStartDateChange = (e) => {
-    setStartDate(e.target.value);
-  };
-  const handleEndDateChange = (e) => {
-    setEndDate(e.target.value);
-  };
-  const handleDateChange = () => {};
 
   return (
     <>

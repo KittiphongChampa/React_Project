@@ -20,6 +20,7 @@ import AdminMenuAside from "./AdminMenuAside";
 import AdminManageAdmin from './AdminManageAdmin'
 import AdminManageUser from './AdminManageUser'
 import AdminManageFAQ from './AdminManageFAQ'
+import AdminManageCms from "./AdminManageCms";
 
 const title = 'จัดการแอดมิน';
 const bgImg = ""
@@ -57,7 +58,8 @@ export default function AdminManagement() {
                     {menu == 'alladmin' ? <AdminManageAdmin />
                         : menu == 'report' ? <Report />
                             : menu == 'alluser' ? <AdminManageUser />
-                                : menu == 'allfaq' ? <AdminManageFAQ /> : null}
+                                : menu == 'allfaq' ? <AdminManageFAQ /> 
+                                    : menu == 'allcms' ? <AdminManageCms /> : null}
                 </div>
             </div>
             {/* <div class="body-lesspadding" style={body}>

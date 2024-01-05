@@ -16,6 +16,11 @@ import Swal from "sweetalert2/dist/sweetalert2.js";
 import "sweetalert2/src/sweetalert2.scss";
 import * as alertData from "../alertdata/alertData";
 
+
+const host = "http://188.166.218.38:3333";
+// const host = "http://localhost:3333";
+
+
 const title = "เปลี่ยนรหัสผ่าน";
 const bgImg = "url('mainmoon.jpg')";
 const body = { backgroundImage: bgImg };
@@ -71,7 +76,7 @@ export default function ResetPassword() {
     formData.append("email", email);
     formData.append("newPassword", data.newPassword);
     await axios
-      .put("http://localhost:3333/reset-password", formData,{})
+      .put(`${host}/reset-password`, formData,{})
       .then((response) => {
         const data = response.data;
         if (data.status === "ok") {

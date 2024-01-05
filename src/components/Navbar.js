@@ -6,6 +6,8 @@ import { useState, useEffect, useRef } from 'react';
 import * as ggIcon from '@mui/icons-material';
 import { useNavigate, Link } from "react-router-dom";
 
+const host = "http://188.166.218.38:3333";
+// const host = "http://localhost:3333";
 
 const NavbarUser = (props) => {
     const navigate = useNavigate();
@@ -32,7 +34,7 @@ const NavbarUser = (props) => {
     const getUser = async () => {
         const token = localStorage.getItem("token");
         await axios
-            .get("http://localhost:3333/index", {
+            .get(`${host}/index`, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: "Bearer " + token,
@@ -227,7 +229,7 @@ const NavbarAdmin = (props) => {
     const getAdmin = async () => {
         const token = localStorage.getItem("token");
         await axios
-            .get("http://localhost:3333/admin", {
+            .get(`${host}/admin`, {
                 headers: {
                     Authorization: "Bearer " + token,
                 },

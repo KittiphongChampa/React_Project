@@ -6,7 +6,7 @@ export const verifyEmainSuccess = {
 }
 
 export const verifyEmainFailed = {
-  title: 'อีเมลล์ถูกใช้งานแล้ว',
+  title: 'อีเมลถูกใช้งานแล้ว',
   icon: 'error',
   iconColor: 'red',
   confirmButtonText: 'ตกลง',
@@ -27,7 +27,7 @@ export const otpisnotcorrect = {
 }
 
 export const LoginError = {
-  title: "อีเมลล์หรือรหัสผ่านไม่ถูกต้อง",
+  title: "อีเมลหรือรหัสผ่านไม่ถูกต้อง",
   icon: "error",
   iconColor: "red",
   confirmButtonText: "ตกลง",

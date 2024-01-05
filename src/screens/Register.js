@@ -22,7 +22,9 @@ import * as Icon from 'react-feather';
 import * as ggIcon from '@mui/icons-material';
 
 const title = "สร้างบัญชี";
-const host = "http://localhost:3333";
+
+const host = "http://188.166.218.38:3333";
+// const host = "http://localhost:3333";
 
 const toastOptions = {
   position: "bottom-right",

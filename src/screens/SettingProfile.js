@@ -24,7 +24,9 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import * as alertData from "../alertdata/alertData";
 
-const host = "http://localhost:3333";
+const host = "http://188.166.218.38:3333";
+// const host = "http://localhost:3333";
+
 const title = "ตั้งค่าโปรไฟล์";
 const toastOptions = {
   position: "bottom-right",
@@ -126,7 +128,7 @@ export default function SettingProfile() {
     formData.append("name", name);
     formData.append("bio", bio);
     await axios
-      .patch("http://localhost:3333/profile/update", formData, {
+      .patch(`${host}/profile/update`, formData, {
         headers: {
           Authorization: "Bearer " + token,
         },
@@ -151,7 +153,7 @@ export default function SettingProfile() {
     formData.append("bankAccName", bankAccName);
     formData.append("ppNumber", ppNumber);
     await axios
-      .patch("http://localhost:3333/bank/update", formData, {
+      .patch(`${host}/bank/update`, formData, {
         headers: {
           Authorization: "Bearer " + token,
         },
@@ -243,7 +245,7 @@ export default function SettingProfile() {
       if (result.isConfirmed) {
         const tested = "";
         axios
-          .put("http://localhost:3333/delete_account", tested, {
+          .put(`${host}/delete_account`, tested, {
             headers: {
               Authorization: "Bearer " + token,
             },

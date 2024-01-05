@@ -32,7 +32,9 @@ import ChatContainer from "../components/ChatContainer";
 import Contacts from "../components/Contacts";
 import Welcome from "../components/Welcome";
 
-const host = "http://localhost:3333"
+const host = "http://188.166.218.38:3333";
+// const host = "http://localhost:3333";
+
 const title = "แชท";
 // const bgImg = { backgroundImage: "url('mainmoon.jpg')", backgroundSize: " cover", backgroundOpacity: "0.5" }
 const body = { backgroundImage: "url('seamoon.jpg')" };
@@ -173,7 +175,7 @@ export default function ChatBox() {
 
   const getPartnerChat = async () => {
     await axios
-      .get(`http://localhost:3333/chat/partner/${chat_partner_id}`, {
+      .get(`${host}/chat/partner/${chat_partner_id}`, {
         headers: {
           Authorization: "Bearer " + token,
         },
@@ -215,7 +217,7 @@ export default function ChatBox() {
 
   useEffect(() => {
     if (userdata) {
-      socket.current = io("http://localhost:3333");
+      socket.current = io(`${host}`);
       socket.current.emit("add-user", userdata.id);
     }
     // try {
@@ -235,7 +237,7 @@ export default function ChatBox() {
   useEffect(() => {
     try {
       axios
-        .get(`http://localhost:3333/allchat/${userdata.id}`)
+        .get(`${host}/allchat/${userdata.id}`)
         .then((response) => {
           setContacts(response.data); //แสดงผลคนที่เราสามารถแชทด้วยได้ทั้งหมด
         });

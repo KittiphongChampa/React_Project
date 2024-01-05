@@ -20,7 +20,7 @@ const AdminMenuAside = (props) => {
             <Link to="/admin/adminmanage/report"><div className={activeCheck('report')}><Icon.Flag /><p>การรายงาน</p></div></Link >
             <Link to="/admin/adminmanage/alladmin" ><div className={activeCheck('alladmin')}><ggIcon.AdminPanelSettings /><p>จัดการแอดมิน</p></div></Link >
             <Link to="/admin/adminmanage/alluser" ><div className={activeCheck('alluser')}><Icon.User /><p>จัดการผู้ใช้งาน</p></div></Link >
-            <Link to="" ><div className={activeCheck('xxx')}><Icon.Image /><p>การตรวจสอบรูปภาพ</p></div></Link >
+            <Link to="/admin/adminmanage/allcms" ><div className={activeCheck('allcms')}><Icon.Image /><p>การตรวจสอบรูปภาพ</p></div></Link >
             <Link to="/admin/adminmanage/allfaq" ><div className={activeCheck('allfaq')} ><Icon.HelpCircle /><p>คำถามที่พบบ่อย</p></div></Link >
             
         </div>

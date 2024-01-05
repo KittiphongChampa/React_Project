@@ -14,6 +14,10 @@ import Button from "react-bootstrap/Button";
 import Scrollbars from 'react-scrollbars-custom';
 import ImgFullscreen from './openFullPic'
 
+const host = "http://188.166.218.38:3333";
+// const host = "http://localhost:3333";
+
+
 export default function ChatContainer({ currentChat, socket,  }) {
   const token = localStorage.getItem("token");
   const [userid, setUserid] = useState();
@@ -35,7 +39,7 @@ export default function ChatContainer({ currentChat, socket,  }) {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const response = await axios.get("http://localhost:3333/index", {
+        const response = await axios.get(`${host}/index`, {
           headers: {
             Authorization: "Bearer " + token,
           },
@@ -44,7 +48,7 @@ export default function ChatContainer({ currentChat, socket,  }) {
         if (data.status === "ok") {
           setUserid(data.users[0].id);
           const getChatdata = await axios.post(
-            "http://localhost:3333/messages/getmsg",
+            `${host}/messages/getmsg`,
             {
               from: data.users[0].id,
               to: currentChat.id,
@@ -70,7 +74,7 @@ export default function ChatContainer({ currentChat, socket,  }) {
       msg,
       timestamp_chat,
     });
-    await axios.post("http://localhost:3333/messages/addmsg", {
+    await axios.post(`${host}/messages/addmsg`, {
       from: userid,
       to: currentChat.id,
       message: msg,
@@ -87,7 +91,7 @@ export default function ChatContainer({ currentChat, socket,  }) {
     formData.append("to", currentChat.id);
     formData.append("image", image);
     await axios
-      .post("http://localhost:3333/messages/addmsg", formData, {})
+      .post(`${host}/messages/addmsg`, formData, {})
       .then((response) => {
         const data = response.data;
         let msg = data.image_chat;
@@ -209,7 +213,7 @@ export default function ChatContainer({ currentChat, socket,  }) {
                   <div className="my-message">
                     <div>
                       {message.message.split("images")[0] ===
-                      "http://localhost:3333/" ? (
+                      `${host}/` ? (
                           // <img src={message.message} width={100} />
                           <div className="att-image" style={{ cursor: "pointer" }} onClick={() => handleFullImg(message.message)}><img src={message.message} /></div>
                       ) : (
@@ -239,7 +243,7 @@ export default function ChatContainer({ currentChat, socket,  }) {
                     <div>
                       {/* <div>{message.message}</div> */}
                       {message.message.split("images")[0] ===
-                      "http://localhost:3333/" ? (
+                      `${host}/` ? (
                         <div className="att-image" style={{ cursor: "pointer" }} onClick={() => handleFullImg(message.message)}><img src={message.message} /></div>
                       ) : (
                         <p className="message">{message.message}</p>

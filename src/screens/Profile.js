@@ -30,6 +30,8 @@ const title = 'Profile';
 const bgImg = ""
 const body = { backgroundColor: "#F4F1F9" }
 
+const host = "http://188.166.218.38:3333";
+// const host = "http://localhost:3333";
 
 export default function Profile() {
     const navigate = useNavigate();
@@ -38,13 +40,11 @@ export default function Profile() {
     const [showCoverModal, setShowCoverModal] = useState(null)
     const [showProfileModal, setShowProfileModal] = useState(null)
 
-    // const [myFollower, setMyFollowerIds] = useState([]);
-    // const [iFollowing, setIFollowingsIds] = useState([]);
-
     const [myFollowerData, setMyFollowerData] = useState([]);
     const [IFollowerData, setIFollowerData] = useState([]);
 
     const [myCommission, setMyCms] = useState([]);
+    const [myGallery, setMyGallery] = useState([]);
     
     // console.log('myFollower : ',myFollower, 'iFollowing : ', iFollowing);
 
@@ -58,14 +58,17 @@ export default function Profile() {
         }
         getUser();
         getMyCms();
+        getMyGallery();
     }, []);
     // }, [myFollower,iFollowing]); //realtime follow
 
     // useEffect(() => {},[])
+    // const [myFollower, setMyFollower] = useState([])
+    // console.log(myFollower);
     
     const getUser = async () => {
         await axios
-          .get(`http://localhost:3333/profile`, {
+          .get(`${host}/profile`, {
             headers: {
               Authorization: "Bearer " + token,
             },
@@ -74,24 +77,13 @@ export default function Profile() {
             const data = response.data;
             if (data.status === "ok") {
                 setUserdata(data.users[0]);
-                const formData = new FormData();
-                formData.append("iFollowing", data.IFollowingsIds);
-                formData.append("iFollowier", data.MyFollowerIds);
-                axios .post("http://localhost:3333/openFollowing", formData,{
-                    headers: {
-                        Authorization: "Bearer " + token,
-                    },
-                }).then((response) => {
+                axios .get(`${host}/openFollowing?iFollowing=${data.IFollowingsIds}`).then((response) => {
                     const data = response.data;
-                    setIFollowerData(data.results)
+                    setIFollowerData(data.ifollowing)
                 })
-                axios .post("http://localhost:3333/openFollower", formData,{
-                    headers: {
-                        Authorization: "Bearer " + token,
-                    },
-                }).then((response) => {
+                axios .get(`${host}/openFollower?myFollower=${data.MyFollowerIds}`).then((response) => {
                     const data = response.data;
-                    setMyFollowerData(data.results)
+                    setMyFollowerData(data.myfollower)
                 })
                 
             } else if (data.status === "no_access") {
@@ -99,7 +91,6 @@ export default function Profile() {
                 navigate('/admin');
             } else {
             //   toast.error("ไม่พบผู้ใช้งาน", toastOptions);
-                console.log('test');
             }
           }).catch((error) => {
             if (error.response && error.response.status === 401 && error.response.data === "Token has expired") {
@@ -113,7 +104,7 @@ export default function Profile() {
     };
 
     const getMyCms = async () => {
-        await axios.get("http://localhost:3333/myCommission",{
+        await axios.get(`${host}/myCommission`,{
             headers: {
                 "Content-Type": "application/json",
                 Authorization: "Bearer " + token,
@@ -123,6 +114,18 @@ export default function Profile() {
             setMyCms(myCms.commissions);
         })
     };
+
+    const getMyGallery = async () => {
+        await axios.get(`${host}/myGallery`,{
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token,
+            },
+        }).then((response) => {
+            const data = response.data;
+            setMyGallery(data.myGallery);
+        })
+    }
 
     function menuProfile(event, menu) {
         setprofileMenuSelected(menu)
@@ -144,8 +147,6 @@ export default function Profile() {
     }
 
     const [profileMenuSelected, setprofileMenuSelected] = useState('cms')
-
-
 
     return (
         <div className="body-con">
@@ -217,7 +218,7 @@ export default function Profile() {
                                 <Link className="sub-menu" onClick={(event) => menuProfile(event, 'following')}>กำลังติดตาม</Link>
                             </div>
                             {profileMenuSelected === "cms" ? <AllCms myCommission={myCommission} userID={userdata.id}/> : null}
-                            {profileMenuSelected === "gallery" ? <AllArtworks /> : null}
+                            {profileMenuSelected === "gallery" ? <AllArtworks myGallery={myGallery} /> : null}
                             {profileMenuSelected === "review" ? <AllReviews /> : null}
                             {profileMenuSelected === "follower" ? <Followers myFollowerData={myFollowerData}/> : null}
                             {profileMenuSelected === "following" ? <Followings IFollowerData={IFollowerData}/> : null}
@@ -233,7 +234,6 @@ export default function Profile() {
 
 function Followers(props) {
     const {myFollowerData} = props
-    console.log(myFollowerData);
 
     return <>
         <p className="h3 mt-3 mb-2">ผู้ติดตาม</p>
@@ -266,30 +266,12 @@ function Followings(props) {
 
 function AllCms(props) {
     const { myCommission, userID } = props;
-    const handleLinkClick = (cms_id) => {
-        const clickstreamData = {
-        userID: userID,
-        page_url: window.location.href+"cmsdetail/"+cms_id, // หรือใช้ URL ปัจจุบัน
-        target_cms_id: cms_id, // ID ของคอมมิชชันที่ผู้ใช้คลิก
-        };
-
-        // axios.post('http://localhost:3333/click', clickstreamData)
-        // .then(response => {
-        //     console.log(response.data.message);
-        //     // หลังจากบันทึก Clickstream เสร็จสิ้น คุณสามารถเรียกใช้การนำทางไปยังรายละเอียดคอมมิชชัน
-        //     // โดยใช้ react-router-dom หรือวิธีการนำทางอื่น ๆ ตามที่คุณใช้
-        // })
-        // .catch(error => {
-        //     console.error(error);
-        //     // ในกรณีที่เกิดข้อผิดพลาดในการบันทึก Clickstream คุณสามารถจัดการตามที่เหมาะสม
-        // });
-    };
     return <>
         <p className="h3 mt-3 mb-2">คอมมิชชัน</p>
         <div class="content-items">
             {myCommission.map(mycms => (
                 <div key={mycms.cms_id} style={{display:"flex"}}>
-                <Link to={`/cmsdetail/${mycms.cms_id}`} onClick={() => handleLinkClick(mycms.cms_id)}>
+                <Link to={`/cmsdetail/${mycms.cms_id}`}>
                     <CmsItem src={mycms.ex_img_path} headding={mycms.cms_name} price="100" desc={mycms.cms_desc}/>
                 </Link>
                 </div>
@@ -299,16 +281,22 @@ function AllCms(props) {
 }
 
 function AllArtworks(props) {
+    const { myGallery } = props
     return <>
         <p className="h3 mt-3 mb-2">แกเลอรี</p>
         <div className="profile-gallery-container">
-            <div className="profile-gallery">
+            {myGallery.map((data)=>(
+                <div className="profile-gallery" key={data.artw_id}>
+                    <img src={data.ex_img_path} />
+                </div>
+            ))}
+            {/* <div className="profile-gallery">
                 <img src="b3.png" />
                 <img src="AB1.png" />
                 <img src="mainmoon.jpg" />
                 <img src="b3.png" />
                 <img src="b3.png" />
-            </div>
+            </div> */}
         </div>
     </>
 }

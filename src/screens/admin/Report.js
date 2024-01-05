@@ -2,8 +2,21 @@
 // import UserBox from "../components/UserBox";
 import ReportItem from "../../components/ReportItem";
 import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
 
 export default function Report(props) {
+    const jwt_token = localStorage.getItem("token");
+    useEffect(() => {
+        // if (localStorage.getItem("token")) {
+        //   if (window.location.pathname === "/login") {
+        //     navigate("/admin/alluser");
+        //   }
+        // } else {
+        //   navigate("/login");
+        // }
+        // getData();
+    }, []);
+
     return (
         <>
 
