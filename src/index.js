@@ -35,20 +35,7 @@ import ResetPassword from "./secondary_screens/ResetPassword";
 import Verify from "./secondary_screens/Verify";
 
 //screens test
-import ChatContainertest from "./yunscreens/ChatContainertest";
-import Chat from "./yunscreens/Chat";
-import ProfileTest from "./yunscreens/ProfileTest";
-import VerifyMail_ResetPassword from "./yunscreens/VerifyMail_ResetPassword";
-import AllUser from "./yunscreens/AllUser";
-import Test from "./yunscreens/Test";
-import Editprofile from "./yunscreens/Editprofile";
-import Buytoken from "./yunscreens/Buytoken";
-import PackageToken from "./yunscreens/PackageToken";
-import Artistseeorder from "./yunscreens/artistseeorder";
-import BuyCoin from "./yunscreens/BuyCoin";
 import TransactionHistory from "./yunscreens/TransactionHistory";
-import SettingCoin from "./yunscreens/SettingCoin";
-import NewPassword from "./yunscreens/NewPassword";
 import Qrpromptpay from "./yunscreens/qrpromptpay";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -63,18 +50,12 @@ root.render(
       <Route path="/register" element={<Register />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/profile/:id" element={<ViewProfile />} />
-      <Route path="/editprofile" element={<Editprofile />} />
-      <Route path="/buytoken" element={<Buytoken />} />
-      <Route path="/packagetoken" element={<PackageToken />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
-      <Route path="/chat" element={<Chat />} />
       <Route path="/manage-commission" element={<ManageCommission />} />
       <Route path="/manage-artwork" element={<ManageArtwork />} />
       <Route path="/editcoin" element={<EditCoin />} />
-      <Route path="/buycoin" element={<BuyCoin />} />
       <Route path="/setting-profile" element={<SettingProfile />} />
-      <Route path="/newpassword" element={<NewPassword />} />
       <Route path="/chatbox" element={<ChatBox />} />
       <Route path="/cmsdetail/:id" element={<CmsDetail />} />
       <Route path="/dashboard" element={<Dashboard />} />
@@ -83,7 +64,6 @@ root.render(
 
       {/*admin*/}
       <Route path="/admin" element={<AdminPage />} />
-      <Route path="/setting-coin" element={<SettingCoin />} />
       <Route path="/admin/alluser" element={<AdminManageUser />} />
       <Route path="/admin/alladmin" element={<AdminManageAdmin />} />
       <Route path="/admin/transaction" element={<TransactionHistory />} />
@@ -93,18 +73,8 @@ root.render(
       <Route path="/admin/adminmanage/:menu" element={<AdminManage />} />
 
       {/* test */}
-      {/* <Route path="/test" element={<App />} /> */}
-      <Route path="/test" element={<Test />} />
-      <Route path="/testchat" element={<ChatContainertest />} />
-      <Route path="/profileTest" element={<ProfileTest />} />
-      <Route path="/alluser" element={<AllUser />} />
-      <Route
-        path="/verify-resetPassword"
-        element={<VerifyMail_ResetPassword />}
-      />
       <Route path="/qrpromptpay" element={<Qrpromptpay />} />
 
-      <Route path="/artistseeorder" element={<Artistseeorder />} />
     </Routes>
   </BrowserRouter>
 );

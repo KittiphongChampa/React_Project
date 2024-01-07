@@ -205,7 +205,6 @@ export default function SettingProfile() {
   const [showPsswordModal, setShowPsswordModal] = useState(null);
   const [showProfileModal, setShowProfileModal] = useState(null);
   const [showCoverModal, setShowCoverModal] = useState(null);
-  console.log(showCoverModal);
 
   const openPassModal = () => {
     const PasswordModal = (
@@ -310,7 +309,8 @@ export default function SettingProfile() {
                   </div>
                 </div>
 
-                <div>
+                {/* มีปัญหา */}
+                {/* <div>
                   <label class="onInput">ชื่อผู้ใช้</label>
                   <TextareaAutosize
                     className="txtarea"
@@ -346,7 +346,8 @@ export default function SettingProfile() {
                   >
                     {bio.length}/350
                   </p>
-                </div>
+                </div> */}
+
                 <div className="" id="sendDataBtn" style={{ display:"flex",justifyContent: "center" }}>
                   {!editProfileBtn&& <><button className="gradiant-btn" type="submit">
                     บันทึกข้อมูล

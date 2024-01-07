@@ -12,7 +12,6 @@ import { Helmet } from "react-helmet";
 import DefaultInput from "../components/DefaultInput";
 import inputSetting from "../function/function";
 import ProfileImg from "../components/ProfileImg";
-import Profile from "../yunscreens/ProfileTest";
 import { NavbarUser, NavbarAdmin, NavbarHomepage } from "../components/Navbar";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
