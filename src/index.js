@@ -59,7 +59,7 @@ root.render(
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/artworkdetail/:id" element={<ArtworkDetail />} />
       <Route path="/artistmanagement/:menu" element={<ArtistManagement />} />
-
+   <Route path="/admin/adminmanage/:menu/:reportid" element={<AdminManage />} />
       {/*admin*/}
       <Route path="/admin" element={<AdminPage />} />
       <Route path="/admin/alluser" element={<AdminManageUser />} />

@@ -532,8 +532,14 @@ export default function ChatContainer({ currentChat, socket }) {
 
   //แก้ไขโปรเกส
   const editProgress = (step_id, step_name) => {
+    let title;
+    if (orderDetail.pkg_edits <= orderDetail.od_number_of_edit+1) {
+      title = 'การแก้ไขครั้งนี้มีค่าใช้จ่าย ต้องการแจ้งแก้ไขภาพนี้หรือไม่'
+    } else {
+      title = 'ต้องการแจ้งแก้ไขภาพนี้หรือไม่'
+    }
     Swal.fire({
-      title: "แก้ไขภาพนี้หรือไม่",
+      title: title,
       showCancelButton: true,
       confirmButtonText: "แก้ไข",
       cancelButtonText: "ปิด",
