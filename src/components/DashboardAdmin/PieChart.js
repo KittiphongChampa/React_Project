@@ -3,10 +3,9 @@ import axios from 'axios';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+import { host } from "../../utils/api";
 
-const host = "http://188.166.218.38:3333";
-// const host = "http://localhost:3333";
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 export const options = {
     responsive: true,

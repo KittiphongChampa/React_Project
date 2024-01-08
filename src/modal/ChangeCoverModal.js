@@ -13,9 +13,8 @@ import 'sweetalert2/src/sweetalert2.scss'
 import * as alertData from '../alertdata/alertData';
 import ProfileImg from "../components/ProfileImg";
 import axios from "axios";
+import { host } from "../utils/api";
 
-const host = "http://188.166.218.38:3333";
-// const host = "http://localhost:3333";
 
 const openInputColor = () => {
 

@@ -25,13 +25,12 @@ import Button from "react-bootstrap/Button";
 import CmsItem from "../components/CmsItem";
 import { Link } from 'react-router-dom';
 import '../styles/main.css';
+import { host } from "../utils/api";
 
 const title = 'Profile';
 const bgImg = ""
 const body = { backgroundColor: "#F4F1F9" }
 
-const host = "http://188.166.218.38:3333";
-// const host = "http://localhost:3333";
 
 export default function Profile() {
     const navigate = useNavigate();

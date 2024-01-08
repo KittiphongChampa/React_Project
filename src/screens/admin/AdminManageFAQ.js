@@ -21,9 +21,7 @@ import loading from "../../loading.json";
 import * as Icon from "react-feather";
 import { Input, Collapse, Space, Button, Modal, Form } from 'antd';
 import { AdminBox, UserBox } from "../../components/UserBox";
-
-const host = "http://188.166.218.38:3333";
-// const host = "http://localhost:3333";
+import { host } from "../../utils/api.js";
 
 export default function AdminManageFAQ() {
 

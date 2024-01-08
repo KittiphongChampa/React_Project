@@ -5,6 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { host } from "../../utils/api";
 
 const toastOptions = {
   position: "bottom-right",
@@ -14,8 +15,6 @@ const toastOptions = {
   theme: "dark",
 };
 
-const host = "http://188.166.218.38:3333";
-// const host = "http://localhost:3333";
 
 export default function Editdata() {
   const token = localStorage.getItem("token");

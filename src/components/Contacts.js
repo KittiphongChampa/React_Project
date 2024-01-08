@@ -3,34 +3,35 @@ import styled from "styled-components";
 import axios from "axios";
 import io from "socket.io-client";
 // import Logo from "../assets/logo.svg";
+import { host } from "../utils/api";
 
-const host = "http://188.166.218.38:3333";
-// const host = "http://localhost:3333";
 
-export default function Contacts({ contacts, changeChat, Toggled, partnerID, socket}) {
+export default function Contacts({ myId, contacts, changeChat, userdata, Toggled, partnerID, orderID, selectedChatType }) {
   const [currentUserName, setCurrentUserName] = useState(undefined);
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
   const [currentSelected, setCurrentSelected] = useState(undefined);
 
   const uniqueContactIds = new Set();
   const filteredContacts = [];
-
-  //ทำการ ลูปค่าเพื่อ หายูนีค id
+ 
   contacts.forEach((contact) => {
-    if (!uniqueContactIds.has(contact.id)) {
-      uniqueContactIds.add(contact.id);
+    const combinedId = contact.id + contact.od_id;
+    if (!uniqueContactIds.has(combinedId)) {
+      uniqueContactIds.add(combinedId);
       filteredContacts.push(contact);
-      // console.log(contact.message_text);
     }
   });
-
  
+
   const token = localStorage.getItem("token");
 
   useEffect(() => {
     //ตึงข้อมูลตัวเอง
+    // filteredContacts.push({ id: "138", urs_name: "ทดสอบ", od_id: "0",
+    //   receiver:"138",sender:"139",urs_profile_img:"http://localhost:3333/images/Meol4zXybLFHqrYuzYCGTMsijHDnZiBmuSyH7YqCx35fZ8JRvG.jpg" });
+    // console.log("ฟีลเตอร์คอนแทค",filteredContacts)
     if (partnerID !== null) {
-      setCurrentSelected(partnerID)
+      orderID == null ? setCurrentSelected(partnerID + 0) : setCurrentSelected(partnerID + orderID)
     }
     getUser();
   }, []);
@@ -50,72 +51,89 @@ export default function Contacts({ contacts, changeChat, Toggled, partnerID, soc
       // Handle error
     }
   };
-
   const changeCurrentChat = (index, contact) => {
     setCurrentSelected(index);
-    changeChat(contact); //เลือกว่าเราสนทนากับใคร
+    changeChat(contact);
     window.history.pushState({}, '', `/chatbox?id=${contact.id}&od_id=${contact.od_id}`)
+    // if (contact.od_id == 0 || contact.od_id == null || contact.od_id == undefined) {
+    //   window.history.pushState({}, '', `/chatbox?id=${contact.id}`)
+      
+    // } else {
+    //   window.history.pushState({}, '', `/chatbox?id=${contact.id}&od_id=${contact.od_id}`)
+    // }
+    
   };
 
-  const [activeChat, setActiveChat] = useState();
-
-  const chatSelected = (id) => {
-    setActiveChat(id);
-    console.log("chat user ทำงาน");
-  };
-  
+  const [prefixStepName, setPrefixStepName] = useState()
 
   return (
     <>
+      
       {currentUserImage && currentUserImage && (
         <>
+
           {filteredContacts.map((contact, index) => {
-            // {console.log(contact);}
-            // <UserChat name={contact.urs_name} src={contact.urs_profile_img} key={contact.id} id="1" onClick={() => chatSelected("1") }  />;
             return (
               <>
-                <div
-                  key={contact.id}
-                  className={`chat-item ${
-                    contact.id == currentSelected?  "selected" : ""
-                  }`}
-                  onClick={() => changeCurrentChat(contact.id, contact)}
-                >
-                  <img src={contact.urs_profile_img}></img>
-                  <div>
-                    {!Toggled && (
-                      <>
-                        <p className="order">{contact.urs_name}</p>
-                        <p>
-                          {contact.message_text.split("images")[0] === `${host}/` ? (
-                            <p className="message">ได้ส่งรูปภาพ</p>
-                          ) : (
-                            <p className="message">{contact.message_text}</p>
-                          )}
-                        </p>
-                        {/* <p className="message">{contact.message_text}</p> */}
-                        <p className="time">
-                          <span className="stat">{new Date(contact.last_message_time).toLocaleString("th-TH")}</span>
-                        </p>
-                      </>
-                    )}
+                {selectedChatType == "private" && contact.od_id == 0 || selectedChatType == "order" && contact.od_id != 0 || selectedChatType == "all" ?
+                  (<>
+                    <div
+                      key={contact.id + contact.od_id} //เปลี่ยนเป็น ยูเซอร์ไอดี+ออเดอร์ไอดี 
+                      className={`chat-item ${contact.id + contact.od_id == currentSelected ? "selected" : ""
+                        }`}
+                      onClick={() => changeCurrentChat(contact.id + contact.od_id, contact)}
+                    >
+                      <img src={contact.urs_profile_img}></img>
+                      <div>
+                        {!Toggled && (
+                          <>
+                            <p className="order h6">{contact.urs_name}</p>
+                            <p>
+                              {contact.message_text?.split("images")[0] === `${host}/` ? (
+                                <p className="message">ได้ส่งรูปภาพ</p>
+                              ) : (
+                                  <p className="message"
+                                    style={{
+                                      display: "flex",
+                                    }}>
+                                    <span className="oneline-textoverflow" style={{ flex: 1}}>{contact.message_text}hello yo watsup bto</span>
+                                    <span style={{width:"fit-content"}}> 11:11 น.</span>
+                                  </p>
+                              )}
+                            </p>
+                            {/* <p className="message">{contact.message_text}</p> */}
+                            <p className="time">
+                              {/* <span className="stat">{new Date(contact.last_message_time).toLocaleString("th-TH")}</span> */}
+                              {contact.od_id != 0 && <> <span className="stat">
+                                {contact?.current_step_name?.includes("แนบสลิป") || contact?.current_step_name?.includes("ภาพ") ?
+                                  contact.artist_id == myId && 'รอ' //ถ้ามีคำว่าสลิปและเราเป็นนักวาด ให้ใส่คำว่ารอ แต่ถ้าไม่มีคำว่าสลิป และเราไม่ใช่นักวาด ให้ใส่คำว่ารอ
+                                  : contact.artist_id !== myId && 'รอ'}{contact?.current_step_name?.includes("ภาพ") && 'อนุมัติ'}{contact.current_step_name}</span>
+                                {/* <span className="stat">{contact.od_id}</span> */}
+                                </>
+                              }
+                            </p>
+                          </>
+                        )}
 
-                    {Toggled && (
-                      <>
-                        <p className="order filterd">xxxx</p>
-                        <p className="message filterd">bust-up full color..</p>
-                        <p className="time filterd">
-                          {" "}
-                          <span className="q">คิวที่1</span>
-                          <span className="stat">รอชำระเงิน</span>
-                        </p>
-                      </>
-                    )}
-                  </div>
-                </div>
-                <div className="qq">
-                  <div className={contact.id == currentSelected? "arrow" : ""} />
-                </div>
+                        {Toggled && (
+                          <>
+                            <p className="order filterd">xxxx</p>
+                            <p className="message filterd">bust-up full color..</p>
+                            <p className="time filterd">
+                              {" "}
+                              <span className="q">คิวที่1</span>
+                              <span className="stat">รอชำระเงิน</span>
+                            </p>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                    <div className="qq">
+                      <div className={contact.id + contact.od_id == currentSelected ? "arrow" : ""} />
+                    </div>
+                  </>)
+                  : null
+                }
               </>
             );
           })}

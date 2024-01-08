@@ -1,6 +1,7 @@
 import "../css/indexx.css";
 import * as Icon from 'react-feather';
 import { Rate } from 'antd';
+import { host } from "../utils/api";
 
 
 

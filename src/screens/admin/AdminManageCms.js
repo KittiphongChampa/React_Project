@@ -4,9 +4,8 @@ import axios from "axios";
 import { NavbarUser, NavbarAdmin, NavbarHomepage } from "../../components/Navbar";
 import { Helmet } from "react-helmet";
 import { Typography,Button,Input } from 'antd';
+import { host } from "../../utils/api";
 
-const host = "http://188.166.218.38:3333";
-// const host = "http://localhost:3333";
 const title = 'จัดการคอมมิชชัน';
 
 export default function AdminManageCms() {

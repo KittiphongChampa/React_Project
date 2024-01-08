@@ -22,13 +22,12 @@ import "sweetalert2/src/sweetalert2.scss";
 import * as alertData from "../../alertdata/alertData";
 import { AdminBox, UserBox } from "../../components/UserBox";
 import { Typography,Button,Input } from 'antd';
+import { host } from "../../utils/api";
 
 const title = "จัดการผู้ใช้งาน";
 const bgImg = "";
 const body = { backgroundColor: "#F4F1F9" };
 
-const host = "http://188.166.218.38:3333";
-// const host = "http://localhost:3333";
 
 export default function AdminManageUser() {
   const navigate = useNavigate();

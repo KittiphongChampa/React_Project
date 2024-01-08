@@ -8,10 +8,7 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import React, { useState, useEffect,useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
-
-
-const host = "http://188.166.218.38:3333";
-// const host = "http://localhost:3333";
+import { host } from "../utils/api";
 
 
 function UserBox(props) {

@@ -23,9 +23,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import * as alertData from "../alertdata/alertData";
-
-const host = "http://188.166.218.38:3333";
-// const host = "http://localhost:3333";
+import { host } from "../utils/api";
 
 const title = "ตั้งค่าโปรไฟล์";
 const toastOptions = {
@@ -65,6 +63,9 @@ export default function SettingProfile() {
   const [userdata, setUserdata] = useState([]);
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
+  if (bio === 'NULL') {
+    setBio('0')
+  }
   const [bankAccName, setBankAccName] = useState("");
   const [ppNumber, setPpNumber] = useState("");
   const [cover, setCover] = useState("");
@@ -310,17 +311,17 @@ export default function SettingProfile() {
                 </div>
 
                 {/* มีปัญหา */}
-                {/* <div>
+                <div>
                   <label class="onInput">ชื่อผู้ใช้</label>
                   <TextareaAutosize
                     className="txtarea"
                     id="username"
                     maxlength="50"
                     disabled={editProfileBtn}
+                    style={{ border: !editProfileBtn && '1px solid black'}}
                     {...register("username", { maxLength: 50 })}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    style={{ border: !editProfileBtn && '1px solid black'}}
                   />
                   <p
                     className="text-align-right"
@@ -346,7 +347,7 @@ export default function SettingProfile() {
                   >
                     {bio.length}/350
                   </p>
-                </div> */}
+                </div>
 
                 <div className="" id="sendDataBtn" style={{ display:"flex",justifyContent: "center" }}>
                   {!editProfileBtn&& <><button className="gradiant-btn" type="submit">

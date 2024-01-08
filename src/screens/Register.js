@@ -20,11 +20,10 @@ import "sweetalert2/src/sweetalert2.scss";
 import * as alertData from "../alertdata/alertData";
 import * as Icon from 'react-feather';
 import * as ggIcon from '@mui/icons-material';
+import { host } from "../utils/api.js";
 
 const title = "สร้างบัญชี";
 
-const host = "http://188.166.218.38:3333";
-// const host = "http://localhost:3333";
 
 const toastOptions = {
   position: "bottom-right",

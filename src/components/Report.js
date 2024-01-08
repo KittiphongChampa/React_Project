@@ -2,9 +2,8 @@ import * as Icon from 'react-feather';
 import UserBox from "../components/UserBox";
 import ReportItem from "../components/ReportItem";
 import { Link, useParams } from 'react-router-dom';
+import { host } from "../../utils/api";
 
-const host = "http://188.166.218.38:3333";
-// const host = "http://localhost:3333";
 
 export default function Report(props) {
     return (

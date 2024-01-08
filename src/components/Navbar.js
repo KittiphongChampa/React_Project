@@ -5,9 +5,7 @@ import "../css/allinput.css";
 import { useState, useEffect, useRef } from 'react';
 import * as ggIcon from '@mui/icons-material';
 import { useNavigate, Link } from "react-router-dom";
-
-const host = "http://188.166.218.38:3333";
-// const host = "http://localhost:3333";
+import { host } from "../utils/api";
 
 const NavbarUser = (props) => {
     const navigate = useNavigate();

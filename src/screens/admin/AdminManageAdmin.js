@@ -17,8 +17,8 @@ import Lottie from "lottie-react";
 import loading from "../../loading.json";
 import * as Icon from 'react-feather';
 import { Typography,Button,Input } from 'antd';
-
 import { AdminBox, UserBox } from "../../components/UserBox";
+import { host } from "../../utils/api.js";
 
 const {Title} = Typography;
 const title = 'จัดการแอดมิน';
@@ -32,8 +32,6 @@ const toastOptions = {
     theme: "dark",
 };
 
-const host = "http://188.166.218.38:3333";
-// const host = "http://localhost:3333";
 
 export default function AdminManageAdmin(props) {
     const navigate = useNavigate();

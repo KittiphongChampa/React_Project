@@ -11,7 +11,6 @@ import Register from "./screens/Register";
 import Login from "./screens/Login";
 import Welcome from "./screens/Welcome";
 import Index from "./screens/Index";
-import EditCoin from "./screens/EditCoin";
 import Profile from "./screens/Profile";
 import AdminManageUser from "./screens/admin/AdminManageUser";
 import AdminManageAdmin from "./screens/admin/AdminManageAdmin";
@@ -54,7 +53,6 @@ root.render(
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/manage-commission" element={<ManageCommission />} />
       <Route path="/manage-artwork" element={<ManageArtwork />} />
-      <Route path="/editcoin" element={<EditCoin />} />
       <Route path="/setting-profile" element={<SettingProfile />} />
       <Route path="/chatbox" element={<ChatBox />} />
       <Route path="/cmsdetail/:id" element={<CmsDetail />} />

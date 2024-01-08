@@ -12,9 +12,7 @@ import LineChart from "../../components/DashboardAdmin/LineChart";
 import { styled } from "styled-components";
 import { width } from "@mui/system";
 import AdminMenuAside from "./AdminMenuAside";
-
-const host = "http://188.166.218.38:3333";
-// const host = "http://localhost:3333";
+import { host } from "../../utils/api";
 
 export default function AdminPage() {
   const navigate = useNavigate();

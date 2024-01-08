@@ -19,9 +19,7 @@ import {
 } from "../components/Navbar";
 import { Button, Checkbox, Form, Input } from "antd";
 import axios from "axios";
-
-const host = "http://188.166.218.38:3333";
-// const host = "http://localhost:3333";
+import { host } from "../utils/api";
 
 const title = "เข้าสู่ระบบ";
 const bgImg = "url('mainmoon.jpg')";

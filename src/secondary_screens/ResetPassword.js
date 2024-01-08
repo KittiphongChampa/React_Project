@@ -15,10 +15,7 @@ import { Helmet } from "react-helmet";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import "sweetalert2/src/sweetalert2.scss";
 import * as alertData from "../alertdata/alertData";
-
-
-const host = "http://188.166.218.38:3333";
-// const host = "http://localhost:3333";
+import { host } from "../utils/api";
 
 
 const title = "เปลี่ยนรหัสผ่าน";

@@ -15,6 +15,7 @@ import {
 } from "chart.js";
 import Dropdown from 'react-dropdown';
 import { Line } from "react-chartjs-2";
+import { host } from "../../utils/api";
 
 ChartJS.register(
   CategoryScale,
@@ -26,8 +27,6 @@ ChartJS.register(
   Legend
 );
 
-const host = "http://188.166.218.38:3333";
-// const host = "http://localhost:3333";
 
 const LineChart = () => {
   let [status, setStutus] = useState(true)

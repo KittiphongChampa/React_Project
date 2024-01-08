@@ -31,148 +31,59 @@ import styled from "styled-components";
 import ChatContainer from "../components/ChatContainer";
 import Contacts from "../components/Contacts";
 import Welcome from "../components/Welcome";
-
-const host = "http://188.166.218.38:3333";
-// const host = "http://localhost:3333";
+import { Modal, Button, Input, Select, Space, Upload, Flex, Radio, Card } from 'antd';
+import { FilterOutlined } from '@ant-design/icons';
+import { host } from "../utils/api";
 
 const title = "แชท";
 // const bgImg = { backgroundImage: "url('mainmoon.jpg')", backgroundSize: " cover", backgroundOpacity: "0.5" }
 const body = { backgroundImage: "url('seamoon.jpg')" };
 
-function ChatMessage(props) {
-  let chatType = "";
-  if (props.chatType == "1") {
-    chatType = "their-message";
-  } else {
-    chatType = "my-message";
-  }
-  //ใส่ด้วยว่าถ้าเวลาที่ส่งต่อกันน้อยกว่า 5 นาทีให้ใส่เวลา
-
-  return (
-    <div className="user-message">
-      <div className={chatType}>
-        <div>{props.message}</div>
-        {/* <p className="time-sent">10.55 น.</p> */}
-      </div>
-    </div>
-  );
-}
-
 export default function ChatBox() {
+  const { Search } = Input;
   const chat = useRef(null);
+  // const message = 'Contrary to popular belsssssssssssssssssssssadfe   grgegief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.3'
   const [messages, setMessages] = useState([]);
   const [chatlist, setChatlist] = useState();
   const [activeChat, setActiveChat] = useState();
 
   const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
+  const queryParams = new URLSearchParams(window.location.search);
   const chat_partner_id = queryParams.get("id");
-  
+  const chat_order_id = queryParams.get("od_id");
+
   const [partnerChat, setPartnerChat] = useState([]);
+  // console.log(partnerChat.id);
 
   useEffect(() => {
     chat.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, activeChat]);
 
-  const toBottom = () => {
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      <ChatMessage message={messages} chatType="2" />,
-    ]);
-  };
+  const [selectedChatType , setSlectedChatType] = useState("private")
 
   function menuChat(event, menu) {
     let oldSelected = document.querySelector("button.selected");
     oldSelected.classList.remove("selected");
     event.target.classList.add("selected");
-    if (menu == "order") {
-      setChatlist(
-        <>
-          <div />
-          <p>ออเดอร์จ้า</p>
-          <div />
-        </>
-      );
-    } else if (menu == "private") {
-      setChatlist(
-        <>
-          <div />
-          <p>ข้อความส่วนตัว</p>
-          <div />
-        </>
-      );
-    } else {
-      setChatlist(
-        <>
-          <div />
-          <p>ทั้งหมด</p>
-          <div />
-        </>
-      );
-    }
+    setSlectedChatType(menu)
   }
-
-  function UserChat(props) {
-    // ถ้า idในตัวแปร = id ให้มันแสดงคลาส selected
-    return (
-      <>
-        <div
-          className={"chat-item " + (activeChat == props.id ? "selected" : "")}
-          onClick={props.onClick}
-          id={props.id}
-        >
-          <img src="b3.png"></img>
-          <div>
-            {!isToggled && (
-              <>
-                <p className="order">ออเsssssดอร์ xssssssxxxx</p>
-                <p className="message">ข้อควsssssssssssssssssss</p>
-                <p className="time">
-                  <span className="stat">00:12 น.</span>
-                </p>
-              </>
-            )}
-
-            {isToggled && (
-              <>
-                <p className="order filterd">xxxx</p>
-                <p className="message filterd">bust-up full color..</p>
-                <p className="time filterd">
-                  {" "}
-                  <span className="q">คิวที่1</span>
-                  <span className="stat">รอชำระเงิน</span>
-                </p>
-              </>
-            )}
-          </div>
-        </div>
-        <div className="qq">
-          <div className={activeChat == props.id ? "arrow" : ""} />
-        </div>
-      </>
-    );
-  }
-
-  const chatSelected = (id) => {
-    setActiveChat(id);
-  };
 
   const [isToggled, setIsToggled] = useState(false);
 
   const handleToggle = () => {
     setIsToggled((prevState) => !prevState);
   };
-
   /*--------------------------------------------------------------------------------- */
-  const navigate = useNavigate();
   const socket = useRef();
-  const [contacts, setContacts] = useState([]); // คู่สนทนาที่เราสมารถแชทด้วยได้
+  const [contacts, setContacts] = useState([]);
   const [currentChat, setCurrentChat] = useState(undefined); //คนที่เราเลือกสนทนา
 
   // const [currentUser, setCurrentUser] = useState(undefined);
   const token = localStorage.getItem("token");
   const [userdata, setUserdata] = useState([]);
+  // const usr = useRef()
 
+  // const [orderId, setOrderId] = useState();
   const getPartnerChat = async () => {
     await axios
       .get(`${host}/chat/partner/${chat_partner_id}`, {
@@ -181,11 +92,14 @@ export default function ChatBox() {
         },
       })
       .then((response) => {
-        console.log(response.data[0]);
+
         setPartnerChat(response.data[0]);
+        // setOrderId(chat_order_id)
+
+        console.log("พาร์ทเนอร์แชท", partnerChat);
+
       });
   };
-
   const getUser = async () => {
     try {
       const response = await axios.get(`${host}/index`, {
@@ -198,15 +112,7 @@ export default function ChatBox() {
         setUserdata(data.users[0]);
       }
     } catch (error) {
-      if (error.response && error.response.status === 401 && error.response.data === "Token has expired") {
-        // Handle token expired error
-        alert("Token has expired. Please log in again.");
-        localStorage.removeItem("token");
-        navigate("/login");
-      } else {
-        // Handle other errors here
-        console.error("Error:", error);
-      }
+      // Handle error
     }
   };
 
@@ -220,24 +126,16 @@ export default function ChatBox() {
       socket.current = io(`${host}`);
       socket.current.emit("add-user", userdata.id);
     }
-    // try {
-    //   axios
-    //     .get(`http://localhost:3333/allchat/${userdata.id}`)
-    //     .then((response) => {
-    //       setContacts(response.data); //แสดงผลคนที่เราสามารถแชทด้วยได้ทั้งหมด
-    //     });
-    // } catch (error) {
-    //   // Handle error
-    //   console.log("catch");
-    // }
-    
   }, [userdata]);
 
-  //โค้ดใหม่
   useEffect(() => {
     try {
       axios
-        .get(`${host}/allchat/${userdata.id}`)
+        .get(`${host}/allchat`,{
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        })
         .then((response) => {
           setContacts(response.data); //แสดงผลคนที่เราสามารถแชทด้วยได้ทั้งหมด
         });
@@ -256,6 +154,9 @@ export default function ChatBox() {
 
   /*--------------------------------------------------------------------------------- */
 
+  //หลังจากที่กดส่งคำขอจ้างไปแล้วจะขึ้น order id มาและขึ้นเป็นแชทใหม่ 
+  //ตอนเรียง contact แยกด้วยการเช็คทั้ง userid และ od_id ถ้า od_id อันเดียวกันให้อยู่ด้วยกัน
+
   return (
     <div className="body-con">
       <Helmet>
@@ -270,70 +171,62 @@ export default function ChatBox() {
             <div className="headding">
               <h1>แชท</h1>
             </div>
+            
+            
             <div className="menu-chat-grid">
+              <div className="abc">
+                <Flex>
+                  <Search placeholder="ค้นหา..." allowClear size="large"/>
+                  <Button type="text" icon={<FilterOutlined style={{color: "white"}} />}
+                    ></Button>
+                </Flex>
+              </div>
               <div className="menu-chat">
-                <button
+                {/* <button
                   onClick={(event) => menuChat(event, "all")}
                   className="selected"
                 >
                   {" "}
                   ทั้งหมด
+                </button> */}
+                <button className="selected" onClick={(event) => menuChat(event, "private")}>
+                  {" "}
+                  ส่วนตัว
                 </button>
                 <button onClick={(event) => menuChat(event, "order")}>
                   {" "}
                   ออเดอร์
                 </button>
-                <button onClick={(event) => menuChat(event, "private")}>
-                  {" "}
-                  ส่วนตัว
-                </button>
+                
               </div>
             </div>
-
-            {/* <div className="toggle-button-div">
-              <div>
-                <Switch
-                  checked={isToggled}
-                  onChange={handleToggle}
-                  onColor="#958EDC"
-                  onHandleColor="#FFEAFB"
-                  handleDiameter={24}
-                  uncheckedIcon={false}
-                  checkedIcon={false}
-                  height={24}
-                  width={48}
-                />
-                <p className="ms-2 text-white">เปิดดูคิวและสถานะ</p>
-              </div>
-            </div> */}
 
             <div className="chat-list">
               {/* {chatlist} */}
               <Contacts
                 partnerID={chat_partner_id}
-                contacts={contacts} //ส่งค่าคนที่เราสามารถแชทด้วยได้
-                changeChat={handleChatChange} //เลือกว่าเราสนทนากับใคร
-                Toggled={isToggled} //ปุ่มกดสำหรับ
-                socket={socket}
+                orderID={chat_order_id}
+                contacts={contacts}
+                changeChat={handleChatChange}
+                userdata={userdata}
+                Toggled={isToggled}
+                selectedChatType={selectedChatType}
+                myId={userdata.id}
               />
             </div>
           </div>
 
           {/* -----ดิฟ2  กดแล้วให้เปลี่ยนตรงนี้------*/}
           <div className="chat-room">
-            {/* {activeChat ? <SelectedChat /> : <p>ไม่มีแชทปจบ</p>} */}
-
-            {/* {currentChat === undefined ? (<Welcome />) : ( <ChatContainer currentChat={currentChat} socket={socket} />)} */}
-
-            {/* {chat_partner_id === undefined ? (<Welcome />) : (<ChatContainer currentChat={chat_partner_id} socket={socket} />) } */}
-
             {partnerChat != undefined ? (
-              <ChatContainer currentChat={partnerChat} socket={socket} />
+              <ChatContainer currentChat={partnerChat} socket={socket} orderId={chat_order_id} />
+              //พอมีการเซ็ท current chat ของ contact จะโชว์แชทขึ้นมาเลย
             ) : currentChat === undefined ? (
               <Welcome />
             ) : (
               <ChatContainer currentChat={currentChat} socket={socket} />
             )}
+            {/* ถ้า partner chat ไม่เคยมีแชทมาก่อน ให้เพิ่ม div ในคอนแทค */}
           </div>
         </div>
       </div>

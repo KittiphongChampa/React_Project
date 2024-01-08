@@ -238,6 +238,58 @@ td {
 
 * {
   box-sizing: border-box;
+  font-weight: 300;
+}
+
+.ant-typography,
+.ant-btn,
+.ant-input,
+.ant-select,
+.ant-radio,
+.ant-checkbox,
+.ant-modal,
+.ant-notification {
+  font-family: "Prompt", sans-serif;
+}
+
+.h1,
+.h2,
+.h3,
+.h4,
+.h5 {
+  margin: 0;
+  font-weight: 400;
+}
+
+.swal2-popup,
+.swal2-title {
+  font-family: "Prompt", sans-serif;
+  font-weight: 400 !important;
+  border-radius: 1rem !important;
+  font-size: 20px !important;
+  max-width: -moz-fit-content !important;
+  max-width: fit-content !important;
+  min-width: 20rem !important;
+}
+
+button.swal2-styled {
+  border-radius: 200px !important;
+  font-weight: 400 !important;
+  font-size: 16px !important;
+  /* แก้ไขค่าตามที่คุณต้องการ */
+}
+
+button.swal2-confirm {
+  background-color: #7E9AFA !important;
+}
+
+button.swal2-cancel {
+  background-color: transparent !important;
+  color: #222222 !important;
+}
+
+.swal2-actions {
+  margin: 0 auto 0 !important;
 }
 
 .ScrollbarsCustom-Scroller {
@@ -246,6 +298,10 @@ td {
 
 button:hover {
   transition: all 0.3s;
+}
+
+label {
+  font-weight: 400;
 }
 
 .upload-list-inline .ant-upload-list-item {
@@ -264,6 +320,30 @@ button:hover {
 
 .ant-input-data-count {
   bottom: -30px;
+}
+
+.ant-btn {
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+.ant-modal-title {
+  font-weight: 400 !important;
+  font-size: 1.25rem !important;
+}
+
+.ant-input-search :where(.css-dev-only-do-not-override-3mqfnx).ant-input-group .ant-input-affix-wrapper:not(:last-child) {
+  border-start-start-radius: 1rem;
+  border-end-start-radius: 1rem;
+}
+
+:where(.css-dev-only-do-not-override-3mqfnx).ant-input-search > .ant-input-group > .ant-input-group-addon:last-child .ant-input-search-button {
+  border-start-end-radius: 1rem;
+  border-end-end-radius: 1rem;
+}
+
+:where(.css-dev-only-do-not-override-3mqfnx).ant-input-group-wrapper-lg .ant-input-group-addon {
+  border-radius: 1rem;
 }
 
 a,
@@ -421,38 +501,30 @@ a:focus {
   background-size: cover;
 }
 
-.modal.cms-detail {
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.682);
-  position: fixed;
-  z-index: 999;
-  display: flex;
-  justify-content: center;
+table.history-order-detail {
+  width: 80%;
 }
-.modal.cms-detail table.history-order-detail {
-  width: 100%;
-}
-.modal.cms-detail table.history-order-detail tr {
+table.history-order-detail tr {
   border-bottom: 1px solid #A9AAC1;
   -moz-column-gap: 1rem;
        column-gap: 1rem;
 }
-.modal.cms-detail table.history-order-detail tr td {
+table.history-order-detail tr td {
   padding: 1.5rem 0.5rem;
-  font-weight: 500;
+  font-weight: 300;
   color: #525764;
 }
-.modal.cms-detail table.history-order-detail tr td:first-child {
+table.history-order-detail tr td:first-child {
   width: -moz-fit-content;
   width: fit-content;
   white-space: nowrap;
   padding-right: 1rem;
 }
-.modal.cms-detail table.history-order-detail tr td:last-child {
+table.history-order-detail tr td:last-child {
   width: 100%;
 }
-.modal.cms-detail .form-order-card {
+
+.form-order-card {
   margin-top: 3rem;
   margin-bottom: 3rem;
   background-color: rgba(255, 255, 255, 0.9);
@@ -464,7 +536,7 @@ a:focus {
   -webkit-backdrop-filter: blur(10px);
           backdrop-filter: blur(10px);
 }
-.modal.cms-detail .form-order-card div.close-tab {
+.form-order-card div.close-tab {
   padding: 1rem;
   width: 100%;
   height: -moz-fit-content;
@@ -473,7 +545,7 @@ a:focus {
   align-items: flex-end;
   justify-content: flex-end;
 }
-.modal.cms-detail .form-order-card div.goback-tab {
+.form-order-card div.goback-tab {
   padding: 1rem;
   width: 100%;
   height: -moz-fit-content;
@@ -545,7 +617,7 @@ div.form-order .orderSubmitBtn {
   width: 100%;
   background-color: rgba(255, 255, 255, 0.968);
   border-radius: 20px;
-  padding: 2.5rem;
+  padding: 2rem;
   -webkit-backdrop-filter: blur(25px);
           backdrop-filter: blur(25px);
 }
@@ -553,14 +625,16 @@ div.form-order .orderSubmitBtn {
   display: flex;
   align-items: center;
 }
-.content-card div.cms-overview p.cms-status-detail {
-  color: white;
+.content-card div.cms-overview .cms-status-detail {
+  color: #52c41a;
   font-weight: 400;
   border-radius: 100px;
   padding: 0.2rem 0.7rem;
-  background-color: #7AB675;
+  background-color: #f6ffed;
   height: -moz-fit-content;
   height: fit-content;
+  margin-left: 0.5rem;
+  vertical-align: middle;
 }
 .content-card h1,
 .content-card h2,
@@ -580,38 +654,43 @@ div.form-order .orderSubmitBtn {
   margin-top: 0.5rem;
   margin-bottom: 1rem;
 }
-.cms-artist-box div#cms-artist-profile {
-  display: flex;
-  align-items: center;
-}
-.cms-artist-box div#cms-artist-profile img {
-  border-radius: 100px;
-  width: 50px;
-  height: 50px;
-  margin-right: 10px;
-}
-.cms-artist-box div#cms-artist-profile p {
-  height: -moz-fit-content;
-  height: fit-content;
-  width: -moz-fit-content;
-  width: fit-content;
-  font-weight: 500;
-  color: #525764;
-}
-.cms-artist-box div#cms-artist-profile p > span {
-  font-weight: 200;
-  color: gray;
-}
 .cms-artist-box p#cms-price {
   height: -moz-fit-content;
   height: fit-content;
   width: -moz-fit-content;
   width: fit-content;
   margin-left: 5px;
-  color: #7A86B6;
-  font-weight: 500;
-  text-shadow: 0px 1px 6px #A3C7BF;
+  color: gray;
+  font-weight: 400;
   /* offset-x | offset-y | blur-radius | color */
+}
+
+div#cms-artist-profile {
+  display: flex;
+  align-items: center;
+  min-width: -moz-fit-content;
+  min-width: fit-content;
+}
+div#cms-artist-profile img {
+  border-radius: 100px;
+  width: 64px;
+  height: 64px;
+  margin-right: 10px;
+}
+div#cms-artist-profile p {
+  height: -moz-fit-content;
+  height: fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  font-weight: 400;
+  color: #525764;
+}
+div#cms-artist-profile p > span {
+  font-weight: 200;
+  color: gray;
+}
+div#cms-artist-profile .q {
+  font-weight: 400;
 }
 
 div.skill {
@@ -794,19 +873,19 @@ table.queue-table th.q {
 .chatbox-container div.menu-chat-grid div.menu-chat {
   display: flex;
   justify-content: space-evenly;
-  -moz-column-gap: 0.5rem;
-       column-gap: 0.5rem;
-  background-color: rgba(255, 255, 255, 0.501);
+  background-color: transparent;
   border-radius: 10rem;
-  padding: 0.5rem;
   margin-bottom: 0.6rem;
   grid-column-start: 2;
 }
 .chatbox-container div.menu-chat-grid div.menu-chat button {
   background-color: transparent;
-  border-radius: 10rem;
-  padding: 0.1rem 0.5rem;
+  border-radius: 1rem;
+  padding: 0.5rem;
   border: 0;
+  width: 100%;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.64);
 }
 .chatbox-container div.menu-chat-grid div.menu-chat button.selected {
   color: white;
@@ -821,13 +900,16 @@ table.queue-table th.q {
   display: flex;
   align-items: center;
 }
+.chatbox-container .abc {
+  margin-bottom: 1rem;
+  grid-column-start: 2;
+}
 .chatbox-container .chat-list {
   display: grid;
   grid-template-columns: 1.3rem 8fr 1.3rem;
   grid-template-rows: repeat(auto-fill, minmax(0, auto));
   overflow-y: scroll;
   overflow-x: hidden;
-  padding-top: 1rem;
 }
 .chatbox-container .chat-list::-webkit-scrollbar {
   display: none;
@@ -872,7 +954,6 @@ table.queue-table th.q {
 .chatbox-container .chat-list .chat-item div p.message {
   min-width: 0;
   color: #525764;
-  padding-bottom: 0.3rem;
   font-weight: 400;
 }
 .chatbox-container .chat-list .chat-item div p.time {
@@ -955,6 +1036,7 @@ table.queue-table th.q {
 .chatbox-container .chat-room .chat-header div.chat-name img,
 .chatbox-container .aside-main-card .chat-header div.chat-name img {
   width: 3rem;
+  min-width: 3rem;
   height: 3rem;
   -o-object-fit: cover;
      object-fit: cover;
@@ -986,9 +1068,7 @@ table.queue-table th.q {
 .chatbox-container .chat-room .chat-sender input,
 .chatbox-container .aside-main-card .chat-sender input {
   padding: 0.5rem 1rem;
-  border-radius: 3.125rem;
-  border: 1px solid #CACACA;
-  background: #F8F6FA;
+  border-radius: 1rem;
   width: 100%;
 }
 .chatbox-container .chat-room .chat-sender button,
@@ -1040,7 +1120,6 @@ table.queue-table th.q {
 .chatbox-container .chat-room .chat .system-message p,
 .chatbox-container .aside-main-card .chat .system-message p {
   color: #525764;
-  font-weight: 400;
 }
 .chatbox-container .chat-room .chat .system-message.progress,
 .chatbox-container .aside-main-card .chat .system-message.progress {
@@ -1188,6 +1267,12 @@ table.queue-table th.q {
   width: 100%;
   height: auto;
 }
+.chatbox-container .aside-main-card {
+  overflow-y: auto;
+}
+.chatbox-container .aside-main-card p {
+  overflow-wrap: break-word;
+}
 
 .modall {
   min-width: 100vw;
@@ -1245,7 +1330,7 @@ table.queue-table th.q {
 .backdrop-modal-area {
   z-index: 19;
   background-color: rgba(0, 0, 0, 0.358);
-  width: 30%;
+  width: 30rem;
   height: 100%;
   position: absolute;
   right: 0;
@@ -1254,13 +1339,14 @@ table.queue-table th.q {
   z-index: 20;
   width: 100%;
   height: 100%;
-  padding: 1.1rem 1.5rem;
+  padding: 2rem;
   background-color: white;
   display: flex;
   flex-direction: column;
   row-gap: 2rem;
   align-items: center;
-  box-shadow: 0px 0px 47px 1px rgba(176, 186, 209, 0.25);
+  overflow-y: auto;
+  box-shadow: 0px 0px 47px 1px rgba(176, 186, 209, 0.701);
 }
 .backdrop-modal-area .od-modal-card .od-headder {
   width: 100%;
@@ -1285,14 +1371,6 @@ table.queue-table th.q {
 }
 .backdrop-modal-area .od-modal-card .od-all-status {
   text-align: center;
-}
-.backdrop-modal-area .od-modal-card .od-edit-brief button {
-  background-color: transparent;
-  color: #7E9AFA;
-  font-weight: 300;
-  border: 2px solid #7A86B6;
-  border-radius: 100px;
-  padding: 0.3rem 0.7rem;
 }
 .backdrop-modal-area .od-modal-card .od-quota-grid {
   width: 100%;
@@ -1339,9 +1417,11 @@ table.queue-table th.q {
   width: 1rem;
   height: 1rem;
   border-radius: 7.5px;
-  background: linear-gradient(180deg, #5400FE 0%, #9400CF 100%);
   margin-right: 1rem;
   margin-left: 0.3rem;
+}
+.backdrop-modal-area .od-modal-card .od-progress-check p.check::before {
+  background: linear-gradient(180deg, #5400FE 0%, #9400CF 100%);
 }
 .backdrop-modal-area .headding-seeall {
   display: flex;
@@ -1597,6 +1677,48 @@ table.queue-table th.q {
   align-items: center;
 }
 
+.ant-card-body {
+  height: 100% !important;
+  border-radius: 1rem !important;
+}
+
+.ant-card {
+  border-radius: 1rem !important;
+}
+
+.report-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  height: 100%;
+}
+.report-content p {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-all;
+}
+
+.reported-link {
+  cursor: pointer;
+}
+.reported-link:hover {
+  filter: brightness(0.9);
+  transition: 0.3s;
+}
+
+.reported-stuff {
+  width: 100%;
+  height: 50vh;
+  overflow: hidden;
+}
+.reported-stuff img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
 .search-container {
   box-sizing: border-box;
   /* height: 50vh; */
@@ -1696,10 +1818,10 @@ table.queue-table th.q {
 
 .content-container {
   width: 100%;
-  background-color: white;
+  background-color: #FCFBFF;
   border-radius: 1.25rem;
-  padding: 2rem 4rem;
-  background: rgba(255, 255, 255, 0.8);
+  padding: 2rem;
+  background: rgb(255, 255, 255);
   -webkit-backdrop-filter: blur(1.5rem);
           backdrop-filter: blur(1.5rem);
 }
@@ -1780,7 +1902,7 @@ table.queue-table th.q {
 }
 .roles-container .role-item.select p {
   color: #5400FE;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .unnamedcard {
@@ -1804,7 +1926,7 @@ table.queue-table th.q {
 }
 .unnamedcard .desc-col {
   flex: 1;
-  padding: 2rem 2.5rem;
+  padding: 2rem;
   overflow-y: auto;
 }
 .unnamedcard .desc-col .artwork-headder {
@@ -1814,8 +1936,10 @@ table.queue-table th.q {
   align-items: center;
 }
 .unnamedcard .desc-col .artwork-headder .artist-profile {
-  height: 4rem;
-  width: 4rem;
+  min-height: 4rem;
+  min-width: 4rem;
+  max-width: 4rem;
+  max-height: 4rem;
   border-radius: 100rem;
   overflow: hidden;
 }
@@ -1878,6 +2002,12 @@ textarea,
   min-width: 10rem;
 }
 
+.icon-btn {
+  border-radius: 100px !important;
+  padding-inline-start: 7px !important;
+  padding-inline-end: 7px !important;
+}
+
 .ant-form label {
   font-size: 16px !important;
   color: #525764 !important;
@@ -1888,13 +2018,17 @@ textarea,
   min-width: 10rem;
 }
 .artwork-uploader :where(.css-dev-only-do-not-override-3mqfnx).ant-upload-wrapper.ant-upload-picture-card-wrapper .ant-upload.ant-upload-select > .ant-upload img,
-.artwork-uploader :where(.css-dev-only-do-not-override-3mqfnx).ant-upload-wrapper.ant-upload-picture-circle-wrapper .ant-upload.ant-upload-select > .ant-upload img {
+.artwork-uploader :where(.css-dev-only-do-not-override-3mqfnx).ant-upload-wrapper.ant-upload-picture-circle-wrapper .ant-upload.ant-upload-select > .ant-upload img,
+.big-uploader :where(.css-dev-only-do-not-override-3mqfnx).ant-upload-wrapper.ant-upload-picture-card-wrapper .ant-upload.ant-upload-select > .ant-upload img,
+.big-uploader :where(.css-dev-only-do-not-override-3mqfnx).ant-upload-wrapper.ant-upload-picture-circle-wrapper .ant-upload.ant-upload-select > .ant-upload img {
   -o-object-fit: contain;
      object-fit: contain;
   height: 100%;
 }
 .artwork-uploader :where(.css-dev-only-do-not-override-3mqfnx).ant-upload-wrapper.ant-upload-picture-card-wrapper .ant-upload.ant-upload-select,
-.artwork-uploader :where(.css-dev-only-do-not-override-3mqfnx).ant-upload-wrapper.ant-upload-picture-circle-wrapper .ant-upload.ant-upload-select {
+.artwork-uploader :where(.css-dev-only-do-not-override-3mqfnx).ant-upload-wrapper.ant-upload-picture-circle-wrapper .ant-upload.ant-upload-select,
+.big-uploader :where(.css-dev-only-do-not-override-3mqfnx).ant-upload-wrapper.ant-upload-picture-card-wrapper .ant-upload.ant-upload-select,
+.big-uploader :where(.css-dev-only-do-not-override-3mqfnx).ant-upload-wrapper.ant-upload-picture-circle-wrapper .ant-upload.ant-upload-select {
   width: 100%;
   height: 50vh;
 }
@@ -1949,15 +2083,14 @@ textarea,
 }
 
 .cms-card-price {
-  font-weight: 800;
+  font-weight: 400;
   color: #8C80DA;
   text-shadow: 0px 1px 6px #A3C7BF;
   text-align: center;
 }
 
 .cms-card-headding {
-  font-weight: 500;
-  color: #58648F;
+  font-weight: 400;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -1996,4 +2129,33 @@ textarea,
 .cms-to-artwork-modal .pic-wrapper:hover img {
   filter: contrast(0.4) brightness(1.5);
   transition: 0.3s;
+}
+
+div.text-wraper {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+div.text-wraper p {
+  display: inline-block;
+}
+
+.anima {
+  animation: move 10s linear infinite;
+  padding-left: 100%;
+}
+
+@keyframes move {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(-100%, 0);
+  }
+}
+.report-grid {
+  display: grid;
+  gap: 0.6rem;
+  grid-template-columns: repeat(auto-fill, minmax(30vw, 1fr));
 }/*# sourceMappingURL=main.css.map */

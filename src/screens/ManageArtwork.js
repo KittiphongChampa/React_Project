@@ -13,10 +13,7 @@ import {
 import { Modal, Progress, notification, Button, Upload, Checkbox, Form, Input, Space, Flex, Tooltip, Alert, Select, message, InputNumber } from 'antd';
 import 'react-quill/dist/quill.snow.css';
 // import 'animate.css';
-
-
-const host = "http://188.166.218.38:3333";
-// const host = "http://localhost:3333";
+import { host } from "../utils/api";
 
 const title = 'ManageCommission';
 

@@ -17,6 +17,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Keyboard, Scrollbar, Navigation, Pagination } from 'swiper/modules';
 import ArtistBox from '../components/ArtistBox'
 import { useParams } from 'react-router-dom';
+import { host } from "../utils/api";
 
 const title = 'หน้าแรก';
 const bgImg = "";
@@ -31,9 +32,6 @@ const cms_loop = () => {
   }
   return paragraphs;
 }
-
-const host = "http://188.166.218.38:3333";
-// const host = "http://localhost:3333";
 
 export default function Index() {
   const navigate = useNavigate();

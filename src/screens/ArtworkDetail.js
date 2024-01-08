@@ -10,9 +10,7 @@ import { useNavigate, Link, useParams, useLocation  } from "react-router-dom";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import "sweetalert2/src/sweetalert2.scss";
 import axios from "axios";
-
-const host = "http://188.166.218.38:3333";
-// const host = "http://localhost:3333";
+import { host } from "../utils/api";
 
 export default function ArtworkDetail() { 
 

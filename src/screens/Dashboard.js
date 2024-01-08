@@ -5,9 +5,7 @@ import LineChart from "../components/DashboardArtist/LineChart";
 import BarChart from "../components/DashboardArtist/BarChart";
 import PieChart from "../components/DashboardArtist/PieChart";
 import Scrollbars from "react-scrollbars-custom";
-
-const host = "http://188.166.218.38:3333";
-// const host = "http://localhost:3333";
+import { host } from "../utils/api";
 
 export default function Dashboard() {
   let [status, setStatus] = useState(true);

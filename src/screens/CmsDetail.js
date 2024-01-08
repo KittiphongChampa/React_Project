@@ -28,9 +28,7 @@ import { useNavigate, Link, useParams, useLocation  } from "react-router-dom";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import "sweetalert2/src/sweetalert2.scss";
 import { Alert, Space, Modal, Form, Button, Input, Radio } from "antd";
-
-const host = "http://188.166.218.38:3333";
-// const host = "http://localhost:3333";
+import { host } from "../utils/api";
 
 const title = "รายละเอียด cms";
 const body = { backgroundImage: "url('monlan.png')" };
@@ -237,11 +235,16 @@ export default function CmsDetail() {
         let od_id = data.orderId;
         if (data.status === "ok") {
             const formData = new FormData();
-            formData.append("from", userdata.id,);
+            // formData.append("from", userdata.id,);
             formData.append("to", artistDetail.artistId);
             formData.append("od_id", od_id);
             // ส่งค่าเพื่อเป็น chat ให้นักวาด
-            axios .post(`${host}/messages/addmsg-order`, formData, {})
+            axios .post(`${host}/messages/addmsg-order`, formData, {
+              headers: {
+                "Content-type": "multipart/form-data",
+                Authorization: "Bearer " + jwt_token,
+              },
+            })
 
         //     axios.post("http://localhost:3333/messages/addmsg", {
         //   from: userdata.id,
@@ -252,7 +255,6 @@ export default function CmsDetail() {
         //   status: "a",
         //   checked: 1,
         // })
-              
               
             .then((response) => {
                 const data = response.data;
