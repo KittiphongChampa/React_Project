@@ -29,7 +29,7 @@ import { host } from "../utils/api";
 
 const title = 'Profile';
 const bgImg = ""
-const body = { backgroundColor: "#F4F1F9" }
+const body = { backgroundColor: "#F1F5F9" }
 
 
 export default function Profile() {
@@ -211,7 +211,7 @@ export default function Profile() {
                             {/* <button className="sub-menu selected" onClick={(event) => menuProfile(event, 'all')}>ทั้งหมด</button> */}
                             <div className="user-profile-contentCard sub-menu-group">
                                 <Link className="sub-menu selected" onClick={(event) => menuProfile(event, 'cms')}>คอมมิชชัน</Link>
-                                <Link className="sub-menu" onClick={(event) => menuProfile(event, 'gallery')}>แกเลอรี</Link>
+                                <Link className="sub-menu" onClick={(event) => menuProfile(event, 'gallery')}>งานวาด</Link>
                                 <Link className="sub-menu" onClick={(event) => menuProfile(event, 'review')}>รีวิว</Link>
                                 <Link className="sub-menu" onClick={(event) => menuProfile(event, 'follower')}>ผู้ติดตาม</Link>
                                 <Link className="sub-menu" onClick={(event) => menuProfile(event, 'following')}>กำลังติดตาม</Link>
@@ -282,7 +282,7 @@ function AllCms(props) {
 function AllArtworks(props) {
     const { myGallery } = props
     return <>
-        <p className="h3 mt-3 mb-2">แกเลอรี</p>
+        <p className="h3 mt-3 mb-2">งานวาด</p>
         <div className="profile-gallery-container">
             {myGallery.map((data)=>(
                 <div className="profile-gallery" key={data.artw_id}>

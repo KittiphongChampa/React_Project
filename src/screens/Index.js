@@ -92,8 +92,8 @@ export default function Index() {
   const [cmsArtists, setCmsArtist] = useState([]); //คอมมิชชันของนักวาดที่ติดตาม
   const [cmsPopular, setCmsPopular] = useState([]); //
 
-  const [gallerylatest, setGallerylatest] = useState([]); //แกลลอรี่ล่าสุด
-  const [galleryIfollow, setGalleryIFollow] = useState([]); //แกลลอรี่ของนักวาดที่ติดตาม
+  const [gallerylatest, setGallerylatest] = useState([]); //งานวาดล่าสุด
+  const [galleryIfollow, setGalleryIFollow] = useState([]); //งานวาดของนักวาดที่ติดตาม
 
   const [IFollowerData, setIFollowerData] = useState([]);
   const [IFollowingIDs, setIFollowingIDs] = useState([]); //นักวาดที่เราติดตามมีใครบ้าง
@@ -215,7 +215,7 @@ export default function Index() {
               <div className="content-type">
                 <Link to="/" id="foryou" className="sub-menu"  >สำหรับคุณ</Link>
                 <Link to="/commissions" id="commissions" className="sub-menu" >คอมมิชชัน</Link>
-                <Link to="/gallery" id="gallery" className="sub-menu" >แกลเลอรี</Link>
+                <Link to="/gallery" id="gallery" className="sub-menu" >งานวาด</Link>
                 <Link to="/artists" id="artists" className="sub-menu" >นักวาด</Link>
               </div>
               {submenu == null 
@@ -331,7 +331,7 @@ function Commissions({IFollowingIDs}) {
         setMessage('');
       } else {
         setCommission([]);
-        setMessage("ไม่มีผลงาน")
+        setMessage("ไม่มีคอมมิชชัน")
       }
     });
   }
@@ -405,6 +405,8 @@ function Commissions({IFollowingIDs}) {
           </div>
         </div>
           
+
+        {Message == '' ? (
         <div className="content-items">
           {commission.map((cms)=>(
             <Link to={`/cmsdetail/${cms.cms_id}`}>
@@ -412,9 +414,11 @@ function Commissions({IFollowingIDs}) {
             </Link>
           ))}
         </div>
-          
-
-
+        ) : (
+          <div className="artistbox-items">
+            <h2>{Message}</h2>
+          </div>
+        )}
       </div>
     </>
   )
@@ -639,7 +643,7 @@ function Gallery({IFollowingIDs}) {
   return (
     <div className="content-box">
       <div className="content-top">
-        <p className="h3">แกลเลอรี</p>
+        <p className="h3">งานวาด</p>
         {/* <p>ดูทั้งหมด&gt;</p> */}
         <div className="submenu-filter">
 
@@ -791,7 +795,7 @@ function SearchResults(props) {
         {/* <Link to="/homepage" id="foryou" className="sub-menu selected"  >สำหรับคุณ</Link> */}
         <Link className="sub-menu" >ทั้งหมด</Link>
         <Link className="sub-menu" >คอมมิชชัน</Link>
-        <Link className="sub-menu" >แกลเลอรี</Link>
+        <Link className="sub-menu" >งานวาด</Link>
         <Link className="sub-menu" >นักวาด</Link>
       </div>
       <h3>ผลการค้นหาของ "xxx"</h3>

@@ -236,7 +236,6 @@ const NavbarAdmin = (props) => {
                 const data = response.data;
                 if (data.status === "ok") {
                     setAdmindata(data.admins[0]);
-                    setAdmintoken(data.admintoken);
                 }
             })
             .catch((error) => {
@@ -273,7 +272,7 @@ const NavbarAdmin = (props) => {
                                 <></>
                             )}
                             <a href="/admin/adminmanage/alluser" className="in-dropdown"><ggIcon.Group className='nav-icon mx-2' />จัดการผู้ใช้งาน</a>
-                            <a href="/admin/commission" className="in-dropdown"><ggIcon.ImageSearch className='nav-icon mx-2' />ตรวจสอบรายงานรูปภาพ</a>
+                            <a href="/admin/adminmanage/allcms" className="in-dropdown"><ggIcon.ImageSearch className='nav-icon mx-2' />ตรวจสอบรายงานรูปภาพ</a>
                             <a href="/admin/adminmanage/allfaq" className="in-dropdown"><Icon.HelpCircle className='nav-icon mx-2' />จัดการคำถามที่พบบ่อย</a>
                             <a href="#" onClick={handleLogout} className="in-dropdown"><Icon.LogOut className='nav-icon mx-2' />ออกจากระบบ</a>
                         </div>

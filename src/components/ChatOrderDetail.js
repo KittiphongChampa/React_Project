@@ -20,7 +20,7 @@ import 'animate.css'
 import { waitFor } from "@testing-library/react";
 import { Container } from 'react-bootstrap/Container';
 
-export default function ChatOrderDetail({ currentStep, messages, showOderDetailModal, handleOdModal, orderDetail, allSteps, currentStepName }) {
+export default function ChatOrderDetail({ myId,isBriefOpen,handleBrief,currentStep, messages, showOderDetailModal, handleOdModal, orderDetail, allSteps, currentStepName }) {
 
     const odModalRef = useRef();
     const briefModalRef = useRef();
@@ -30,7 +30,7 @@ export default function ChatOrderDetail({ currentStep, messages, showOderDetailM
     useEffect(() => {
         let handler = (event) => {
             if (!odModalRef.current.contains(event.target)) {
-                if (!formModalOpened && !isHistoryModalOpen) {
+                if (!formModalOpened && !isHistoryModalOpen && !isBriefOpen) {
                     const myElement = odModalRef?.current;
                     myElement?.classList.add('animate__animated', 'animate__fadeOutRight', 'animate__faster');
                     myElement?.style.setProperty('--animate-duration', '0.3s');
@@ -227,17 +227,19 @@ export default function ChatOrderDetail({ currentStep, messages, showOderDetailM
 
 
                     <Flex gap="small" className="od-edit-brief">
-                        <Button shape="round" onClick={openFormModal}>ดูบรีฟ</Button>
+                        <Button shape="round" onClick={handleBrief}>ดูบรีฟ</Button>
                         <Button shape="round" onClick={handleHistoryModal}>ดูประวัติการดำเนินการ</Button>
                         {/* <Icon.Info className="ms-2" /> */}
                     </Flex>
                     <div className="od-quota-grid">
                         <p className="quota-headding">ระยะเวลาทำงาน</p>
-                        <p className="quota-amount">{orderDetail?.pkg_duration} day</p>
+                        <p className="quota-amount">{orderDetail?.pkg_duration} วัน</p>
                         <p className="quota-headding">จำนวนครั้งที่แก้ไข</p>
-                        <p className="quota-amount">({orderDetail.od_number_of_edit}/{orderDetail.pkg_edits})</p>
+                        <p className="quota-amount">({orderDetail?.od_number_of_edit}/{orderDetail?.pkg_edits})</p>
                         <p className="quota-headding">ประเภทงาน</p>
-                        <p className="quota-amount">Personal use</p>
+                        <p className="quota-amount">{orderDetail?.tou}</p>
+                        <p className="quota-headding">กำหนดส่ง</p>
+                        <p className="quota-amount">xxxxxx</p>
                     </div>
                     <Flex justify="flex-start" style={{ width: "100%" }}>
 
@@ -288,7 +290,7 @@ export default function ChatOrderDetail({ currentStep, messages, showOderDetailM
                         return currentDate != null && currentDate != undefined && message.step_id !== 0 && message.step_id !== undefined && message.message != null && !message.message.includes("แนบ")? (
                             <tr key={index}>
                                 <td>{currentDate}</td>
-                                <td>{message.message}</td>
+                                <td>{message.sender == myId &&'คุณ'}{message.message}</td>
                             </tr>
                         ) : null;
                     })}

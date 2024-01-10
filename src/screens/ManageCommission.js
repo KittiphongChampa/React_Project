@@ -68,12 +68,21 @@ export default function ManageCommission() {
   const [userdata, setUserdata] = useState([]);
   let userID = userdata.id;
   const [isLoading, setLoading] = useState(false);
+  const [topics, setTopics] = useState([]);
 
   //---------------------------------------------------------------------
 
   useEffect(() => {
     getUser();
+    topic();
   }, []);
+
+  const topic = () => {
+    axios.get(`${host}/getTopic`).then((response) => {
+      const data = response.data;
+      setTopics(data.topics)
+    });
+  }
 
   const getUser = async () => {
     const token = localStorage.getItem("token");
@@ -140,7 +149,6 @@ export default function ManageCommission() {
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
   const [fileList, setFileList] = useState([]);
-  console.log(fileList);
   const handleCancel = () => setPreviewOpen(false);
   const handleCancelModal = () => setUploadModalOpen(false);
   const handlePreview = async (file) => {
@@ -153,9 +161,7 @@ export default function ManageCommission() {
       file.name || file.url.substring(file.url.lastIndexOf("/") + 1)
     );
   };
-  const handleChange = ({ fileList: newFileList }) => {
-    setFileList(newFileList);
-  };
+  const handleChange = ({ fileList: newFileList }) => {setFileList(newFileList);};
   const ref = useRef();
 
   const [topicValues, setTopicValues] = useState([]);
@@ -165,26 +171,12 @@ export default function ManageCommission() {
   }
 
   const all_option = [
-    { value: "1", label: "Sequentail Art" },
-    { value: "2", label: "SD scale" },
-    { value: "3", label: "Traditional Art" },
-    { value: "4", label: "doodle Art" },
-    { value: "5", label: "Semi-realistic" },
-    { value: "6", label: "Realistic" },
-    { value: "7", label: "Pixel Art" },
-    { value: "8", label: "Vector" },
-    { value: "9", label: "Anime" },
-    { value: "10", label: "Digital Art" },
-    { value: "11", label: "Furry" },
-    { value: "12", label: "Cubism Art" },
-    { value: "13", label: "Isometric Art" },
-    { value: "14", label: "Midcentury Illustration" },
-    { value: "15", label: "Minimalism" },
-    { value: "16", label: "Mosaic Art" },
-    { value: "17", label: "Pop Art" },
-    { value: "18", label: "Sketchy Style Art" },
-    { value: "19", label: "Watercolor" },
-  ];
+    ...topics.map((data) => ({
+      value: data.tp_id,
+      label: data.tp_name,
+    })),
+  ]
+
 
   const [selectedValues, setSelectedValues] = useState([]);
 
@@ -312,13 +304,13 @@ export default function ManageCommission() {
       </Helmet>
       <NavbarUser />
 
-      <div class="body-nopadding" style={{ backgroundColor: "#F4F1F9" }}>
+      <div class="body-nopadding" style={{ backgroundColor: "#F1F5F9" }}>
         <div className="container mt-4">
           <div className="content-container">
             <div className="content-body preview-cms">
               <div className="sub-menu-group">
                 <Link className="sub-menu selected">คอมมิชชัน</Link>
-                <Link to="/manage-artwork" className="sub-menu">แกลเลอรี</Link>
+                <Link to="/manage-artwork" className="sub-menu">งานวาด</Link>
               </div>
               <h3 className="content-header d-flex justify-content-center mt-4">
                 เพิ่มคอมมิชชัน

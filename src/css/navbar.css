@@ -37,8 +37,10 @@ a:visited {
 }
 
 .inline-nav>a:hover {
-    background-color: #7E9AFA;
-    color: white;
+    background-color: #CDD8FF;
+    color: #7f70ff;
+    /* color: white; */
+    transition: all 0.2s;
 
 }
 
@@ -119,6 +121,8 @@ a:visited {
 
 .dropdown-area a:hover {
     background-color: #CDD8FF;
+    color: #7f70ff;
+    transition: all 0.1s;
 }
 
 .show-coin {

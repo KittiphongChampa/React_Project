@@ -210,9 +210,10 @@ export default function Dashboard() {
               <div
                 style={{
                   padding: 30,
-                  borderRadius: 20,
-                  backgroundColor: "blue",
-                  color: "white",
+                  borderRadius: "1rem",
+                  backgroundColor: "white",
+                  color: "#525764",
+                  border: "1px solid #919ab0",
                   marginRight: 10,
                   width: "250px",
                 }}
@@ -224,9 +225,10 @@ export default function Dashboard() {
               <div
                 style={{
                   padding: 30,
-                  borderRadius: 20,
-                  backgroundColor: "green",
-                  color: "white",
+                  borderRadius: "1rem",
+                  backgroundColor: "white",
+                  color: "#525764",
+                  border: "1px solid #919ab0",
                   marginRight: 10,
                   width: "250px",
                 }}
@@ -238,9 +240,10 @@ export default function Dashboard() {
               <div
                 style={{
                   padding: 30,
-                  borderRadius: 20,
-                  backgroundColor: "yellow",
-                  color: "white",
+                  borderRadius: "1rem",
+                  backgroundColor: "white",
+                  color: "#525764",
+                  border: "1px solid #919ab0",
                   marginRight: 10,
                   width: "250px",
                 }}
@@ -252,9 +255,10 @@ export default function Dashboard() {
               <div
                 style={{
                   padding: 30,
-                  borderRadius: 20,
-                  backgroundColor: "red",
-                  color: "white",
+                  borderRadius: "1rem",
+                  backgroundColor: "white",
+                  color: "#525764",
+                  border: "1px solid #919ab0",
                   marginRight: 10,
                   width: "250px",
                 }}
@@ -273,6 +277,7 @@ export default function Dashboard() {
                 <option value="thisMonth">เดือนนี้</option>
               </select>
             </div>
+
             <div style={{ display: "flex", marginTop: "15px" }}> 
               <div
                 style={{
@@ -286,7 +291,8 @@ export default function Dashboard() {
                 <h4>รายได้</h4>
                 <BarChart />
               </div>
-              <div
+
+              {/* <div
                 style={{
                   borderRadius: "20px",
                   border: "3px",
@@ -297,7 +303,8 @@ export default function Dashboard() {
               >
                 <h4>หัวข้อที่นิยม</h4>
                 <PieChart countTopic={countTopic}/>
-              </div>
+              </div> */}
+              
             </div>
 
             <div style={{ display: "flex", marginTop: "15px" }}>

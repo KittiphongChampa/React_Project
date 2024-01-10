@@ -14,8 +14,10 @@ import { host } from "../utils/api";
 
 export default function ArtworkDetail() { 
     const {TextArea} = Input;
+    const artworkId = useParams();
     const token = localStorage.getItem("token");
     const [reportModalIsOpened, setReportModalIsOpened] = useState(false)
+    const [gettopics, setGetTopics] = useState([]);
     function handleReportModal() {
         setReportModalIsOpened(preveState => !preveState)
         setIsNext(false)
@@ -24,25 +26,10 @@ export default function ArtworkDetail() {
     }
 
     const all_option = [
-        { value: '1', label: 'Sequentail Art' },
-        { value: '2', label: 'SD scale' },
-        { value: '3', label: 'Traditional Art' },
-        { value: '4', label: 'doodle Art' },
-        { value: '5', label: 'Semi-realistic' },
-        { value: '6', label: 'Realistic' },
-        { value: '7', label: 'Pixel Art' },
-        { value: '8', label: 'Vector' },
-        { value: '9', label: 'Anime' },
-        { value: '10', label: 'Digital Art' },
-        { value: '11', label: 'Furry' },
-        { value: '12', label: 'Cubism Art' },
-        { value: '13', label: 'Isometric Art' },
-        { value: '14', label: 'Midcentury Illustration' },
-        { value: '15', label: 'Minimalism' },
-        { value: '16', label: 'Mosaic Art' },
-        { value: '17', label: 'Pop Art' },
-        { value: '19', label: 'Sketchy Style Art' },
-        { value: '20', label: 'Watercolor' },
+        ...gettopics.map((data) => ({
+          value: data.tp_id,
+          label: data.tp_name,
+        })),
     ]
 
     useEffect(() => {
@@ -53,7 +40,15 @@ export default function ArtworkDetail() {
             
         }
         getArtworkData();
+        gettopic();
     },[])
+
+    const gettopic = () => {
+        axios.get(`${host}/getTopic`).then((response) => {
+          const data = response.data;
+          setGetTopics(data.topics)
+        });
+    }
 
     const getUserdata = async () => {
         await axios.get(`${host}/index`,{
@@ -67,19 +62,26 @@ export default function ArtworkDetail() {
         })
     }
 
-    const artworkId = useParams();
     const getArtworkData = async() => {
         await axios.get(`${host}/gallerry/detail/${artworkId.id}`)
         .then((response) => {
             const data = response.data;
             setGallery(data.artworkData.gallery);
             setTopic(data.artworkData.topic);
+
+            let arraay = data.artworkData.topic
+            let aaa = []
+            arraay.map((data) =>
+                aaa.push(data.tp_id)
+            )
+            // console.log('aaa : ', aaa);
+            setTopicValues(aaa)
         })
     };
+
     const [userdata, setUserdata] = useState([]);
     const [gallery, setGallery] = useState([])
     const [topic ,setTopic] = useState([])
-    console.log(gallery);
 
     const time = gallery.created_at;
     const date = new Date(time);
@@ -152,11 +154,34 @@ export default function ArtworkDetail() {
             }
         ];
     }
-    
-
     const onEdit = (values) => {
         const formData = new FormData();
         formData.append("detail", values.detail);
+        formData.append("artworkTopic", topicValues);
+        axios .patch(`${host}/gallerry/update/${artworkId.id}`, formData, {
+            headers: {
+                Authorization: "Bearer " + token,
+                "Content-type": "multipart/form-data",
+            },
+        }).then((response) => {
+            const data = response.data;
+            console.log(data);
+            if (data.status === "ok") {
+                Swal.fire({
+                    title: "บันทึกสำเร็จ",
+                    icon: "success"
+                }).then(() => {
+                    window.location.reload(false);
+                });
+            } else {
+                Swal.fire({
+                    title: "เกิดข้อผิดพลาดบางอย่าง กรุณาลองใหม่",
+                    icon: "error"
+                }).then(() => {
+                    window.location.reload(false);
+                });
+            }
+        })
     }
 
     function delArtwork() {
@@ -183,14 +208,16 @@ export default function ArtworkDetail() {
         });
     }
 
+    //ค่าของ topicValues ไว้ว่งไปบันทึก
     const [topicValues, setTopicValues] = useState([])
 
     function handleTopic(value) {
         setTopicValues(value)
     }
+
     const initialValues = {
         detail: gallery.artw_desc,
-        // ฟิลด์อื่น ๆ ที่คุณต้องการกำหนดค่าเริ่มต้น
+        topic: topicValues,
     };
 
 
@@ -199,7 +226,7 @@ export default function ArtworkDetail() {
             {src!=null  && <ImgFullscreen src={src} handleFullImg={handleFullImg} />}
             <div className="body-con">
                 <NavbarUser />
-                <div className="body-lesspadding" style={{ backgroundColor: "#F4F1F9" }}>
+                <div className="body-lesspadding" style={{ backgroundColor: "#F1F5F9" }}>
                     <div className="container">
                         <div className="unnamedcard">
                             <div className="img-col" onClick={() => handleFullImg("/f-b.png")}>

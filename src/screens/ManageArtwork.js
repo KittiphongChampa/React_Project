@@ -40,11 +40,20 @@ export default function ManageArtwork() {
     const [userdata, setUserdata] = useState([]);
     let userID = userdata.id;
     const [isLoading, setLoading] = useState(false);
+    const [topics, setTopics] = useState([]);
 
     //---------------------------------------------------------------------
     useEffect(() => {
         getUser();
+        topic();
     }, []);
+
+    const topic = () => {
+        axios.get(`${host}/getTopic`).then((response) => {
+          const data = response.data;
+          setTopics(data.topics)
+        });
+    }
 
     const getUser = async () => {
         const token = localStorage.getItem("token");
@@ -112,27 +121,15 @@ export default function ManageArtwork() {
         })
     }
 
+
     const all_option = [
-        { value: '1', label: 'Sequentail Art' },
-        { value: '2', label: 'SD scale' },
-        { value: '3', label: 'Traditional Art' },
-        { value: '4', label: 'doodle Art' },
-        { value: '5', label: 'Semi-realistic' },
-        { value: '6', label: 'Realistic' },
-        { value: '7', label: 'Pixel Art' },
-        { value: '8', label: 'Vector' },
-        { value: '9', label: 'Anime' },
-        { value: '10', label: 'Digital Art' },
-        { value: '11', label: 'Furry' },
-        { value: '12', label: 'Cubism Art' },
-        { value: '13', label: 'Isometric Art' },
-        { value: '14', label: 'Midcentury Illustration' },
-        { value: '15', label: 'Minimalism' },
-        { value: '16', label: 'Mosaic Art' },
-        { value: '17', label: 'Pop Art' },
-        { value: '19', label: 'Sketchy Style Art' },
-        { value: '20', label: 'Watercolor' },
+        ...topics.map((data) => ({
+          value: data.tp_id,
+          label: data.tp_name,
+        })),
     ]
+
+
     const [imageId, setImageId] = useState();
     const [imageUrl, setImageUrl] = useState();
     const [fileList, setFileList] = useState([]);
@@ -191,7 +188,13 @@ export default function ManageArtwork() {
                     window.location.reload(false);
                 });
             } else {
-                console.log('เกิดข้อผิดพลาดบางอย่าง');
+                // console.log('เกิดข้อผิดพลาดบางอย่าง');
+                Swal.fire({
+                    title: "เกิดข้อผิดพลาดบางอย่าง กรุณาลองใหม่",
+                    icon: "error"
+                }).then(() => {
+                    window.location.reload(false);
+                });
             }
         })
 
@@ -206,7 +209,7 @@ export default function ManageArtwork() {
         api.info({
             message: 'กำลังตรวจสอบรูปภาพ',
             description:
-                'กำลังตรวจสอบรูปภาพรอก่อนพี่ชายย ยังอัปคอมมิชชันไม่ได้เด้อ', btn,
+                'กำลังตรวจสอบรูปภาพซ้ำ', btn,
             duration: 0,
             placement: 'bottomRight',
             // icon: <LoadingOutlined style={{ color: '#108ee9' }} />
@@ -223,14 +226,14 @@ export default function ManageArtwork() {
             </Helmet>
             <NavbarUser />
 
-            <div class="body-nopadding" style={{ backgroundColor: "#F4F1F9" }}>
+            <div class="body-nopadding" style={{ backgroundColor: "#F1F5F9" }}>
                 <div className="container mt-4">
                     <div className="content-container">
 
                         <div className="content-body preview-cms">
                             <div className="sub-menu-group">
                                 <Link to="/manage-commission" className="sub-menu ">คอมมิชชัน</Link>
-                                <Link className="sub-menu selected">แกลเลอรี</Link>
+                                <Link className="sub-menu selected">งานวาด</Link>
                             </div>
                             <h3 className="content-header d-flex justify-content-center mt-4">เพิ่มงานวาด</h3>
                             <Form
@@ -281,7 +284,7 @@ export default function ManageArtwork() {
                                     </div>
                                 </Form.Item>
 
-                                <Modal open={uploadModalOpen} title="." footer={null} onCancel={handleCancelModal} width={"fit-content"}>
+                                <Modal open={uploadModalOpen} title="" footer={null} onCancel={handleCancelModal} width={"fit-content"}>
                                     <Flex gap="small">
                                         <>
                                             <Upload
@@ -336,13 +339,10 @@ export default function ManageArtwork() {
                                 >
                                     <Select
                                         mode="multiple"
-                                        // style={{ width: '10rem' }}
                                         placeholder="เลือกหัวข้อ"
                                         value={topicValues}
-                                        // value={["1", "2"]}
                                         id="topicSelector"
                                         onChange={handleTopic}
-                                        // maxTagCount='responsive'
                                         options={all_option}
                                         allowClear
                                     // maxTagCount={3}

@@ -24,7 +24,7 @@ import AdminManageCms from "./AdminManageCms";
 
 const title = 'จัดการแอดมิน';
 const bgImg = ""
-const body = { backgroundColor: "#F4F1F9" }
+const body = { backgroundColor: "#F1F5F9" }
 
 
 export default function AdminManagement() {

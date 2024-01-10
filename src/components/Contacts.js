@@ -3,13 +3,14 @@ import styled from "styled-components";
 import axios from "axios";
 import io from "socket.io-client";
 // import Logo from "../assets/logo.svg";
+import { Link, useParams } from 'react-router-dom';
 import { host } from "../utils/api";
 
 
 export default function Contacts({ myId, contacts, changeChat, userdata, Toggled, partnerID, orderID, selectedChatType }) {
   const [currentUserName, setCurrentUserName] = useState(undefined);
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
-  const [currentSelected, setCurrentSelected] = useState(undefined);
+  const [currentSelected, setCurrentSelected] = useState();
 
   const uniqueContactIds = new Set();
   const filteredContacts = [];
@@ -55,17 +56,7 @@ export default function Contacts({ myId, contacts, changeChat, userdata, Toggled
     setCurrentSelected(index);
     changeChat(contact);
     window.history.pushState({}, '', `/chatbox?id=${contact.id}&od_id=${contact.od_id}`)
-    // if (contact.od_id == 0 || contact.od_id == null || contact.od_id == undefined) {
-    //   window.history.pushState({}, '', `/chatbox?id=${contact.id}`)
-      
-    // } else {
-    //   window.history.pushState({}, '', `/chatbox?id=${contact.id}&od_id=${contact.od_id}`)
-    // }
-    
   };
-
-  const [prefixStepName, setPrefixStepName] = useState()
-
   return (
     <>
       
@@ -79,9 +70,9 @@ export default function Contacts({ myId, contacts, changeChat, userdata, Toggled
                   (<>
                     <div
                       key={contact.id + contact.od_id} //เปลี่ยนเป็น ยูเซอร์ไอดี+ออเดอร์ไอดี 
-                      className={`chat-item ${contact.id + contact.od_id == currentSelected ? "selected" : ""
+                      className={`chat-item ${String(contact.id) + String(contact.od_id) == currentSelected ? "selected" : ""
                         }`}
-                      onClick={() => changeCurrentChat(contact.id + contact.od_id, contact)}
+                      onClick={() => changeCurrentChat(String(contact.id) + String(contact.od_id), contact)}
                     >
                       <img src={contact.urs_profile_img}></img>
                       <div>
@@ -96,8 +87,8 @@ export default function Contacts({ myId, contacts, changeChat, userdata, Toggled
                                     style={{
                                       display: "flex",
                                     }}>
-                                    <span className="oneline-textoverflow" style={{ flex: 1}}>{contact.message_text}hello yo watsup bto</span>
-                                    <span style={{width:"fit-content"}}> 11:11 น.</span>
+                                    <span className="oneline-textoverflow" style={{ flex: 1}}>{contact.message_text}</span>
+                                    <span style={{ width: "fit-content" }}> xx:xx น.</span>
                                   </p>
                               )}
                             </p>
@@ -129,7 +120,8 @@ export default function Contacts({ myId, contacts, changeChat, userdata, Toggled
                       </div>
                     </div>
                     <div className="qq">
-                      <div className={contact.id + contact.od_id == currentSelected ? "arrow" : ""} />
+                      {/* {console.log(contact.id + contact.od_id + "=" + currentSelected)} */}
+                      <div className={String(contact.id) + String(contact.od_id) == currentSelected ? "arrow" : ""} />
                     </div>
                   </>)
                   : null

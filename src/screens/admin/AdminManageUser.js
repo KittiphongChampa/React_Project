@@ -26,7 +26,7 @@ import { host } from "../../utils/api";
 
 const title = "จัดการผู้ใช้งาน";
 const bgImg = "";
-const body = { backgroundColor: "#F4F1F9" };
+const body = { backgroundColor: "#F1F5F9" };
 
 
 export default function AdminManageUser() {

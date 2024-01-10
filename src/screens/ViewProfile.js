@@ -26,7 +26,7 @@ import { host } from "../utils/api";
 
 const title = "ViewProfile";
 const bgImg = "";
-const body = { backgroundColor: "#F4F1F9" };
+const body = { backgroundColor: "#F1F5F9" };
 
 const toastOptions = {
   position: "bottom-right",
@@ -390,7 +390,7 @@ export default function ViewProfile() {
                 className="sub-menu"
                 onClick={(event) => menuProfile(event, "gallery")}
               >
-                แกลเลอรี่
+                งานวาด่
               </button>
               <button
                 className="sub-menu"

@@ -50,12 +50,7 @@ export default function SettingProfile() {
     formState: { errors, isSubmitting, isDirty, isValid },
     reset,
     watch,
-  } = useForm({
-    // defaultValues: {
-    //     username: watchUsername,
-    //     bio: watchBio,
-    // }
-  });
+  } = useForm({});
 
   const token = localStorage.getItem("token");
 
@@ -63,9 +58,7 @@ export default function SettingProfile() {
   const [userdata, setUserdata] = useState([]);
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
-  if (bio === 'NULL') {
-    setBio('0')
-  }
+
   const [bankAccName, setBankAccName] = useState("");
   const [ppNumber, setPpNumber] = useState("");
   const [cover, setCover] = useState("");
@@ -345,7 +338,7 @@ export default function SettingProfile() {
                     className="text-align-right"
                     style={{ display: editProfileBtn? 'none' : 'block' }}
                   >
-                    {bio.length}/350
+                    {/* {bio.length}/350 */}
                   </p>
                 </div>
 

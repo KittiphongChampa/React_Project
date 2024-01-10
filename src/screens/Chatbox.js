@@ -1,7 +1,4 @@
 import React, { useState, useEffect, useRef, createElement } from "react";
-import * as Icon from "react-feather";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useForm } from "react-hook-form";
 import "../css/indexx.css";
 // import "../css/recent_index.css";
 // import '../styles/index.css';
@@ -10,30 +7,20 @@ import "../css/allbutton.css";
 import "../css/profileimg.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Helmet } from "react-helmet";
-import DefaultInput from "../components/DefaultInput";
 import { NavbarUser, NavbarAdmin, NavbarHomepage } from "../components/Navbar";
-import inputSetting from "../function/function";
-import ProfileImg from "../components/ProfileImg";
-import Profile from "./Profile";
-import ChangeProfileImgModal from "../modal/ChangeProfileImgModal";
-import { ChangeCoverModal, openInputColor } from "../modal/ChangeCoverModal";
-import CmsItem from "../components/CmsItem";
-// import ImgSlide from './../components/ImgSlide';
-import Carousel from "react-bootstrap/Carousel";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import * as ggIcon from "@mui/icons-material";
-import { Grid } from "@mui/material/Grid";
-import Switch from "react-switch";
 import "../css/chat.css";
 import axios from "axios";
 import { io } from "socket.io-client";
-import styled from "styled-components";
 import ChatContainer from "../components/ChatContainer";
 import Contacts from "../components/Contacts";
 import Welcome from "../components/Welcome";
 import { Modal, Button, Input, Select, Space, Upload, Flex, Radio, Card } from 'antd';
 import { FilterOutlined } from '@ant-design/icons';
 import { host } from "../utils/api";
+import { Link, useParams } from 'react-router-dom';
 
 const title = "แชท";
 // const bgImg = { backgroundImage: "url('mainmoon.jpg')", backgroundSize: " cover", backgroundOpacity: "0.5" }
@@ -46,8 +33,7 @@ export default function ChatBox() {
   const [messages, setMessages] = useState([]);
   const [chatlist, setChatlist] = useState();
   const [activeChat, setActiveChat] = useState();
-
-  const location = useLocation();
+  // const location = useLocation();
   const queryParams = new URLSearchParams(window.location.search);
   const chat_partner_id = queryParams.get("id");
   const chat_order_id = queryParams.get("od_id");
@@ -59,13 +45,13 @@ export default function ChatBox() {
     chat.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, activeChat]);
 
-  const [selectedChatType , setSlectedChatType] = useState("private")
+  const [selectedChatType, setSelectedChatType] = useState(chat_order_id == 0 || chat_order_id == null || chat_order_id == undefined? "private" : "order");
 
   function menuChat(event, menu) {
     let oldSelected = document.querySelector("button.selected");
     oldSelected.classList.remove("selected");
     event.target.classList.add("selected");
-    setSlectedChatType(menu)
+    setSelectedChatType(menu)
   }
 
   const [isToggled, setIsToggled] = useState(false);
@@ -77,13 +63,9 @@ export default function ChatBox() {
   const socket = useRef();
   const [contacts, setContacts] = useState([]);
   const [currentChat, setCurrentChat] = useState(undefined); //คนที่เราเลือกสนทนา
-
-  // const [currentUser, setCurrentUser] = useState(undefined);
   const token = localStorage.getItem("token");
   const [userdata, setUserdata] = useState([]);
-  // const usr = useRef()
 
-  // const [orderId, setOrderId] = useState();
   const getPartnerChat = async () => {
     await axios
       .get(`${host}/chat/partner/${chat_partner_id}`, {
@@ -189,12 +171,10 @@ export default function ChatBox() {
                   {" "}
                   ทั้งหมด
                 </button> */}
-                <button className="selected" onClick={(event) => menuChat(event, "private")}>
-                  {" "}
+                <button className={selectedChatType=="private" && "selected"} onClick={(event) => menuChat(event, "private")}>
                   ส่วนตัว
                 </button>
-                <button onClick={(event) => menuChat(event, "order")}>
-                  {" "}
+                <button className={selectedChatType == "order" && "selected"} onClick={(event) => menuChat(event, "order")}>
                   ออเดอร์
                 </button>
                 
@@ -202,6 +182,7 @@ export default function ChatBox() {
             </div>
 
             <div className="chat-list">
+              {/* {alert(chat_partner_id)} */}
               {/* {chatlist} */}
               <Contacts
                 partnerID={chat_partner_id}
