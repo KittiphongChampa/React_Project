@@ -249,7 +249,6 @@ export default function AdminManageAdmin(props) {
                 <div className="all-user-head">
                     <h2>รายชื่อแอดมิน ({admins.length})</h2>
                     <div>
-                    {/* <button onClick={handleClick}><Icon.Plus /> เพิ่มแอดมิน</button> */}
                     <Button onClick={handleClick} type="primary" shape="round" icon={<Icon.Plus />} size='large'>
                         เพิ่มแอดมิน
                     </Button>
@@ -337,12 +336,6 @@ export default function AdminManageAdmin(props) {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                         />
-                        {/* <Form.Control
-                    type="text"
-                    placeholder="ใส่ลิ้งก์รูปภาพ"
-                    value={profileImg}
-                    onChange={(e) => setProfileImage(e.target.value)}
-                /> */}
                     </Form>
                 </Modal.Body>
 

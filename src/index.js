@@ -36,6 +36,7 @@ import Verify from "./secondary_screens/Verify";
 //screens test
 import TransactionHistory from "./yunscreens/TransactionHistory";
 import Qrpromptpay from "./yunscreens/qrpromptpay";
+import AdminNoti from "./yunscreens/adminNoti";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -59,19 +60,21 @@ root.render(
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/artworkdetail/:id" element={<ArtworkDetail />} />
       <Route path="/artistmanagement/:menu" element={<ArtistManagement />} />
-   <Route path="/admin/adminmanage/:menu/:reportid" element={<AdminManage />} />
+      <Route path="/admin/adminmanage/:menu/:reportid" element={<AdminManage />} />
       {/*admin*/}
       <Route path="/admin" element={<AdminPage />} />
       <Route path="/admin/alluser" element={<AdminManageUser />} />
       <Route path="/admin/alladmin" element={<AdminManageAdmin />} />
-      <Route path="/admin/transaction" element={<TransactionHistory />} />
+
       <Route path="/admin/commission" element={<AdminManageCms />} />
       <Route path="/admin/adminmanage/cms-problem/:id" element={<AdminManageCmsProblem />}/>
       <Route path="/admin/allfaq" element={<AdminManageFAQ />} />
       <Route path="/admin/adminmanage/:menu" element={<AdminManage />} />
 
       {/* test */}
+      <Route path="/admin/transaction" element={<TransactionHistory />} />
       <Route path="/qrpromptpay" element={<Qrpromptpay />} />
+      <Route path="/admin/noti" element={<AdminNoti />} />
 
     </Routes>
   </BrowserRouter>

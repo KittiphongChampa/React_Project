@@ -390,7 +390,7 @@ export default function ViewProfile() {
                 className="sub-menu"
                 onClick={(event) => menuProfile(event, "gallery")}
               >
-                งานวาด่
+                งานวาด
               </button>
               <button
                 className="sub-menu"

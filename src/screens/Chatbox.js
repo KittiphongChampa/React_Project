@@ -108,7 +108,7 @@ export default function ChatBox() {
       socket.current = io(`${host}`);
       socket.current.emit("add-user", userdata.id);
     }
-  }, [userdata]);
+  }, [userdata.id]);
 
   useEffect(() => {
     try {
@@ -125,7 +125,8 @@ export default function ChatBox() {
       // Handle error
       console.log("catch");
     }
-  }, [contacts])
+  // }, [contacts])
+  }, [])
 
 
   const handleChatChange = (chat) => {
@@ -159,8 +160,7 @@ export default function ChatBox() {
               <div className="abc">
                 <Flex>
                   <Search placeholder="ค้นหา..." allowClear size="large"/>
-                  <Button type="text" icon={<FilterOutlined style={{color: "white"}} />}
-                    ></Button>
+                  <Button type="text" icon={<FilterOutlined style={{color: "white"}} />}></Button>
                 </Flex>
               </div>
               <div className="menu-chat">
@@ -200,14 +200,12 @@ export default function ChatBox() {
           {/* -----ดิฟ2  กดแล้วให้เปลี่ยนตรงนี้------*/}
           <div className="chat-room">
             {partnerChat != undefined ? (
-              <ChatContainer currentChat={partnerChat} socket={socket} orderId={chat_order_id} />
-              //พอมีการเซ็ท current chat ของ contact จะโชว์แชทขึ้นมาเลย
+              <ChatContainer currentChat={partnerChat} socket={socket} orderId={chat_order_id} userdata={userdata}/>
             ) : currentChat === undefined ? (
               <Welcome />
             ) : (
-              <ChatContainer currentChat={currentChat} socket={socket} />
+              <ChatContainer currentChat={currentChat} socket={socket} userdata={userdata}/>
             )}
-            {/* ถ้า partner chat ไม่เคยมีแชทมาก่อน ให้เพิ่ม div ในคอนแทค */}
           </div>
         </div>
       </div>

@@ -37,7 +37,7 @@ const getBase64 = (file) =>
     reader.onerror = (error) => rreject(error);
   });
 
-export default function ChatContainer({ currentChat, socket }) {
+export default function ChatContainer({ currentChat, socket, userdata }) {
   const token = localStorage.getItem("token");
   const [userid, setUserid] = useState();
   const [messages, setMessages] = useState([]);
@@ -76,7 +76,6 @@ export default function ChatContainer({ currentChat, socket }) {
             from: data.users[0].id,
             to: currentChat.id,
             od_id: chat_order_id
-
           }
         )
         const getOrderData = await axios.post(
@@ -175,7 +174,7 @@ export default function ChatContainer({ currentChat, socket }) {
         });
       });
     }
-  }, [socket.current]);
+  }, [socket.current, currentChat]);
 
   useEffect(() => {
     arrivalMessage &&
@@ -268,6 +267,19 @@ export default function ChatContainer({ currentChat, socket }) {
       cancelButtonText: "ยกเลิก",
     }).then(async (result) => {
       if (result.isConfirmed) {
+
+        // แจ้งเตือนเมื่อยอมรับ
+        const acceptOrder = {
+          sender_id: userdata.id,
+          sender_name: userdata.urs_name,
+          sender_img: userdata.urs_profile_img,
+          order_id: chat_order_id,
+          receiver_id: currentChat.id,
+          msg: 'รับคำขอจ้าง'
+        }
+        socket.current.emit('acceptOrder', acceptOrder);
+        await axios.post(`${host}/noti/order/add`, acceptOrder);
+
         //ไปอัปเดต ui ให้เป็นเช็ค 1
         updateMsg()
         //อัปเดตให้ส่งคำขอจ้องเป็นเช็ค1

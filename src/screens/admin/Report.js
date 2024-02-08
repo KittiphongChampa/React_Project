@@ -6,32 +6,72 @@ import { Modal, Button, Input, Select, Space, Upload, Switch, Flex, Radio, Card 
 import React, { useState, useEffect, useRef } from "react";
 import ReportItem from "../../components/ReportItem";
 import { CloseOutlined, LeftOutlined, HomeOutlined, UserOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import "sweetalert2/src/sweetalert2.scss";
+import * as alertData from "../../alertdata/alertData";
+import axios from "axios";
+import { Helmet } from "react-helmet";
+
+import { host } from "../../utils/api";
+
+const title = "รายงาน";
 
 export default function Report(props) {
-
-
+    const jwt_token = localStorage.getItem("token");
     const { reportid } = useParams();
     const [reportDetail, setReportDetail] = useState()
+    const [reportAll, setReportAll] = useState([])
+    console.log(reportAll);
     useEffect(() => {
         setReportDetail(reportid)
+        getReport()
     }, [reportid])
+
+    const getReport = async() => {
+        await axios.get(`${host}/allreport`, {
+            headers: {
+                Authorization: "Bearer " + jwt_token,
+            },
+        }).then((response) => {
+            const data = response.data;
+            if (data.status === 'ok') {
+                setReportAll(data.results);
+            }
+        })
+    }
 
     return (
         <>
-
-
+            <Helmet>
+                <title>{title}</title>
+            </Helmet>
             {!reportDetail ?
                 <>
                     <h1 className="">การรายงาน</h1>
                     <div className="all-user-head">
                     </div>
                     <div className="sub-menu-group mt-4">
-                        <Link to="/homepage" id="foryou" className="sub-menu selected"  >กำลังดำเนินการ</Link>
-                        <Link to="/homepage/commissions" id="commissions" className="sub-menu" >อนุมัติแล้ว</Link>
-                        <Link to="/homepage/gallery" id="gallery" className="sub-menu" >ลบแล้ว</Link>
+                        <Link to="#" className="sub-menu selected"  >กำลังดำเนินการ</Link>
+                        <Link to="#" className="sub-menu" >อนุมัติแล้ว</Link>
+                        <Link to="#" className="sub-menu" >ลบแล้ว</Link>
                     </div>
                     <div className="report-item-area">
-                        <Link to="/admin/adminmanage/report/11"><ReportItem /></Link>
+                        {/* <Link to="/admin/adminmanage/report/11"><ReportItem /></Link> */}
+
+                        {/* ต้อง map */}
+                        {reportAll.map((data) => (
+                            <div key={data.sendrp_id}>
+                                <Link to={`/admin/adminmanage/report/${data.sendrp_id}`}>
+                                    <ReportItem 
+                                        sendrp_header={data.sendrp_header}
+                                        ex_img_path={data.ex_img_path}
+                                        usr_reporter_id={data.usr_reporter_id}
+                                        created_at={data.created_at}
+                                    />
+                                </Link>
+                            </div>
+                        ))}
+                        
                     </div>
                 </>
                 :

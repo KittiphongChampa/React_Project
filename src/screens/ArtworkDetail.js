@@ -9,6 +9,7 @@ import { useNavigate, Link, useParams, useLocation  } from "react-router-dom";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import "sweetalert2/src/sweetalert2.scss";
 import axios from "axios";
+import { io } from "socket.io-client";
 
 import { host } from "../utils/api";
 
@@ -31,6 +32,12 @@ export default function ArtworkDetail() {
           label: data.tp_name,
         })),
     ]
+
+    const [socket, setSocket] = useState(null);
+
+    useEffect(() => {
+        setSocket(io(`${host}`));
+    }, []);
 
     useEffect(() => {
         if (token) { //หากมี token
@@ -116,8 +123,59 @@ export default function ArtworkDetail() {
 
     const [form] = Form.useForm();
 
-    const onFinish = () => {
-        message.success('Submit success!');
+    const onFinish = async(values, selectRadio) => {
+        // console.log(values);
+        // console.log(selectRadio);
+        try {
+            const postData = {
+                rpheader: selectRadio,
+                rpdetail: values['rp-detail'],
+                rplink: values['rp-link'],
+                rpemail: values['rp-email'],
+            };
+            const response = await axios.post(`${host}/report/artwork/${artworkId.id}`, postData, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + token,
+                },
+            });
+            if (response.status === 200) {
+                // เพิ่มการส่งข้อมูลไปยัง socket server
+                const reportData = {
+                    sender_id: userdata.id,
+                    sender_name: userdata.urs_name,
+                    sender_img: userdata.urs_profile_img,
+                    artworkId: artworkId.id,
+                    reportId: response.data.reportId,
+                    msg: "ได้รายงานผลงานวาน"
+                };
+                socket.emit('adminReportNotification', reportData);
+
+                // บันทึก notification
+                // await axios.post(`${host}/admin-noti-artwork/add`, {
+                //     reporter: userdata.id,
+                //     artworkId: artworkId.id,
+                //     reportId: response.data.reportId,
+                //     msg: "ได้รายงานผลงานวาน"
+                // });
+
+                Swal.fire({
+                    title: "รายงานสำเร็จ",
+                    icon: "success"
+                }).then(() => {
+                    window.location.reload(false);
+                });
+            } else {
+                Swal.fire({
+                    title: "เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่",
+                    icon: "error"
+                }).then(() => {
+                    window.location.reload(false);
+                });
+            }
+        } catch (error) {
+            console.error('เกิดข้อผิดพลาด', error);
+        }
     };
 
     const onFinishFailed = () => {
@@ -219,6 +277,7 @@ export default function ArtworkDetail() {
         detail: gallery.artw_desc,
         topic: topicValues,
     };
+
 
 
     return (
@@ -327,23 +386,21 @@ export default function ArtworkDetail() {
                 } */}
                 <Modal title="รายงาน" open={reportModalIsOpened} onCancel={handleReportModal} footer="">
                     <Space gap="small" direction="vertical" style={{ width: "100%" }}>
-                        {/* <p className="h4">รายงาน</p> */}
-                        {/* <form > */}
 
                         {!isNext && <>
 
                             <Radio.Group onChange={onChange} value={value} >
                                 <Space direction="vertical">
-                                    <div><Radio value="spam"><p className="report-headding">สแปม</p></Radio>
+                                    <div><Radio value="สแปม"><p className="report-headding">สแปม</p></Radio>
                                         <p className="report-desc ms-4">ทำให้เข้าใจผิดหรือเป็นโพสท์ซ้ำ</p>
                                     </div>
-                                    <div><Radio value="ละเมิด"><p className="report-headding">ละเมิดทรัพย์สินทางปัญญา</p></Radio>
+                                    <div><Radio value="ละเมิดทรัพย์สินทางปัญญา"><p className="report-headding">ละเมิดทรัพย์สินทางปัญญา</p></Radio>
                                         <p className="report-desc ms-4">มีการละเมิดลิขสิทธิ์หรือเครื่องหมายการค้า</p>
                                     </div>
-                                    <div><Radio value="ss"><p className="report-headding">ภาพลามกอนาจารหรือเนื้อหาเกี่ยวกับเรื่องเพศ</p></Radio>
+                                    <div><Radio value="ภาพลามกอนาจารหรือเนื้อหาเกี่ยวกับเรื่องเพศ"><p className="report-headding">ภาพลามกอนาจารหรือเนื้อหาเกี่ยวกับเรื่องเพศ</p></Radio>
                                         <p className="report-desc ms-4">เนื้อหาทางเพศที่โจ่งแจ้งซึ่งเกี่ยวข้องกับผู้ใหญ่หรือภาพเปลือย ไม่ใช่ภาพเปลือย หรือการใช้ในทางที่ผิดโดยเจตนาเกี่ยวกับผู้เยาว์</p>
                                     </div>
-                                    <div><Radio value="s"><p className="report-headding">
+                                    <div><Radio value="กิจกรรมที่แสดงความเกลียดชัง"><p className="report-headding">
                                         กิจกรรมที่แสดงความเกลียดชัง</p></Radio>
                                         <p className="report-desc ms-4">อคติ การเหมารวม ลัทธิคนผิวขาว การใช้คำพูดส่อเสียด</p>
                                     </div>
@@ -363,21 +420,20 @@ export default function ArtworkDetail() {
                                 <Button shape="round" size="large" type="primary" onClick={handleNext} disabled={value == null}>ถัดไป</Button>
                             </Flex>
 
-                        </>
-
-                        }
-                        {value == "ละเมิด" && isNext &&
+                        </>}
+                        <Form
+                            form={form}
+                            layout="vertical"
+                            // onFinish={onFinish}
+                            onFinish={(selectRadio) => onFinish(selectRadio, value)} // ส่งค่าของ value ที่เลือกจาก radio ไปด้วย
+                            onFinishFailed={onFinishFailed}
+                            autoComplete="off"
+                            className="ant-form"
+                        >
+                        
+                        {value == "ละเมิดทรัพย์สินทางปัญญา" && isNext &&
                             <>
                                 <p>รายงาน : การละเมิดทรัพย์สินทางปัญญา</p>
-
-                                <Form
-                                    form={form}
-                                    layout="vertical"
-                                    onFinish={onFinish}
-                                    onFinishFailed={onFinishFailed}
-                                    autoComplete="off"
-                                    className="ant-form"
-                                >
                                     <Form.Item
                                         name="rp-detail"
                                         label="รายละเอียดการแจ้งรายงาน"
@@ -402,25 +458,13 @@ export default function ArtworkDetail() {
 
                                     <Flex gap="small" justify="flex-end">
                                         <Button shape="round" size="large" onClick={handleNext}>ย้อนกลับ</Button>
-                                        <Button shape="round" size="large" type="primary" onClick={handleNext} disabled>รายงาน</Button>
+                                        <Button shape="round" size="large" type="primary" htmlType="submit" >รายงาน</Button>
                                     </Flex>
-
-                                </Form>
-
-                            </>}
-
-                        {value !== "ละเมิด" && isNext &&
+                            </>
+                        }
+                        {value !== "ละเมิดทรัพย์สินทางปัญญา" && isNext &&
                             <>
-                                <p>รายงาน : xxxxxx</p>
-
-                                <Form
-                                    form={form}
-                                    layout="vertical"
-                                    onFinish={onFinish}
-                                    onFinishFailed={onFinishFailed}
-                                    autoComplete="off"
-                                    className="ant-form"
-                                >
+                                <p>รายงาน : {value}</p>
                                     <Form.Item
                                         name="rp-detail"
                                         label="รายละเอียดการแจ้งรายงาน"
@@ -435,25 +479,14 @@ export default function ArtworkDetail() {
                                     >
                                         <Input />
                                     </Form.Item>
-                                    <Form.Item>
-                                        <Space>
-                                            {/* <Button type="primary" htmlType="submit">
-                                                Submit
-                                            </Button> */}
-                                            {/* <Button htmlType="button" onClick={onFill}>
-                                                Fill
-                                            </Button> */}
-                                        </Space>
-                                    </Form.Item>
-                                </Form>
-
                                 <Flex gap="small" justify="flex-end">
                                     <Button shape="round" size="large" onClick={handleNext}>ย้อนกลับ</Button>
-                                    <Button shape="round" size="large" type="primary" onClick={handleNext} disabled>รายงาน</Button>
+                                    <Button shape="round" size="large" type="primary" htmlType="submit" >รายงาน</Button>
                                 </Flex>
-
-                            </>}
-                        {/* </form> */}
+                            </>
+                        }
+                     
+                        </Form>
                     </Space>
                 </Modal>
             </div>

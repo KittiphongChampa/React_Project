@@ -17,6 +17,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Keyboard, Scrollbar, Navigation, Pagination } from 'swiper/modules';
 import ArtistBox from '../components/ArtistBox'
 import { useParams } from 'react-router-dom';
+import { io } from "socket.io-client";
 import { host } from "../utils/api";
 
 const title = 'หน้าแรก';
@@ -43,17 +44,12 @@ export default function Index() {
     if (token) {
       setStatusUserLogin('login');
       getUser();
-      
+      getAritisIFollow();
+      getGalleryArtistIfollow();
+      getArtistCommission();
     }
-    getAritisIFollow();
-    
     getLatestCommission();
-    getArtistCommission();
-    // getPopular();
     getGalleryLatest();
-    getGalleryArtistIfollow();
-
-    
   }, []);
   
   const getUser = async () => {
@@ -90,7 +86,6 @@ export default function Index() {
   };
   const [cmsLatests, setCmsLatest] = useState([]); //คอมมิชชันล่าสุด
   const [cmsArtists, setCmsArtist] = useState([]); //คอมมิชชันของนักวาดที่ติดตาม
-  const [cmsPopular, setCmsPopular] = useState([]); //
 
   const [gallerylatest, setGallerylatest] = useState([]); //งานวาดล่าสุด
   const [galleryIfollow, setGalleryIFollow] = useState([]); //งานวาดของนักวาดที่ติดตาม
@@ -135,19 +130,10 @@ export default function Index() {
         Authorization: "Bearer " + token,
       },
     }).then((response) => {
-      const Cmsfollowing = response.data;
-      setCmsArtist(Cmsfollowing.commissions);
-    })
-  }
-  const getPopular = async () => {
-    await axios.get(`${host}/popularCommission`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    }).then((response) => {
-      const Cmspopular = response.data;
-      setCmsPopular(Cmspopular.commissions);
+      if (response.data.status === 'ok') {
+        const Cmsfollowing = response.data;
+        setCmsArtist(Cmsfollowing.commissions);
+      }
     })
   }
 
@@ -167,14 +153,13 @@ export default function Index() {
       const data = response.data;
       if (data.status === 'ok') {
         setGalleryIFollow(data.results)
-      } else {
-        // setMessage("ไม่มีนักวาดที่กำลังติดตาม")
-      }
+      } 
     })
   }
 
   const { Search } = Input;
   const { submenu } = useParams();
+
 
   useEffect(() => {
     // console.log(submenu)
@@ -193,6 +178,13 @@ export default function Index() {
       }
     }
   }, [submenu])
+
+  // เกี่ยวกับการแจ้งเตือน
+  const [socket, setSocket] = useState(null);
+  useEffect(() => {
+    setSocket(io(`${host}`));
+  }, []);
+
 
   return (
     <div className="body-con">
@@ -451,13 +443,17 @@ function Foryou({statusUserLogin, cmsLatests, cmsArtists, handleLinkClick, IFoll
               modules={[Navigation]}
               className="artistbox-swiper"
             >
-              {IFollowerData.map(data => (
+              {IFollowerData === 'คุณไม่มีนักวาดที่ติดตาม' ? (
+              <p>คุณไม่มีนักวาดที่ติดตาม</p>
+            ) : (
+              IFollowerData.map(data => (
                   <SwiperSlide>
                     <a key={data.id} href={`/profile/${data.id}`}>
                       <ArtistBox img={data.urs_profile_img} name={data.urs_name}/>
                     </a>
                   </SwiperSlide>
-              ))}
+              ))
+              )}
             </Swiper>
           </div>
 
@@ -480,13 +476,17 @@ function Foryou({statusUserLogin, cmsLatests, cmsArtists, handleLinkClick, IFoll
             modules={[Keyboard, Scrollbar, Navigation]}
             className="cms-item-swiper"
           >
-            {cmsArtists.map(cmsArtstdata => (
-              <SwiperSlide key={cmsArtstdata.cms_id}>
-                <Link to={`/cmsdetail/${cmsArtstdata.cms_id}`} onClick={() => handleLinkClick(cmsArtstdata.cms_id)}>
-                  <CmsItem src={cmsArtstdata.ex_img_path} headding={cmsArtstdata.cms_name} price={cmsArtstdata.pkg_min_price} desc={cmsArtstdata.cms_desc}/>
-                </Link>
-              </SwiperSlide>
-            ))}
+            {cmsArtists === 'คุณไม่มีนักวาดที่ติดตาม' ? (
+              <p>คุณไม่มีนักวาดที่ติดตาม</p>
+            ) : (
+              cmsArtists.map(cmsArtstdata => (
+                <SwiperSlide key={cmsArtstdata.cms_id}>
+                  <Link to={`/cmsdetail/${cmsArtstdata.cms_id}`} onClick={() => handleLinkClick(cmsArtstdata.cms_id)}>
+                    <CmsItem src={cmsArtstdata.ex_img_path} headding={cmsArtstdata.cms_name} price={cmsArtstdata.pkg_min_price} desc={cmsArtstdata.cms_desc}/>
+                  </Link>
+                </SwiperSlide>
+              ))
+            )}
           </Swiper >
           </div>
 
@@ -509,11 +509,15 @@ function Foryou({statusUserLogin, cmsLatests, cmsArtists, handleLinkClick, IFoll
               modules={[Keyboard, Scrollbar, Navigation]}
               className="gall-item-swiper"
             >
-              {galleryIfollow.map((data, index) => (
-                <SwiperSlide key={index}>
-                  <Link to={`/artworkdetail/${data.artw_id}`}><img src={data.ex_img_path} /></Link>
-                </SwiperSlide>
-              ))}
+              {galleryIfollow === 'คุณไม่มีนักวาดที่ติดตาม' ? (
+                <p>คุณไม่มีนักวาดที่ติดตาม</p>
+              ) : (
+                galleryIfollow.map((data, index) => (
+                  <SwiperSlide key={index}>
+                    <Link to={`/artworkdetail/${data.artw_id}`}><img src={data.ex_img_path} /></Link>
+                  </SwiperSlide>
+                ))
+              )}
 
             </Swiper>
           </div>

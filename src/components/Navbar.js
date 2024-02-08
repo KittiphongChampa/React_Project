@@ -5,6 +5,8 @@ import "../css/allinput.css";
 import { useState, useEffect, useRef } from 'react';
 import * as ggIcon from '@mui/icons-material';
 import { useNavigate, Link } from "react-router-dom";
+import { io } from "socket.io-client";
+
 import { host } from "../utils/api";
 
 const NavbarUser = (props) => {
@@ -12,6 +14,110 @@ const NavbarUser = (props) => {
     const [open, setOpen] = useState(false)
     const dropdownRef = useRef();
     const [userdata, setUserdata] = useState([]);
+
+    // ส่วนของการแสดงผล noti
+    const [notifications, setNotifications] = useState([]);
+    const [openNoti, setOpenNoti] = useState(false);
+    const socket = useRef();
+    useEffect(() => {
+        if (userdata) {
+            socket.current = io(`${host}`);
+            socket.current.emit("add-user", userdata.id);
+            socket.current.on('getNotification', (data) => {
+                setNotifications((prev) => [...prev, data.data]);
+            })
+        }
+    }, [socket, userdata]);
+
+    const displayNotification = ( data ) => {
+        if (data.msg === 'รับคำขอจ้าง') {
+            return (
+                <div key={data.order_id}>
+                    <a href={`/chatbox?id=${data.sender_id}&od_id=${data.order_id}`}>
+                        <span><img src={data.sender_img} style={{width:30}}/>{data.sender_name} {data.msg} </span>
+                    </a>
+                </div>
+            );
+        } else if (data.msg === 'ไม่รับคำขอจ้าง') {
+            return (
+                <div key={data.order_id}>
+                    <a href={`/chatbox?id=${data.sender_id}&od_id=${data.order_id}`}>
+                        <span><img src={data.sender_img} style={{width:30}}/>{data.sender_name} {data.msg} {data.created_at} </span>
+                    </a>
+                </div>
+            );
+        } else if (data.msg === 'ได้ส่งภาพร่าง') {
+            return (
+                <div key={data.order_id}>
+                    <a href={`/chatbox?id=${data.sender_id}&od_id=${data.order_id}`}>
+                        <span><img src={data.sender_img} style={{width:30}}/>{data.sender_name} {data.msg} {data.created_at}</span>
+                    </a>
+                </div>
+            );
+        } else if (data.msg === 'แจ้งเตือนการชำระเงินครั้งที่ 1') {
+            return (
+                <div key={data.order_id}>
+                    <a href={`/chatbox?id=${data.sender_id}&od_id=${data.order_id}`}>
+                        <span><img src={data.sender_img} style={{width:30}}/>{data.sender_name} {data.msg} {data.created_at}</span>
+                    </a>
+                </div>
+            );
+        } else if (data.msg === 'แจ้งเตือนการชำระเงินครั้งที่ 2') {
+            return (
+                <div key={data.order_id}>
+                    <a href={`/chatbox?id=${data.sender_id}&od_id=${data.order_id}`}>
+                        <span><img src={data.sender_img} style={{width:30}}/>{data.sender_name} {data.msg} {data.created_at}</span>
+                    </a>
+                </div>
+            );
+        } else if (data.msg === 'ได้ส่งผลงานแล้ว') {
+            return (
+                <div key={data.order_id}>
+                    <a href={`/chatbox?id=${data.sender_id}&od_id=${data.order_id}`}>
+                        <span><img src={data.sender_img} style={{width:30}}/>{data.sender_name} {data.msg} {data.created_at}</span>
+                    </a>
+                </div>
+            );
+        } else if (data.msg === 'ส่งคำขอจ้าง') {
+            return (
+                <div key={data.order_id}>
+                    <a href={`/chatbox?id=${data.sender_id}&od_id=${data.order_id}`}>
+                        <span><img src={data.sender_img} style={{width:30}}/>{data.sender_name} {data.msg} {data.created_at}</span>
+                    </a>
+                </div>
+            );
+        } else if (data.msg === 'โปรดตั้งราคางาน') {
+            return (
+                <div key={data.order_id}>
+                    <a href={`/chatbox?id=${data.sender_id}&od_id=${data.order_id}`}>
+                        <span><img src={data.sender_img} style={{width:30}}/>{data.sender_name} {data.msg} {data.created_at}</span>
+                    </a>
+                </div>
+            );
+        } else if (data.msg === 'ได้ชำระเงินครั้งที่ 1 แล้ว') {
+            return (
+                <div key={data.order_id}>
+                    <a href={`/chatbox?id=${data.sender_id}&od_id=${data.order_id}`}>
+                        <span><img src={data.sender_img} style={{width:30}}/>{data.sender_name} {data.msg} {data.created_at}</span>
+                    </a>
+                </div>
+            );
+        } else if (data.msg === 'ได้ชำระเงินครั้งที่ 2 แล้ว') {
+            return (
+                <div key={data.order_id}>
+                    <a href={`/chatbox?id=${data.sender_id}&od_id=${data.order_id}`}>
+                        <span><img src={data.sender_img} style={{width:30}}/>{data.sender_name} {data.msg} {data.created_at}</span>
+                    </a>
+                </div>
+            );
+        }
+    };
+
+    const handleRead = () => {
+        // setNotifications([]);
+        setOpenNoti(false);
+    };
+    
     
     // console.log('urs_type '+userdata.urs_type);
 
@@ -29,12 +135,11 @@ const NavbarUser = (props) => {
             document.removeEventListener("mousedown", handler);
         }
     }, [])
+    const token = localStorage.getItem("token");
     const getUser = async () => {
-        const token = localStorage.getItem("token");
         await axios
             .get(`${host}/index`, {
                 headers: {
-                    "Content-Type": "application/json",
                     Authorization: "Bearer " + token,
                 },
             })
@@ -43,6 +148,24 @@ const NavbarUser = (props) => {
                 if (data.status === "ok") {
                     setUserdata(data.users[0]);
                 }
+                axios.get(`${host}/noti/getmsg`,{
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: "Bearer " + token,
+                    },
+                }).then((response) => {
+                    const data = response.data;
+                    console.log(data);
+                    setNotifications(data.dataNoti);
+                })
+                // const getNotidata = axios.get(
+                //     `${host}/noti/getmsg`, {
+                //         headers: {
+                //             Authorization: "Bearer " + token,
+                //         },
+                //     }
+                // )
+                // setNotifications(getNotidata.data)
             })
             .catch((error) => {
                 console.error("Error:", error);
@@ -64,7 +187,30 @@ const NavbarUser = (props) => {
                     <a href="#"><Icon.Search className='nav-icon' /></a>
                 </div>
                 <div class="inline-nav">
-                    <a href="#"><Icon.Bell className='nav-icon' /><i data-feather="bell" class="nav-icon"></i></a>
+                    {/* <a href="#"><Icon.Bell className='nav-icon' /><i data-feather="bell" class="nav-icon"></i></a> */}
+                    {/* โค้ดการแสดงผลการแจ้งเตือน ให้มิ้นท์แก้ใหม่ */}
+                    <div className="dropdown-nav" ref={dropdownRef}>
+                        <button onClick={() => setOpenNoti(!openNoti)}>
+                            <Icon.Bell className='nav-icon' />
+                            {notifications.length > 0 && (
+                                <div className="counter">{notifications.length}</div>
+                            )}
+                        </button>
+                        <div className={`dropdown-area ${openNoti ? 'open' : 'close'}`} >
+                            <div className="notifications">
+                                {/* {notifications.map(data => (
+                                    <div key={data.reportId}>
+                                        <span><img src={data.sender_img} style={{width:30}}/>{data.sender_name} {data.msg} </span>
+                                    </div>
+                                ))} */}
+                                {notifications.map((n) => displayNotification(n))}
+                                <button className="nButton" onClick={handleRead}>
+                                    Mark as read
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                     <a href="/chatbox"><Icon.MessageCircle className='nav-icon' /><i data-feather="message-circle" class="nav-icon"></i></a>
                     {/* <a href="/manage-commission"><Icon.PlusSquare className='nav-icon' /></a>  */}
                     {userdata.urs_type === 1 ? (
@@ -207,7 +353,23 @@ const NavbarAdmin = (props) => {
     const [open, setOpen] = useState(false)
     const dropdownRef = useRef();
     const [admindata, setAdmindata] = useState([]);
-    const [admintoken, setAdmintoken] = useState();
+
+    // ส่วนของการแสดงผล noti
+    const [notifications, setNotifications] = useState([]);
+    const [openNoti, setOpenNoti] = useState(false);
+
+    useEffect(() => {
+        const socket = io(`${host}`);
+        socket.on('adminNotification', (data) => {
+        //   console.log('New report received:', data);
+          setNotifications((prev) => [...prev, data.data]);
+        })
+    }, [])
+
+    const handleRead = () => {
+        // setNotifications([]);
+        setOpenNoti(false);
+    };
 
     useEffect(() => {
         getAdmin();
@@ -248,6 +410,7 @@ const NavbarAdmin = (props) => {
         localStorage.removeItem("token");
         navigate("/welcome");
     };
+    
     return (
         <div class="nav-box" >
             <nav class="nav-container">
@@ -256,7 +419,30 @@ const NavbarAdmin = (props) => {
                     <a href="/admin"><Icon.Home className='nav-icon' /></a>
                 </div>
                 <div class="inline-nav">
-                    <a href="#"><Icon.Bell className='nav-icon' /></a>
+                    {/* <a href="#"><Icon.Bell className='nav-icon' /></a> */}
+
+                    {/* โค้ดการแสดงผลการแจ้งเตือน ให้มิ้นท์แก้ใหม่ */}
+                    <div className="dropdown-nav" ref={dropdownRef}>
+                        <button onClick={() => setOpenNoti(!openNoti)}>
+                            <Icon.Bell className='nav-icon' />
+                            {notifications.length > 0 && (
+                                <div className="counter">{notifications.length}</div>
+                            )}
+                        </button>
+                        <div className={`dropdown-area ${openNoti ? 'open' : 'close'}`} >
+                            <div className="notifications">
+                                {notifications.map(data => (
+                                    <div key={data.reportId}>
+                                        <span><img src={data.sender_img} style={{width:30}}/>{data.sender_name} {data.msg} </span>
+                                    </div>
+                                ))}
+                                <button className="nButton" onClick={handleRead}>
+                                    Mark as read
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                     <a href="/admin/adminmanage/alladmin"><ggIcon.AdminPanelSettings className='nav-icon' /></a>
                     <div className="dropdown-nav" ref={dropdownRef}>
                         <button onClick={() => { setOpen(!open) }}>
